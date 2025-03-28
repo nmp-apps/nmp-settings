@@ -1,0 +1,36 @@
+[application]
+
+name = "nmp-settings"
+
+default_platform = "desktop"
+
+# resource directory after build for using with direct paths (e.g. for css font definitions)
+asset_dir = "assets"
+
+[web.app]
+
+# HTML title tag content
+title = "nmp-settings"
+
+# include `assets` in web platform
+[web.resource]
+
+# Additional CSS style files
+style = []
+
+# Additional JavaScript files
+script = []
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
+
+[bundle]
+identifier = "com.nmp"
+publisher = "nmp"
+copyright = "nmp"
+category = "System"
+short_description = "Settings GUI extensible by plugins"
+long_description = "TODO: long description"

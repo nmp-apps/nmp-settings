@@ -1,0 +1,33 @@
+.top-bar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    border-bottom: 1px solid var(--layout-border-color);
+    padding: 8px;
+}
+
+.top-bar__left,
+.top-bar__center,
+.top-bar__right {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.top-bar__left {
+    justify-content: flex-start;
+}
+
+.top-bar__right {
+    justify-content: flex-end;
+}
+
+.top-bar__title {
+    flex-grow: 1;
+    font-size: 18px;
+    font-weight: 250;
+    text-align: center;
+    cursor: default;
+}
