@@ -1,0 +1,59 @@
+/* secondary button [default] */
+.ui-button {
+    padding: 4px 14px;
+    display: inline-flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    gap: 2px;
+    border-radius: 8px;
+    border: none;
+    background: none;
+    border: 2px solid var(--button-border-color);
+    box-shadow: none;
+    color: var(--button-text-color);
+    cursor: pointer;
+    transition: background 0.2s,
+    border 0.2s;
+}
+
+.ui-button:hover {
+    border-color: var(--button-border-hover-color);
+    background: var(--button-bg-hover-color);
+}
+
+.ui-button:active {
+    border-color: var(--button-border-active-color);
+    background: var(--button-bg-active-color);
+    transition: background 0.04s,
+    border 0.04s;
+}
+
+.ui-button.disabled {
+    border: none;
+    cursor: default;
+    background: var(--button-disabled-bg-color);
+    color: var(--button-disabled-text-color);
+}
+
+/* primary button */
+.ui-button.primary {
+    border: none;
+    background: var(--button-primary-bg-color);
+    color: var(--button-primary-text-color);
+}
+
+.ui-button.primary:hover {
+    background: var(--button-primary-bg-hover-color);
+}
+
+.ui-button.primary:active {
+    background: var(--button-primary-bg-active-color);
+}
+
+.ui-button.primary.disabled {
+    border: none;
+    cursor: default;
+    background: var(--button-primary-disabled-bg-color);
+    color: var(--button-primary-disabled-text-color);
+}

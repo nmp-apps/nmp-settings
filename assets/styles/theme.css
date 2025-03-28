@@ -1,0 +1,23 @@
+:root {
+    --app-background-color:rgba(15, 17, 22, 1);
+    --text-color: rgba(255, 255, 255, 0.95);
+
+    --layout-border-color: rgb(255, 255, 255, 0.5);
+
+    /* Button - secondary [default] */
+    --button-border-color: rgba(255, 255, 255, 0.2);
+    --button-border-hover-color: rgba(255, 255, 255, 0.25);
+    --button-border-active-color: rgba(255, 255, 255, 0.4);
+    --button-text-color: rgba(255, 255, 255, 0.8);
+    --button-bg-hover-color: rgba(255, 255, 255, 0.05);
+    --button-bg-active-color: rgba(255, 255, 255, 0.07);
+    --button-disabled-bg-color: rgba(255, 255, 255, 0.15);
+    --button-disabled-text-color: rgba(255, 255, 255, 0.25);
+    /* Button - primary */
+    --button-primary-bg-color: rgba(255, 255, 255, 0.95);
+    --button-primary-bg-hover-color: rgba(255, 255, 255, 0.8);
+    --button-primary-bg-active-color: rgba(255, 255, 255, 0.6);
+    --button-primary-text-color: rgba(0, 0, 0, 0.8);
+    --button-primary-disabled-bg-color: rgba(255, 255, 255, 0.15);
+    --button-primary-disabled-text-color: rgba(255, 255, 255, 0.25);
+}
