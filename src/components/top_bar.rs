@@ -6,6 +6,8 @@ const STYLES: Asset = asset!("/assets/styles/top_bar.css");
 
 #[component]
 pub fn TopBar() -> Element {
+    let mut is_advanced_settings_enabled = use_signal(|| false);
+
     rsx! {
         document::Link { rel: "stylesheet", href: STYLES }
 
@@ -15,8 +17,12 @@ pub fn TopBar() -> Element {
                 h1 { class: "top-bar__title", "Settings" }
             }
             div { class: "top-bar__right",
-                Switch {}
-                Button { "Save" }
+                Switch {
+                    title: "Enable advanced settings",
+                    value: is_advanced_settings_enabled(),
+                    onchange: move |event: Event<FormData>| is_advanced_settings_enabled.set(event.checked()),
+                }
+                Button { primary: true, "Save" }
             }
         }
     }

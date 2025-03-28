@@ -18,13 +18,13 @@
 }
 
 .ui-button:hover {
-    border-color: var(--button-border-hover-color);
-    background: var(--button-bg-hover-color);
+    border-color: var(--button-hover-border-color);
+    background: var(--button-hover-bg-color);
 }
 
 .ui-button:active {
-    border-color: var(--button-border-active-color);
-    background: var(--button-bg-active-color);
+    border-color: var(--button-active-border-color);
+    background: var(--button-active-bg-color);
     transition: background 0.04s,
     border 0.04s;
 }
@@ -44,11 +44,11 @@
 }
 
 .ui-button.primary:hover {
-    background: var(--button-primary-bg-hover-color);
+    background: var(--button-primary-hover-bg-color);
 }
 
 .ui-button.primary:active {
-    background: var(--button-primary-bg-active-color);
+    background: var(--button-primary-active-bg-color);
 }
 
 .ui-button.primary.disabled {

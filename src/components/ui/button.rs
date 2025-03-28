@@ -3,7 +3,8 @@ use dioxus::prelude::*;
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonProps {
     children: Option<Element>,
-    #[props(default = true)]
+    title: Option<String>,
+    #[props(default = false)]
     primary: bool,
     #[props(default = false)]
     disabled: bool,
@@ -19,6 +20,7 @@ pub fn Button(props: ButtonProps) -> Element {
             class: if props.disabled { "disabled" },
 
             disabled: props.disabled,
+            title: props.title.unwrap_or(String::new()),
 
             onclick: move |event| {
                 if let Some(handler) = props.onclick {
@@ -27,7 +29,7 @@ pub fn Button(props: ButtonProps) -> Element {
             },
             document::Link {
                 rel: "stylesheet",
-                href: asset!("/assets/styles/ui_button.css"),
+                href: asset!("/assets/styles/ui/button.css"),
             }
             if let Some(children) = props.children {
                 {children}
