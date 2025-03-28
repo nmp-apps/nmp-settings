@@ -35,4 +35,9 @@
     --switch-checked-disabled-border-color: rgba(255, 255, 255, 0.25);
     --switch-checked-disabled-bg-color: rgba(255, 255, 255, 0.25);
     --switch-checked-disabled-thumb-bg-color: rgba(255, 255, 255, 0.25);
+
+    /* Icon Button */
+    --icon-button-bg-color: transparent;
+    --icon-button-text-color: rgba(255, 255, 255, 0.8);
+    --icon-button-hover-bg-color: rgba(255, 255, 255, 0.2);
 }

@@ -1,0 +1,13 @@
+.ui-icon-button {
+    padding: 4px;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--icon-button-bg-color);
+    cursor: pointer;
+    transition: background-color 0.15s;
+    color: var(--icon-button-text-color);
+}
+
+.ui-icon-button:hover {
+    background-color: var(--icon-button-hover-bg-color);
+}

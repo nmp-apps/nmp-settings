@@ -1,6 +1,6 @@
 /* secondary button [default] */
 .ui-button {
-    padding: 4px 14px;
+    padding: 3px 14px;
     display: inline-flex;
     position: relative;
     justify-content: center;

@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+const STYLES: Asset = asset!("/assets/styles/ui/switch.css");
+
 #[derive(PartialEq, Props, Clone)]
 pub struct SwitchProps {
     #[props(default = false)]
@@ -29,10 +31,7 @@ pub fn Switch(props: SwitchProps) -> Element {
             class: "ui-switch",
             class: if props.disabled { "disabled" },
             title: props.title.unwrap_or(String::new()),
-            document::Link {
-                rel: "stylesheet",
-                href: asset!("/assets/styles/ui/switch.css"),
-            }
+            document::Link { rel: "stylesheet", href: STYLES }
             input {
                 r#type: "checkbox",
                 class: "ui-switch-checkbox",

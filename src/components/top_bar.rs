@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::components::{Button, Switch};
+use crate::components::{Button, Icon, IconButton, Switch};
 
 const STYLES: Asset = asset!("/assets/styles/top_bar.css");
 
@@ -17,6 +17,7 @@ pub fn TopBar() -> Element {
                 h1 { class: "top-bar__title", "Settings" }
             }
             div { class: "top-bar__right",
+                IconButton { icon: Icon::Extension, title: "Manage Extensions" }
                 Switch {
                     title: "Enable advanced settings",
                     value: is_advanced_settings_enabled(),

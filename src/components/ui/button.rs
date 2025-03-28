@@ -1,5 +1,7 @@
 use dioxus::prelude::*;
 
+const STYLES: Asset = asset!("/assets/styles/ui/button.css");
+
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonProps {
     children: Option<Element>,
@@ -27,10 +29,7 @@ pub fn Button(props: ButtonProps) -> Element {
                     handler.call(event)
                 }
             },
-            document::Link {
-                rel: "stylesheet",
-                href: asset!("/assets/styles/ui/button.css"),
-            }
+            document::Link { rel: "stylesheet", href: STYLES }
             if let Some(children) = props.children {
                 {children}
             } else {

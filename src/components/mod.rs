@@ -1,3 +1,6 @@
+mod icons;
+pub use icons::*;
+
 mod layouts;
 pub use layouts::*;
 
