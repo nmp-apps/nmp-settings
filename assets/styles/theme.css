@@ -6,18 +6,33 @@
 
     /* Button - secondary [default] */
     --button-border-color: rgba(255, 255, 255, 0.2);
-    --button-border-hover-color: rgba(255, 255, 255, 0.25);
-    --button-border-active-color: rgba(255, 255, 255, 0.4);
     --button-text-color: rgba(255, 255, 255, 0.8);
-    --button-bg-hover-color: rgba(255, 255, 255, 0.05);
-    --button-bg-active-color: rgba(255, 255, 255, 0.07);
+    --button-hover-border-color: rgba(255, 255, 255, 0.25);
+    --button-hover-bg-color: rgba(255, 255, 255, 0.05);
+    --button-active-border-color: rgba(255, 255, 255, 0.4);
+    --button-active-bg-color: rgba(255, 255, 255, 0.07);
     --button-disabled-bg-color: rgba(255, 255, 255, 0.15);
     --button-disabled-text-color: rgba(255, 255, 255, 0.25);
     /* Button - primary */
     --button-primary-bg-color: rgba(255, 255, 255, 0.95);
-    --button-primary-bg-hover-color: rgba(255, 255, 255, 0.8);
-    --button-primary-bg-active-color: rgba(255, 255, 255, 0.6);
     --button-primary-text-color: rgba(0, 0, 0, 0.8);
+    --button-primary-hover-bg-color: rgba(255, 255, 255, 0.8);
+    --button-primary-active-bg-color: rgba(255, 255, 255, 0.6);
     --button-primary-disabled-bg-color: rgba(255, 255, 255, 0.15);
     --button-primary-disabled-text-color: rgba(255, 255, 255, 0.25);
+
+    /* Switch - unchecked [default] */
+    --switch-border-color: rgba(255, 255, 255, 0.2);
+    --switch-bg-color: transparent;
+    --switch-thumb-bg-color: rgba(255, 255, 255, 0.95);
+    --switch-disabled-border-color: rgba(255, 255, 255, 0.15);
+    --switch-disabled-bg-color: rgba(255, 255, 255, 0.05);
+    --switch-disabled-thumb-bg-color: rgba(255, 255, 255, 0.25);
+    /* Switch - checked */
+    --switch-checked-border-color: rgba(0, 0, 0, 0.8);
+    --switch-checked-bg-color: rgba(255, 255, 255, 0.95);
+    --switch-checked-thumb-bg-color: rgba(0, 0, 0, 0.8);
+    --switch-checked-disabled-border-color: rgba(255, 255, 255, 0.25);
+    --switch-checked-disabled-bg-color: rgba(255, 255, 255, 0.25);
+    --switch-checked-disabled-thumb-bg-color: rgba(255, 255, 255, 0.25);
 }

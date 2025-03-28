@@ -1,0 +1,62 @@
+/* Unchecked state [default] */
+.ui-switch {
+    width: 70px;
+    height: 35px;
+    position: relative;
+    border-radius: 3.40282e+38px;
+    border: 2px solid var(--switch-border-color);
+    background: var(--switch-bg-color);
+    overflow: hidden;
+    transition: all 0.25s;
+}
+
+.ui-switch-checkbox {
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.ui-switch-thumb {
+    width: 25px;
+    height: 25px;
+    pointer-events: none;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    background: var(--switch-thumb-bg-color);
+    border-radius: 3.40282e+38px;
+    border: none;
+    transition: all 0.25s;
+}
+
+.ui-switch.disabled {
+    cursor: default;
+    pointer-events: none;
+    border-color: var(--switch-disabled-border-color);
+    background: var(--switch-disabled-bg-color);
+}
+
+.ui-switch.disabled .ui-switch-thumb {
+    background: var(--switch-disabled-thumb-bg-color);
+}
+
+/* Checked state */
+.ui-switch:has(.ui-switch-checkbox:checked) {
+    border-color: var(--switch-checked-border-color);
+    background: var(--switch-checked-bg-color);
+}
+
+.ui-switch:has(.ui-switch-checkbox:checked) .ui-switch-thumb {
+    translate: 150% 0;
+    background: var(--switch-checked-thumb-bg-color);
+}
+
+.ui-switch.disabled:has(.ui-switch-checkbox:checked) {
+    border-color: var(--switch-checked-disabled-border-color);
+    background: var(--switch-checked-disabled-bg-color);
+}
+
+.ui-switch.disabled:has(.ui-switch-checkbox:checked) .ui-switch-thumb {
+    background-color: var(--switch-checked-disabled-thumb-bg-color);
+}
