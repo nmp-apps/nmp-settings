@@ -31,3 +31,8 @@
     text-align: center;
     cursor: default;
 }
+
+.top-bar__window-actions {
+    display: flex;
+    gap: 4px;
+}
