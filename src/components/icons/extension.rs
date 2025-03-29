@@ -1,23 +1,16 @@
 use dioxus::prelude::*;
 
-#[derive(PartialEq, Props, Clone)]
-pub struct ExtensionIconProps {
-    // currentColor means take color from parent element
-    #[props(into, default = "currentColor")]
-    color: String,
-    #[props(into, default = "24px")]
-    size: String
-}
+use super::IconProps;
 
 #[component]
-pub fn ExtensionIcon(props: ExtensionIconProps) -> Element {
+pub fn ExtensionIcon(props: IconProps) -> Element {
     rsx! {
         svg {
             xmlns: "http://www.w3.org/2000/svg",
             view_box: "0 -960 960 960",
-            height: props.size.clone(),
-            width: props.size,
-            fill: props.color,
+            height: props.size.clone().unwrap_or(String::from("24px")),
+            width: props.size.unwrap_or(String::from("24px")),
+            fill: props.color.unwrap_or(String::from("currentColor")),
             path { d: "M352-120H200q-33 0-56.5-23.5T120-200v-152q48 0 84-30.5t36-77.5q0-47-36-77.5T120-568v-152q0-33 23.5-56.5T200-800h160q0-42 29-71t71-29q42 0 71 29t29 71h160q33 0 56.5 23.5T800-720v160q42 0 71 29t29 71q0 42-29 71t-71 29v160q0 33-23.5 56.5T720-120H568q0-50-31.5-85T460-240q-45 0-76.5 35T352-120Z" }
         }
     }

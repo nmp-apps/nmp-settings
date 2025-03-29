@@ -23,7 +23,12 @@ pub fn TopBar() -> Element {
                     value: is_advanced_settings_enabled(),
                     onchange: move |event: Event<FormData>| is_advanced_settings_enabled.set(event.checked()),
                 }
-                Button { primary: true, "Save" }
+                Button { title: "Save changes", primary: true, "Save" }
+                div { class: "top-bar__window-actions",
+                    IconButton { size: "16px", icon: Icon::Minimize }
+                    IconButton { size: "16px", icon: Icon::Square }
+                    IconButton { size: "16px", icon: Icon::Close }
+                }
             }
         }
     }

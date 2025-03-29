@@ -6,35 +6,40 @@ const STYLES: Asset = asset!("/assets/styles/ui/icon_button.css");
 
 #[derive(PartialEq, Clone)]
 pub enum Icon {
-    // Close,
+    Close,
     Extension,
-    // Minimize,
-    // Square,
+    Minimize,
+    Square,
 }
 
 impl Icon {
-    fn to_component(&self) -> Element {
+    fn to_component(&self, size: String) -> Element {
         match self {
-            // Icon::Close => rsx! {
-            //     CloseIcon {}
-            // },
-            Icon::Extension => rsx! {
-                ExtensionIcon {}
-            },
-            // Icon::Minimize => rsx! {
-            //     MinimizeIcon {}
-            // },
-            // Icon::Square => rsx! {
-            //     SquareIcon {}
-            // }
+            Icon::Close => CloseIcon(IconProps { color: None, size: Some(size), }),
+            Icon::Extension => ExtensionIcon(IconProps { color: None, size: Some(size), }),
+            Icon::Minimize => MinimizeIcon(IconProps { color: None, size: Some(size), }),
+            Icon::Square => SquareIcon(IconProps { color: None, size: Some(size), }),
         }
     }
 }
+
+// impl Icon {
+//     fn to_component(&self, p: IconProps) -> Box<dyn Fn(IconProps) -> Element> {
+//         match self {
+//             Icon::Close => Box::new(move |p| CloseIcon(p)),
+//             Icon::Extension => Box::new(move |p| ExtensionIcon(p)),
+//             Icon::Minimize => Box::new(move |p| MinimizeIcon(p)),
+//             Icon::Square => Box::new(move |p| SquareIcon(p)),
+//         }
+//     }
+// }
 
 #[derive(PartialEq, Props, Clone)]
 pub struct IconButtonProps {
     icon: Icon,
     title: Option<String>,
+    #[props(into, default = "24px")]
+    size: String,
     #[props(default = false)]
     disabled: bool,
     onclick: Option<EventHandler<MouseEvent>>
@@ -56,7 +61,7 @@ pub fn IconButton(props: IconButtonProps) -> Element {
             },
 
             document::Link { rel: "stylesheet", href: STYLES }
-            {props.icon.to_component()}
+            {props.icon.to_component(props.size)}
         }
     }
 }
