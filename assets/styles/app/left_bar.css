@@ -1,0 +1,7 @@
+.left-bar {
+    width: 30%;
+    max-width: 300px;
+    min-width: 200px;
+    padding: 8px;
+    border-right: 1px solid var(--layout-border-color);
+}

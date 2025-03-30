@@ -9,14 +9,44 @@ pub struct IconProps {
     pub size: Option<String>
 }
 
+mod appearance;
+pub use  appearance::*;
+
+mod bluetooth;
+pub use bluetooth::*;
+
 mod close;
 pub use close::*;
+
+mod desktop;
+pub use desktop::*;
+
+mod display;
+pub use display::*;
 
 mod extension;
 pub use extension::*;
 
+mod lock_screen;
+pub use lock_screen::*;
+
 mod minimize;
 pub use minimize::*;
 
+mod network;
+pub use network::*;
+
+mod notifications;
+pub use notifications::*;
+
+mod security;
+pub use security::*;
+
+mod sound;
+pub use sound::*;
+
 mod square;
 pub use square::*;
+
+mod users;
+pub use users::*;

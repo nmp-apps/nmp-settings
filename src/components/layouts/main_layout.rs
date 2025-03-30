@@ -1,9 +1,9 @@
 use dioxus::prelude::*;
 use crate::router::Route;
 
-use crate::components::TopBar;
+use crate::components::{LeftBar, TopBar};
 
-const STYLES: Asset = asset!("/assets/styles/main_layout.css");
+const STYLES: Asset = asset!("/assets/styles/layouts/main_layout.css");
 
 #[component]
 pub fn MainLayout() -> Element {
@@ -12,10 +12,9 @@ pub fn MainLayout() -> Element {
 
         TopBar {}
 
-        div { id: "navbar",
-            Link { to: Route::Home {}, "Home" }
+        div { class: "main-layout__wrapper",
+            LeftBar {}
+            Outlet::<Route> {}
         }
-
-        Outlet::<Route> {}
     }
 }
