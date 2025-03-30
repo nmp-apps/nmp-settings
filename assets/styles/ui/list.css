@@ -1,0 +1,22 @@
+.ui-list {
+    padding: 0;
+}
+
+.ui-list__item {
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    list-style: none;
+    text-transform: capitalize;
+    color: var(--list-item-text-color);
+    background-color: var(--list-item-bg-color);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.15s;
+}
+
+.ui-list__item:hover {
+    background-color: var(--list-item-hover-bg-color);
+}

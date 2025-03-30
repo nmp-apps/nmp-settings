@@ -40,4 +40,9 @@
     --icon-button-bg-color: transparent;
     --icon-button-text-color: rgba(255, 255, 255, 0.8);
     --icon-button-hover-bg-color: rgba(255, 255, 255, 0.2);
+
+    /* List Item */
+    --list-item-text-color: rgba(255, 255, 255, 0.8);
+    --list-item-bg-color: transparent;
+    --list-item-hover-bg-color: rgba(255, 255, 255, 0.05);
 }

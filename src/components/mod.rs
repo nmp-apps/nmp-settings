@@ -1,3 +1,6 @@
+mod app;
+pub use app::*;
+
 mod icons;
 pub use icons::*;
 
@@ -12,6 +15,3 @@ pub use ui::*;
 
 mod hero;
 pub use hero::Hero;
-
-mod top_bar;
-pub use top_bar::TopBar;

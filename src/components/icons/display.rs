@@ -1,0 +1,17 @@
+use dioxus::prelude::*;
+
+use super::IconProps;
+
+#[component]
+pub fn DisplayIcon(props: IconProps) -> Element {
+    rsx! {
+        svg {
+            xmlns: "http://www.w3.org/2000/svg",
+            view_box: "0 -960 960 960",
+            height: props.size.clone().unwrap_or(String::from("24px")),
+            width: props.size.unwrap_or(String::from("24px")),
+            fill: props.color.unwrap_or(String::from("currentColor")),
+            path { d: "M140-80q-24 0-42-18t-18-42v-387q0-24 18-42t42-18h115v-233q0-24 18-42t42-18h505q24 0 42 18t18 42v387q0 24-18 42t-42 18H706v233q0 24-18 42t-42 18H140Zm0-60h506v-327H140v327Zm566-293h114v-327H315v173h317q32 0 53 21t21 53v80Z" }
+        }
+    }
+}

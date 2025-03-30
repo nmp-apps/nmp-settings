@@ -13,6 +13,7 @@ use dioxus::logger::tracing::Level;
 
 mod router;
 mod components;
+mod models;
 mod views;
 mod app;
 use app::App;
