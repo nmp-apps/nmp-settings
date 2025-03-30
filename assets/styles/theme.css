@@ -3,6 +3,7 @@
     --text-color: rgba(255, 255, 255, 0.95);
 
     --layout-border-color: rgb(255, 255, 255, 0.5);
+    --divider-color: rgba(255, 255, 255, 0.2);
 
     /* Button - secondary [default] */
     --button-border-color: rgba(255, 255, 255, 0.2);

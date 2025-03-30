@@ -18,21 +18,37 @@ impl<T> ListItem<T> {
     pub fn new(name: String, value: T, icon: Icon) -> ListItem<T> {
         ListItem { name, value, icon }
     }
+
+    pub fn get_value(&self) -> &T {
+        &self.value
+    }
 }
 
 #[derive(PartialEq, Props, Clone)]
-pub struct ListProps<T: 'static + PartialEq> {
-    items: Vec<ListItem<T>>
+pub struct ListProps<T: 'static + PartialEq + Clone> {
+    items: Vec<ListItem<T>>,
+    onclick: Option<EventHandler<ListItem<T>>>
 }
 
 #[component]
-pub fn List<T: Display + PartialEq>(props: ListProps<T>) -> Element {
+pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
+    let list_item_handler = move |item: ListItem<T>| {
+        match props.onclick {
+            Some(handler) => handler.call(item),
+            None => ()
+        }
+    };
+
     rsx! {
         ul { class: "ui-list",
             document::Link { rel: "stylesheet", href: STYLES }
 
-            for item in &props.items {
-                li { class: "ui-list__item",
+            for item in props.items {
+                li {
+                    class: "ui-list__item",
+                    onclick: move |_| list_item_handler(item.clone()),
+                    key: props.name,
+
                     {item.icon.to_component(String::from("20px"))}
                     "{item.name}"
                 }
