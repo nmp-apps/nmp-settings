@@ -5,3 +5,8 @@
     padding: 8px;
     border-right: 1px solid var(--layout-border-color);
 }
+
+.left-bar__divider {
+    margin: 20px 0;
+    color: var(--divider-color);
+}
