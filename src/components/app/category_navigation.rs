@@ -12,7 +12,7 @@ pub fn CategoryNavigation() -> Element {
     let list_items: Vec<ListItem<String>> = CATEGORIES.map(|category|
         ListItem::new(
             category.get_name(),
-            category.get_name(),
+            category.get_id(),
             category.get_icon()
         )
     ).to_vec();

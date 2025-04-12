@@ -15,6 +15,7 @@ pub enum SettingsCategory {
 }
 
 impl SettingsCategory {
+    /// Human readable name of category
     pub fn get_name(&self) -> String {
         match self {
             Self::Appearance => String::from("appearance"),
@@ -22,6 +23,21 @@ impl SettingsCategory {
             Self::Desktop => String::from("desktop"),
             Self::Display => String::from("display"),
             Self::LockScreen => String::from("lock screen"),
+            Self::Network => String::from("network"),
+            Self::Notifications => String::from("notifications"),
+            Self::Security => String::from("security"),
+            Self::Sound => String::from("sound"),
+            Self::Users => String::from("users")
+        }
+    }
+    /// Value is a name of category in snake_case
+    pub fn get_id(&self) -> String {
+        match self {
+            Self::Appearance => String::from("appearance"),
+            Self::Bluetooth => String::from("bluetooth"),
+            Self::Desktop => String::from("desktop"),
+            Self::Display => String::from("display"),
+            Self::LockScreen => String::from("lock_screen"),
             Self::Network => String::from("network"),
             Self::Notifications => String::from("notifications"),
             Self::Security => String::from("security"),

@@ -1,9 +1,10 @@
+use dioxus::desktop::{use_window, DesktopContext};
 use dioxus::prelude::*;
 
+use crate::get_asset;
 use crate::components::{Button, IconButton, Switch};
 use crate::models::Icon;
 
-const STYLES: Asset = asset!("/assets/styles/app/top_bar.css");
 
 #[derive(PartialEq, Props, Clone)]
 pub struct TopBarProps {
@@ -13,14 +14,35 @@ pub struct TopBarProps {
 
 #[component]
 pub fn TopBar(props: TopBarProps) -> Element {
+    let styles: String = get_asset!("/assets/styles/app/top_bar.css");
+    let window: DesktopContext = use_window();
     let mut is_advanced_settings_enabled = use_signal(|| false);
-    let top_bar_classes = match props.class.clone() {
+    let top_bar_classes = match &props.class {
         Some(classes) => format!("top-bar {classes}"),
         None => "top-bar".to_string()
     };
 
+    let click_close_handler = {
+        let window = window.clone();
+        move || {
+            window.close();
+        }
+    };
+    let click_minimize_handler = {
+        let window = window.clone();
+        move || {
+            window.set_minimized(true);
+        }
+    };
+    let click_maximize_handler = {
+        let window = window.clone();
+        move || {
+            window.set_maximized(true);
+        }
+    };
+
     rsx! {
-        document::Link { rel: "stylesheet", href: STYLES }
+        document::Link { rel: "stylesheet", href: styles }
 
         div { class: top_bar_classes,
             div { class: "top-bar__left" }
@@ -36,9 +58,21 @@ pub fn TopBar(props: TopBarProps) -> Element {
                 }
                 Button { title: "Save changes", primary: true, "Save" }
                 div { class: "top-bar__window-actions",
-                    IconButton { size: "16px", icon: Icon::Minimize }
-                    IconButton { size: "16px", icon: Icon::Square }
-                    IconButton { size: "16px", icon: Icon::Close }
+                    IconButton {
+                        onclick: move |_| click_minimize_handler(),
+                        size: "16px",
+                        icon: Icon::Minimize,
+                    }
+                    IconButton {
+                        onclick: move |_| click_maximize_handler(),
+                        size: "16px",
+                        icon: Icon::Square,
+                    }
+                    IconButton {
+                        onclick: move |_| click_close_handler(),
+                        size: "16px",
+                        icon: Icon::Close,
+                    }
                 }
             }
         }
