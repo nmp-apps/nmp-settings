@@ -30,7 +30,7 @@ script = []
 [bundle]
 identifier = "com.nmp"
 publisher = "nmp"
-copyright = "nmp"
-category = "System"
+category = "Utility"
 short_description = "Settings GUI extensible by plugins"
 long_description = "TODO: long description"
+icon = ["assets/logo.png"]

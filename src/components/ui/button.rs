@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const STYLES: Asset = asset!("/assets/styles/ui/button.css");
+use crate::get_asset;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonProps {
@@ -15,6 +15,7 @@ pub struct ButtonProps {
 
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
+    let styles: String = get_asset!("/assets/styles/ui/button.css");
     rsx! {
         button {
             class: "ui-button",
@@ -29,7 +30,9 @@ pub fn Button(props: ButtonProps) -> Element {
                     handler.call(event)
                 }
             },
-            document::Link { rel: "stylesheet", href: STYLES }
+
+            document::Link { rel: "stylesheet", href: styles }
+
             if let Some(children) = props.children {
                 {children}
             } else {

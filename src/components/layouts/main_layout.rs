@@ -1,14 +1,15 @@
 use dioxus::prelude::*;
-use crate::router::Route;
 
+use crate::get_asset;
+use crate::router::Route;
 use crate::components::{LeftBar, TopBar};
 
-const STYLES: Asset = asset!("/assets/styles/layouts/main_layout.css");
 
 #[component]
 pub fn MainLayout() -> Element {
+    let styles: String = get_asset!("/assets/styles/layouts/main_layout.css");
     rsx! {
-        document::Link { rel: "stylesheet", href: STYLES }
+        document::Link { rel: "stylesheet", href: styles }
 
         TopBar {}
 

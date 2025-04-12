@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-const STYLES: Asset = asset!("/assets/styles/ui/switch.css");
+use crate::get_asset;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SwitchProps {
@@ -14,6 +14,7 @@ pub struct SwitchProps {
 
 #[component]
 pub fn Switch(props: SwitchProps) -> Element {
+    let styles: String = get_asset!("/assets/styles/ui/switch.css");
     let mut is_checked = use_signal(|| props.value);
     use_effect(move || {
         if is_checked() != props.value {
@@ -31,7 +32,7 @@ pub fn Switch(props: SwitchProps) -> Element {
             class: "ui-switch",
             class: if props.disabled { "disabled" },
             title: props.title.unwrap_or(String::new()),
-            document::Link { rel: "stylesheet", href: STYLES }
+            document::Link { rel: "stylesheet", href: styles }
             input {
                 r#type: "checkbox",
                 class: "ui-switch-checkbox",

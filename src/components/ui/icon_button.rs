@@ -1,8 +1,7 @@
 use dioxus::prelude::*;
 
+use crate::get_asset;
 use crate::models::Icon;
-
-const STYLES: Asset = asset!("/assets/styles/ui/icon_button.css");
 
 #[derive(PartialEq, Props, Clone)]
 pub struct IconButtonProps {
@@ -17,6 +16,7 @@ pub struct IconButtonProps {
 
 #[component]
 pub fn IconButton(props: IconButtonProps) -> Element {
+    let styles: String = get_asset!("/assets/styles/ui/icon_button.css");
     rsx! {
         button {
             class: "ui-icon-button",
@@ -30,7 +30,7 @@ pub fn IconButton(props: IconButtonProps) -> Element {
                 }
             },
 
-            document::Link { rel: "stylesheet", href: STYLES }
+            document::Link { rel: "stylesheet", href: styles }
             {props.icon.to_component(props.size)}
         }
     }

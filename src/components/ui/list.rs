@@ -3,9 +3,9 @@ use std::cmp::PartialEq;
 
 use dioxus::prelude::*;
 
+use crate::get_asset;
 use crate::models::Icon;
 
-const STYLES: Asset = asset!("/assets/styles/ui/list.css");
 
 #[derive(PartialEq, Clone)]
 pub struct ListItem<T> {
@@ -32,27 +32,39 @@ pub struct ListProps<T: 'static + PartialEq + Clone> {
 
 #[component]
 pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
-    let list_item_handler = move |item: ListItem<T>| {
-        match props.onclick {
-            Some(handler) => handler.call(item),
-            None => ()
-        }
-    };
-
+    let styles: String = get_asset!("/assets/styles/ui/list.css");
     rsx! {
         ul { class: "ui-list",
-            document::Link { rel: "stylesheet", href: STYLES }
+            document::Link { rel: "stylesheet", href: styles }
 
             for item in props.items {
-                li {
-                    class: "ui-list__item",
-                    onclick: move |_| list_item_handler(item.clone()),
-                    key: props.name,
-
-                    {item.icon.to_component(String::from("20px"))}
-                    "{item.name}"
-                }
+                ListItem { item, onclick: props.onclick.clone() }
             }
+        }
+    }
+}
+
+#[derive(PartialEq, Props, Clone)]
+pub struct ListItemProps<T: 'static + PartialEq + Clone> {
+    item: ListItem<T>,
+    onclick: Option<EventHandler<ListItem<T>>>
+}
+
+#[component]
+fn ListItem<T: Display + PartialEq + Clone>(props: ListItemProps<T>) -> Element {
+    let item = props.item.clone();
+    rsx! {
+        li {
+            class: "ui-list__item",
+            onclick: move |_| {
+                if let Some(handler) = props.onclick {
+                    handler.call(props.item.clone())
+                }
+            },
+            key: item.name.clone(),
+
+            {item.icon.to_component(String::from("20px"))}
+            "{item.name}"
         }
     }
 }
