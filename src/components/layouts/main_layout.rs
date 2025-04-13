@@ -7,9 +7,9 @@ use crate::components::{LeftBar, TopBar};
 
 #[component]
 pub fn MainLayout() -> Element {
-    let styles: String = get_asset!("/assets/styles/layouts/main_layout.css");
+    let styles: String = use_hook(|| get_asset!("/assets/styles/layouts/main_layout.css"));
     rsx! {
-        document::Link { rel: "stylesheet", href: styles }
+        document::Link { rel: "stylesheet", href: "{styles}" }
 
         TopBar {}
 

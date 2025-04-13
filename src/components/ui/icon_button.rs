@@ -16,7 +16,7 @@ pub struct IconButtonProps {
 
 #[component]
 pub fn IconButton(props: IconButtonProps) -> Element {
-    let styles: String = get_asset!("/assets/styles/ui/icon_button.css");
+    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/icon_button.css"));
     rsx! {
         button {
             class: "ui-icon-button",
@@ -30,7 +30,7 @@ pub fn IconButton(props: IconButtonProps) -> Element {
                 }
             },
 
-            document::Link { rel: "stylesheet", href: styles }
+            document::Link { rel: "stylesheet", href: "{styles}" }
             {props.icon.to_component(props.size)}
         }
     }

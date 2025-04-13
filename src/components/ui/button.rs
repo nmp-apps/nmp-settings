@@ -15,7 +15,7 @@ pub struct ButtonProps {
 
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
-    let styles: String = get_asset!("/assets/styles/ui/button.css");
+    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
     rsx! {
         button {
             class: "ui-button",
@@ -31,7 +31,7 @@ pub fn Button(props: ButtonProps) -> Element {
                 }
             },
 
-            document::Link { rel: "stylesheet", href: styles }
+            document::Link { rel: "stylesheet", href: "{styles}" }
 
             if let Some(children) = props.children {
                 {children}
