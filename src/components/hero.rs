@@ -5,10 +5,10 @@ use crate::get_asset;
 
 #[component]
 pub fn Hero() -> Element {
-    let header_svg: String = get_asset!("/assets/header.svg");
+    let header_svg: String = use_hook(|| get_asset!("/assets/header.svg"));
     rsx! {
         div { id: "hero",
-            img { src: header_svg, id: "header" }
+            img { src: "{header_svg}", id: "header" }
             div { id: "links",
                 a { href: "https://dioxuslabs.com/learn/0.6/", "📚 Learn Dioxus" }
                 a { href: "https://dioxuslabs.com/awesome", "🚀 Awesome Dioxus" }

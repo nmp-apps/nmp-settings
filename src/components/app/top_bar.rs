@@ -14,7 +14,7 @@ pub struct TopBarProps {
 
 #[component]
 pub fn TopBar(props: TopBarProps) -> Element {
-    let styles: String = get_asset!("/assets/styles/app/top_bar.css");
+    let styles: String = use_hook(|| get_asset!("/assets/styles/app/top_bar.css"));
     let window: DesktopContext = use_window();
     let mut is_advanced_settings_enabled = use_signal(|| false);
     let top_bar_classes = match &props.class {
@@ -42,7 +42,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
     };
 
     rsx! {
-        document::Link { rel: "stylesheet", href: styles }
+        document::Link { rel: "stylesheet", href: "{styles}" }
 
         div { class: top_bar_classes,
             div { class: "top-bar__left" }
