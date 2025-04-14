@@ -12,6 +12,3 @@ pub use settings::*;
 
 mod ui;
 pub use ui::*;
-
-mod hero;
-pub use hero::Hero;
