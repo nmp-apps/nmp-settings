@@ -1,0 +1,32 @@
+.home {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin: 200px auto 0 auto;
+    padding: 8px 24px;
+}
+
+.home__title {
+    font-size: 44px;
+    font-weight: 400;
+    text-transform: capitalize;
+    margin-bottom: 20px;
+}
+
+.home__description {
+    margin-bottom: 12px;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.links {
+    padding: 0;
+    font-size: 20px;
+    color: rgba(10, 70, 173, 0.7);
+    list-style: none;
+}
+
+.links a {
+    color: inherit;
+}

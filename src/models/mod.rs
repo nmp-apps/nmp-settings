@@ -3,3 +3,6 @@ pub use settings_category::*;
 
 mod icon;
 pub use icon::*;
+
+mod plugin;
+pub use plugin::*;
