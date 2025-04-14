@@ -1,6 +1,8 @@
 use crate::models::Icon;
+use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Serialize, Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
 pub enum SettingsCategory {
     Appearance,
     Bluetooth,
