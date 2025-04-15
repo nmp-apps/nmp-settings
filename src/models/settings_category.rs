@@ -1,7 +1,7 @@
 use crate::models::Icon;
 use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Clone, Serialize, Deserialize, Debug)]
+#[derive(Hash, Eq, PartialEq, Clone, Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SettingsCategory {
     Appearance,
@@ -60,5 +60,20 @@ impl SettingsCategory {
             Self::Sound => Icon::Sound,
             Self::Users => Icon::Users
         }
+    }
+    pub fn get_by_id(id: &str) -> SettingsCategory {
+        match id {
+            "appearance" => Self::Appearance,  
+            "bluetooth" => Self::Bluetooth,  
+            "desktop" => Self::Desktop,  
+            "display" => Self::Display,  
+            "lock_screen" => Self::LockScreen,  
+            "network" => Self::Network,  
+            "notifications" => Self::Notifications,  
+            "security" => Self::Security,  
+            "sound" => Self::Sound,  
+            "users" => Self::Users,
+            _ => panic!("Setting category: wrong id"),
+        } 
     }
 }

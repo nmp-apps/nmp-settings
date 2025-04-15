@@ -1,7 +1,9 @@
 .left-bar {
-    width: 30%;
+    width: 30vw;
     max-width: 300px;
     min-width: 200px;
+    flex-grow: 1;
+    flex-basis: 100%;
     padding: 8px;
     border-right: 1px solid var(--layout-border-color);
 }
