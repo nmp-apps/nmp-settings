@@ -1,0 +1,31 @@
+.setting {
+    display: flex;
+    justify-content: space-between;
+}
+
+.setting__content {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 60%;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+.setting__content h6 {
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.setting__content h6:has(+ p) {
+    margin-bottom: 8px;
+}
+
+.setting__content p {
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--text-secondary-color);
+}
+
+.setting__actions {
+    display: flex;
+}

@@ -1,9 +1,10 @@
 :root {
     --app-background-color:rgba(15, 17, 22, 1);
     --text-color: rgba(255, 255, 255, 0.95);
+    --text-secondary-color: rgba(255, 255, 255, 0.65);
 
     --layout-border-color: rgb(255, 255, 255, 0.5);
-    --divider-color: rgba(255, 255, 255, 0.2);
+    --divider-color: rgba(255, 255, 255, 0.15);
 
     /* Button - secondary [default] */
     --button-border-color: rgba(255, 255, 255, 0.2);
@@ -46,4 +47,5 @@
     --list-item-text-color: rgba(255, 255, 255, 0.8);
     --list-item-bg-color: transparent;
     --list-item-hover-bg-color: rgba(255, 255, 255, 0.05);
+
 }
