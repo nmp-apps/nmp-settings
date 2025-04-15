@@ -13,7 +13,6 @@ use dioxus::logger::tracing::Level;
 
 mod macros; // must be defined before all
 mod stores;
-mod utils;
 mod router;
 mod components;
 mod models;

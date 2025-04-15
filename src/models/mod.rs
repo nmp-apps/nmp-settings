@@ -6,3 +6,6 @@ pub use icon::*;
 
 mod plugin;
 pub use plugin::*;
+
+mod setting;
+pub  use setting::*;
