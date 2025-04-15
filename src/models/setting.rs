@@ -17,6 +17,15 @@ impl Setting {
     pub fn category(&self) -> &Option<SettingsCategory> {
         &self.category
     }
+    pub fn title(&self) -> &String {
+        &self.title
+    }
+    pub fn description(&self) -> &String {
+        &self.description
+    }
+    pub fn component(&self) -> &SettingComponent {
+        &self.component
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
