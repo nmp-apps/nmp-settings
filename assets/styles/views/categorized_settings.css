@@ -1,5 +1,13 @@
 .categorized-settings {
+    width: 100%;
+    height: calc(100vh - 52px);
+    overflow-y: scroll;
     padding: 8px 24px;
+    scroll-behavior: smooth;
+}
+
+.categorized-settings__container {
+    max-width: 960px;
 }
 
 .categorized-settings__title {
@@ -7,4 +15,18 @@
     font-weight: 400;
     text-transform: capitalize;
     margin-bottom: 20px;
+}
+
+.categorized-settings__list {
+    list-style: none;
+    padding: 0 0 0 4px;
+}
+
+.categorized-settings__list > :not(:last-child) {
+    border-bottom: 2px solid var(--divider-color);
+}
+
+.categorized-settings__list-item {
+    margin: 0 0 32px 0;
+    padding: 0 0 12px 0;
 }
