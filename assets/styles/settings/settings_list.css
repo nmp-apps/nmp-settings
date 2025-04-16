@@ -1,0 +1,13 @@
+.settings-list {
+    list-style: none;
+    padding: 0 0 0 4px;
+}
+
+.settings-list > :not(:last-child) {
+    border-bottom: 2px solid var(--divider-color);
+}
+
+.settings-list__item {
+    margin: 0 0 32px 0;
+    padding: 0 0 12px 0;
+}
