@@ -1,7 +1,6 @@
-use dioxus::logger::tracing::info;
 use dioxus::prelude::*;
 
-use crate::components::Setting;
+use crate::components::SettingsList;
 use crate::models::SettingsCategory;
 use crate::stores::SettingsStore;
 use crate::get_asset;
@@ -22,7 +21,7 @@ pub fn CategorizedSettings(props: CategorizedSettingsProps) -> Element {
             match v.setting().category() {
                 Some(settings_category) => {
                     if *settings_category == SettingsCategory::get_by_id(props.category_name.as_str()) {
-                        Some(v)
+                        Some(v.clone())
                     } else {
                         None
                     }
@@ -41,16 +40,7 @@ pub fn CategorizedSettings(props: CategorizedSettingsProps) -> Element {
 
             div { class: "categorized-settings__container",
                 h1 { class: "categorized-settings__title", "{title}" }
-                ul { class: "categorized-settings__list",
-                    for setting in category_settings {
-                        li { class: "categorized-settings__list-item",
-                            Setting { setting: setting.clone() }
-                        }
-                        li { class: "categorized-settings__list-item",
-                            Setting { setting: setting.clone() }
-                        }
-                    }
-                }
+                SettingsList { settings: category_settings }
             }
         }
     }
