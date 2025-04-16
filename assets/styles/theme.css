@@ -48,4 +48,9 @@
     --list-item-bg-color: transparent;
     --list-item-hover-bg-color: rgba(255, 255, 255, 0.05);
 
+    /* Number Input */
+    --number-input-border-color: rgba(255, 255, 255, 0.2);
+    --number-input-bg-color: transparent;
+    --number-input-active-border-color: rgba(255, 255, 255, 0.3);
+    --number-input-active-bg-color: rgba(255, 255, 255, 0.1);
 }
