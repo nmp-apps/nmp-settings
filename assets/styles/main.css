@@ -12,6 +12,10 @@
     font-weight: 0 1000;
 }
 
+html {
+    font-size: 16px; // rem unit
+}
+
 body {
     background-color: var(--app-background-color);
     color: var(--text-color);

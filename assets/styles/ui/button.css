@@ -1,11 +1,12 @@
 /* secondary button [default] */
 .ui-button {
-    padding: 3px 14px;
+    height: 2rem;
+    padding: 0.25rem 1rem;
     display: inline-flex;
     position: relative;
     justify-content: center;
     align-items: center;
-    gap: 2px;
+    gap: 0.125rem;
     border-radius: 8px;
     border: none;
     background: none;
