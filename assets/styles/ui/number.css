@@ -2,15 +2,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 32px;
+    height: 2rem;
 }
 
 .ui-number__step-button {
-    padding: 0 10px;
+    padding: 0 0.75rem;
     height: 100%;
     border-radius: none;
     background-color: var(--number-input-bg-color);
-    color: var(--text-color);
+    color: var(--text-secondary-color);
     border: 2px solid var(--number-input-border-color);
     cursor: pointer;
 }
@@ -31,12 +31,12 @@
 }
 
 .ui-number__input {
-    padding: 0px 4px;
+    padding: 0px 0.5rem;
     appearance: none;
     -moz-appearance: textfield; /*  hide arrows */
     background-color: var(--number-input-bg-color);
     color: var(--text-color);
-    width: 10rem;
+    width: 6rem;
     height: 100%;
     border: none;
     border-top: 2px solid var(--number-input-border-color);

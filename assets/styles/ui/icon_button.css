@@ -1,7 +1,7 @@
 .ui-icon-button {
     width: max-content;
     height: max-content;
-    padding: 4px;
+    padding: 0.25rem;
     border-radius: 50%;
     border: none;
     background-color: var(--icon-button-bg-color);
