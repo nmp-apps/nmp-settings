@@ -6,6 +6,7 @@ use super::IconProps;
 pub fn UsersIcon(props: IconProps) -> Element {
     rsx! {
         svg {
+            class: props.class.unwrap_or(String::from("")),
             xmlns: "http://www.w3.org/2000/svg",
             view_box: "0 -960 960 960",
             height: props.size.clone().unwrap_or(String::from("24px")),
