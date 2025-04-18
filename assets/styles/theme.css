@@ -53,4 +53,11 @@
     --number-input-bg-color: transparent;
     --number-input-active-border-color: rgba(255, 255, 255, 0.3);
     --number-input-active-bg-color: rgba(255, 255, 255, 0.1);
+
+    /* Select */
+    --select-bg-color: rgba(15, 17, 22, 1);
+    --select-border-color: rgba(255, 255, 255, 0.2);
+    --select-item-text-color: rgba(255, 255, 255, 0.8);
+    --select-item-bg-color: transparent;
+    --select-item-hover-bg-color: rgba(255, 255, 255, 0.05);
 }

@@ -1,6 +1,6 @@
 use dioxus::{document, prelude::*};
 
-use crate::components::{ButtonGroup, Number, Select, Slider, Text, Switch};
+use crate::components::{ButtonGroup, Number, Select, SelectItem, SelectValue, Slider, Switch, Text};
 use crate::get_asset;
 use crate::models::SettingComponent;
 use crate::stores::StoredSetting;
@@ -20,14 +20,33 @@ pub fn Setting(props: SettingProps) -> Element {
             SettingComponent::ButtonGroup(data) => rsx! {
                 ButtonGroup {}
             },
-            SettingComponent::MultiSelect(data) => rsx! {
-                Select {}
+            SettingComponent::MultiSelect(data) => {
+                let new_vec = data.items().iter().map(|item| {
+                    SelectItem::new(item.text().clone(), item.value().clone())
+                }).collect();
+
+                rsx! {
+                    Select {
+                        multiple: true,
+                        items: new_vec,
+                        value: SelectValue::Multiple(data.value().clone()),
+                    }
+                }
             },
             SettingComponent::Number(data) => rsx! {
                 Number {}
             },
-            SettingComponent::Select(data) => rsx! {
-                Select {}
+            SettingComponent::Select(data) => {
+                let new_vec = data.items().iter().map(|item| {
+                    SelectItem::new(item.text().clone(), item.value().clone())
+                }).collect();
+
+                rsx! {
+                    Select {
+                        items: new_vec,
+                        value: SelectValue::Single(data.value().clone()),
+                    }
+                }
             },
             SettingComponent::Slider(data) => rsx! {
                 Slider {}
@@ -46,7 +65,6 @@ pub fn Setting(props: SettingProps) -> Element {
             document::Stylesheet { href: "{styles}" }
 
             div { class: "setting__content",
-
                 h6 { {format!("{}", props.setting.read().setting().title())} }
                 if props.setting.read().setting().description().len() > 0 {
                     p { {format!("{}", props.setting.read().setting().description())} }

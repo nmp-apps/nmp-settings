@@ -21,7 +21,7 @@ mod app;
 use app::App;
 
 fn main() {
-    dioxus::logger::init(Level::INFO).expect("logger failed to init");
+    dioxus::logger::init(Level::ERROR).expect("logger failed to init");
     dioxus::LaunchBuilder::desktop()
     .with_cfg(
         Config::new().with_window(
