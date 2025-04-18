@@ -6,7 +6,8 @@ pub struct IconProps {
     #[props(into, default = "currentColor")]
     pub color: Option<String>,
     #[props(into, default = "24px")]
-    pub size: Option<String>
+    pub size: Option<String>,
+    pub class: Option<String>,
 }
 
 mod appearance;
@@ -14,6 +15,9 @@ pub use  appearance::*;
 
 mod bluetooth;
 pub use bluetooth::*;
+
+mod check;
+pub use check::*;
 
 mod close;
 pub use close::*;
@@ -26,6 +30,9 @@ pub use display::*;
 
 mod extension;
 pub use extension::*;
+
+mod keyboard_arrow_up;
+pub use keyboard_arrow_up:: *;
 
 mod lock_screen;
 pub use lock_screen::*;

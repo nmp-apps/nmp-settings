@@ -1,12 +1,15 @@
+use std::ops::Deref;
+
 use dioxus::{logger::tracing::error, prelude::*};
 
-use crate::get_asset;
+use crate::{components::{CheckIcon, KeyboardArrowUpIcon}, get_asset};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SelectProps<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Debug> {
     multiple: ReadOnlySignal<Option<bool>>,
-    items: Vec<SelectItem<T>>,
-    value: ReadOnlySignal<SelectValue<T>>, // todo: add ReadOnlySignal<Option<SelectValue<T>>>
+    items: ReadOnlySignal<Vec<SelectItem<T>>>,
+    value: ReadOnlySignal<SelectValue<T>>,
+    onclick: EventHandler<SelectValue<T>>
 }
 
 #[derive(PartialEq, Clone)]
@@ -21,14 +24,17 @@ impl<T> SelectItem<T> {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum SelectValue<T: std::fmt::Debug> {
-    Single(T),
+    Single(Option<T>),
     Multiple(Vec<T>)
 }
 
 #[component]
-pub fn Select<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Display + std::fmt::Debug>(props: SelectProps<T>) -> Element {
+pub fn Select<T>(props: SelectProps<T>) -> Element
+where
+    T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Display + std::fmt::Debug
+{
     let styles: String = use_hook(|| get_asset!("/assets/styles/ui/select.css"));
     let is_multiple = use_memo(move || {
         match *props.multiple.read() {
@@ -41,10 +47,23 @@ pub fn Select<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::D
         match props.value.read().clone() {
             SelectValue::Single(value) => {
                 if !is_multiple.read().clone() {
-                    format!("{value}")
+                    match value {
+                        Some(value) => {
+                            let list = props.items.read();
+                            let found_item = list.iter().find(|item| item.value == value);
+                            match found_item {
+                                Some(item) => format!("{}", item.text),
+                                None => {
+                                    error!("selected value {:?} not found in select items list", value);
+                                    String::from("Choose an option")
+                                }   
+                            }
+                        },
+                        None => String::from("Choose an option")
+                    }
                 } else {
                     // error case
-                    error!("in multiple select value of single select: {value}");
+                    error!("in multiple select value of single select: {:?}", value);
                     String::from("Choose an options")
                 }
             },
@@ -54,15 +73,26 @@ pub fn Select<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::D
                     if length <= 0 {
                         String::from("Choose an options")
                     } else {
-                        let first_item_text = list.get(0);
+                        let first_item_value = list.get(0);
                         let values_without_first: String = if length == 1 {
                             String::from("")
                         } else {
                             let without_first = length - 1;
                             without_first.to_string()
                         };
-                        match first_item_text {
-                            Some(text) => format!("{text} +{values_without_first}"),
+                        match first_item_value {
+                            Some(value) => {
+                                let list = props.items.read();
+                                let found_item = list.iter().find(|item| item.value == *value);
+                                match found_item {
+                                    Some(item) => format!("{} +{}", item.text, values_without_first),
+                                    None => {
+                                        error!("first selected value {:?} not found in select items list", value);
+                                        String::from("Choose an option")
+                                    }   
+                                }
+                                
+                            },
                             None => {
                                 error!("in multiple select can't get the first item in the selected values.");
                                 String::from("Choose an options")
@@ -78,17 +108,100 @@ pub fn Select<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::D
         }
     });
 
+    let mut is_opened = use_signal(|| false);
+
+    let mut select_handler = move |item: SelectItem<T>| {
+        let is_multiple = match *props.multiple.read() {
+            Some(val) => val,
+            None => false,
+        };
+
+        if is_multiple {
+            match props.value.read().clone() {
+                SelectValue::Multiple(list) => {
+                    if list.len() <= 0 {
+                        props.onclick.call(SelectValue::Multiple(vec![item.value])); // new select
+                    } else {
+                        if list.contains(&item.value) {
+                            let iter = list.iter();
+                            let filtered_list = iter.filter(|v| **v != item.value).cloned().collect();
+                            props.onclick.call(SelectValue::Multiple(filtered_list));
+                        } else {
+                            let mut new_list = list.clone();
+                            new_list.push(item.value);
+                            props.onclick.call(SelectValue::Multiple(new_list));
+                        }
+                    }
+                },
+                SelectValue::Single(value) => {
+                    error!("in a multiple select value of single select: {:?}", value);
+                    props.onclick.call(SelectValue::Multiple(vec![]));
+                }
+            }
+        } else {
+            match props.value.read().clone() {
+                SelectValue::Single(value) => {
+                    match value {
+                        Some(exist_value) => {
+                            if exist_value == item.value {
+                                props.onclick.call(SelectValue::Single(None)) // unselect
+                            } else {
+                                props.onclick.call(SelectValue::Single(Some(item.value))) // change
+                            }
+                        },
+                        None => props.onclick.call(SelectValue::Single(Some(item.value))) // new select
+                    }
+                },
+                // error case
+                SelectValue::Multiple(value) => {
+                    error!("in a single select value of multiple select: {:?}", value);
+                    props.onclick.call(SelectValue::Single(None));
+                }
+            }
+            is_opened.set(!is_opened())
+        }
+    };
+
     rsx! {
-        div { class: "ui-select",
+        div { class: "ui-select", class: if is_opened() { "opened" } else { "" },
             document::Stylesheet { href: "{styles}" }
 
-            button { class: "ui-select__button", "{select_button_text}" }
+            button {
+                class: "ui-select__button",
+                onclick: move |_| is_opened.set(!is_opened()),
+                span { "{select_button_text}" }
+                KeyboardArrowUpIcon { class: "ui-select__arrow-icon" }
+            }
 
             ul { class: "ui-select__list",
-                for item in props.items {
-                    li { class: "ui-select__item", "{item.text}-{item.value}" }
+                for item in props.items.read().clone() {
+                    li {
+                        class: "ui-select__item",
+                        onclick: move |_| select_handler(item.clone()),
+                        span { class: "ui-select__item-text", "{item.text}" }
+                        if is_selected_value(item.clone(), props.value) {
+                            CheckIcon { class: "ui-select__item-icon" }
+                        } else {
+                            div { class: "ui-select__item-icon" }
+                        }
+                    }
                 }
             }
         }
+    }
+}
+
+fn is_selected_value<T>(item: SelectItem<T>, current_value: ReadOnlySignal<SelectValue<T>>) -> bool
+where
+    T: std::fmt::Debug + std::cmp::PartialEq
+{
+    match current_value.read().deref() {
+        SelectValue::Single(value) => {
+            match value {
+                Some(v) => *v == item.value,
+                None => false,
+            }
+        },
+        SelectValue::Multiple(list) => list.contains(&item.value),
     }
 }
