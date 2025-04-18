@@ -1,0 +1,28 @@
+.ui-select {
+    position: relative;    
+}
+
+.ui-select__list {
+    padding: 0;
+    list-style: none;
+    background-color: var(--select-bg-color);
+    border: 2px solid var(--select-border-color);
+    border-radius: 8px;
+}
+
+.ui-select__item {
+    padding: 0.375rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: none;
+    list-style: none;
+    color: var(--select-item-text-color);
+    background-color: var(--select-item-bg-color);
+    cursor: pointer;
+    transition: background-color 0.15s;
+}
+
+.ui-select__item:hover {
+    background-color: var(--select-item-hover-bg-color);
+}
