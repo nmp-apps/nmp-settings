@@ -1,3 +1,4 @@
+use dioxus::logger::tracing::info;
 use dioxus::{document, prelude::*};
 
 use crate::components::{ButtonGroup, Number, Select, SelectItem, SelectValue, Slider, Switch, Text};
@@ -21,7 +22,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 ButtonGroup {}
             },
             SettingComponent::MultiSelect(data) => {
-                let new_vec = data.items().iter().map(|item| {
+                let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
 
@@ -30,6 +31,7 @@ pub fn Setting(props: SettingProps) -> Element {
                         multiple: true,
                         items: new_vec,
                         value: SelectValue::Multiple(data.value().clone()),
+                        onclick: move |v| select_handler(v),
                     }
                 }
             },
@@ -37,14 +39,15 @@ pub fn Setting(props: SettingProps) -> Element {
                 Number {}
             },
             SettingComponent::Select(data) => {
-                let new_vec = data.items().iter().map(|item| {
+                let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
 
                 rsx! {
                     Select {
                         items: new_vec,
-                        value: SelectValue::Single(data.value().clone()),
+                        value: SelectValue::Single(Some(data.value().clone())),
+                        onclick: move |v| select_handler(v),
                     }
                 }
             },
@@ -74,4 +77,9 @@ pub fn Setting(props: SettingProps) -> Element {
             div { class: "setting__actions", {component} }
         }
     }
+}
+
+fn select_handler<T: std::fmt::Debug>(selected_value: SelectValue<T>) {
+    println!("{:?}", selected_value);
+    info!("{:?}", selected_value);
 }

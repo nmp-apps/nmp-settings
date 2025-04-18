@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use super::IconProps;
 
 #[component]
-pub fn SquareIcon(props: IconProps) -> Element {
+pub fn KeyboardArrowUpIcon(props: IconProps) -> Element {
     rsx! {
         svg {
             class: props.class.unwrap_or(String::from("")),
@@ -12,7 +12,7 @@ pub fn SquareIcon(props: IconProps) -> Element {
             height: props.size.clone().unwrap_or(String::from("24px")),
             width: props.size.unwrap_or(String::from("24px")),
             fill: props.color.unwrap_or(String::from("currentColor")),
-            path { d: "M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm0 0v-560 560Z" }
+            path { d: "M480-528 324-372q-11 11-28 11t-28-11q-11-11-11-28t11-28l184-184q12-12 28-12t28 12l184 184q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-528Z" }
         }
     }
 }

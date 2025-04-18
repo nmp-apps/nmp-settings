@@ -1,28 +1,82 @@
 .ui-select {
-    position: relative;    
+    height: 2rem;
+    width: 18rem;
+    position: relative;
+}
+
+.ui-select__button {
+    width: 100%;
+    cursor: pointer;
+    text-align: start;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid var(--select-border-color);
+    border-radius: 8px;
+    background-color: var(--select-bg-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
+}
+
+.ui-select.opened .ui-select__button {
+    border-radius: 8px 8px 0 0;
+}
+
+.ui-select__arrow-icon {
+    transition: all 0.3s;
+}
+
+.ui-select.opened .ui-select__arrow-icon {
+    transform: rotateX(180deg);
 }
 
 .ui-select__list {
+    position: absolute;
+    z-index: 10;
+    top: 2.25rem;
+    right: 0;
     padding: 0;
+    width: 100%;
+    max-height: 0;
+    overflow-y: auto;
+    scroll-behavior: smooth;
     list-style: none;
     background-color: var(--select-bg-color);
+    border-radius: 0 0 8px 8px;
+    font-size: 1rem;
+    transition: height 0.2s, max-height 0.2s;
+}
+
+.ui-select.opened > .ui-select__list {
+    max-height: 160px;
     border: 2px solid var(--select-border-color);
-    border-radius: 8px;
+    border-top: none;
 }
 
 .ui-select__item {
     padding: 0.375rem 0.5rem;
+    width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 0.5rem;
     border: none;
     list-style: none;
     color: var(--select-item-text-color);
     background-color: var(--select-item-bg-color);
     cursor: pointer;
+    word-break: break-all;
     transition: background-color 0.15s;
 }
 
 .ui-select__item:hover {
     background-color: var(--select-item-hover-bg-color);
+}
+
+.ui-select__item-text {
+}
+
+.ui-select__item-icon {
+    min-width: 1.5rem;
+    max-width: 1.5rem;
 }
