@@ -6,8 +6,15 @@
     border: none;
     background-color: var(--icon-button-bg-color);
     cursor: pointer;
-    transition: background-color 0.15s;
+    transition: background-color 0.15s,
+    outline-offset 0.05s,
+    outline 0.05s;
     color: var(--icon-button-text-color);
+}
+
+.ui-icon-button:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 .ui-icon-button:hover {

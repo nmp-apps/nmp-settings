@@ -16,6 +16,12 @@
     background-color: var(--select-bg-color);
     color: var(--text-color);
     font-size: 1.125rem;
+    transition: outline-offset 0.05s, outline 0.05s;
+}
+
+.ui-select__button:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 .ui-select.opened .ui-select__button {
