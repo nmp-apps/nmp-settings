@@ -7,7 +7,14 @@
     border: 2px solid var(--switch-border-color);
     background: var(--switch-bg-color);
     overflow: hidden;
-    transition: all 0.25s;
+    transition: all 0.25s,
+    outline-offset 0.05s,
+    outline 0.05s;
+}
+
+.ui-switch:has(.ui-switch-checkbox:focus) {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 .ui-switch-checkbox {

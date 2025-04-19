@@ -14,7 +14,14 @@
     border: 2px solid var(--number-input-border-color);
     cursor: pointer;
     transition: background 0.2s,
-    border 0.2s;
+    border 0.2s,
+    outline-offset 0.05s,
+    outline 0.05s;
+}
+
+.ui-number__step-button:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 .ui-number__step-button:active {
@@ -43,6 +50,12 @@
     border: none;
     border-top: 2px solid var(--number-input-border-color);
     border-bottom: 2px solid var(--number-input-border-color);
+    transition: outline-offset 0.05s, outline 0.05s;
+}
+
+.ui-number__input:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 /* hide arrows */
