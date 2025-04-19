@@ -27,19 +27,26 @@ impl SettingsStore {
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct StoredSetting {
+    id: String,
     owner: String,
     setting: Setting,
 }
 
 impl StoredSetting {
-    pub fn new(owner: String, setting: Setting) -> StoredSetting {
-        StoredSetting { owner, setting }
+    pub fn new(id: String, owner: String, setting: Setting) -> StoredSetting {
+        StoredSetting { id, owner, setting }
+    }
+    pub fn id(&self) -> &String {
+        &self.id
     }
     pub fn owner(&self) -> &String {
         &self.owner
     }
     pub fn setting(&self) -> &Setting {
         &self.setting
+    }
+    pub fn setting_mut(&mut self) -> &mut Setting {
+        &mut self.setting
     }
 }
 
@@ -51,6 +58,7 @@ pub fn use_settings_store() {
     use_context_provider(|| SettingsStore::new(result.0, result.1));
 }
 
+/// Parses loaded plugins data and sorts settings into categories
 fn get_category_settings(plugins: Vec<Plugin>) -> (HashMap<SettingsCategory, Vec<StoredSetting>>, HashMap<String, Vec<StoredSetting>>) {
     let mut categorized: HashMap<SettingsCategory, Vec<StoredSetting>> = HashMap::new();
     let mut uncategorized: HashMap<String, Vec<StoredSetting>> = HashMap::new();
@@ -59,28 +67,61 @@ fn get_category_settings(plugins: Vec<Plugin>) -> (HashMap<SettingsCategory, Vec
         let plugin_name = plugin.get_name();
         plugin.get_settings().iter().for_each(|setting| {
             match setting.category() {
+                // categorized setting
                 Some(category) => {
                     match categorized.get_mut(&category) {
-                        Some(category_settings) => category_settings.push(
-                            StoredSetting::new(plugin_name.clone(), setting.clone())
-                        ),
+                        // list exists
+                        Some(category_settings) => {
+                            let setting_id = format!("{}:{}", category.get_id(), category_settings.len() + 1);
+                            category_settings.push(
+                                StoredSetting::new(
+                                    setting_id,
+                                    plugin_name.clone(), 
+                                    setting.clone())
+                            )
+                        },
+                        // new list
                         None => {
+                            let setting_id = format!("{}:{}", category.get_id(), 1);
                             categorized.insert(
                                 category.clone(),
-                                vec![StoredSetting::new(plugin_name.clone(), setting.clone())],
+                                vec![
+                                    StoredSetting::new(
+                                        setting_id,
+                                        plugin_name.clone(),
+                                        setting.clone()
+                                    )
+                                ],
                             );
                         },
                     }
                 },
+                // setting in plugin category
                 None => {
                     match uncategorized.get_mut(&plugin_name) {
-                        Some(plugin_settings) => plugin_settings.push(
-                            StoredSetting::new(plugin_name.clone(), setting.clone())
-                        ),
+                        // list exists
+                        Some(plugin_settings) => {
+                            let setting_id = format!("{}:{}", plugin_name.clone(), plugin_settings.len() + 1);
+                            plugin_settings.push(
+                                StoredSetting::new(
+                                    setting_id,
+                                    plugin_name.clone(), 
+                                    setting.clone()
+                                )
+                            )
+                        },
+                        // new list
                         None => {
+                            let setting_id = format!("{}:{}", plugin_name.clone(), 1);
                             uncategorized.insert(
                                 plugin_name.clone(),
-                                vec![StoredSetting::new(plugin_name.clone(), setting.clone())]
+                                vec![
+                                    StoredSetting::new(
+                                        setting_id,
+                                        plugin_name.clone(),
+                                        setting.clone()
+                                    )
+                                ]
                             );
                         }
                     }

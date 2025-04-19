@@ -26,6 +26,9 @@ impl Setting {
     pub fn component(&self) -> &SettingComponent {
         &self.component
     }
+    pub fn component_mut(&mut self) -> &mut SettingComponent {
+        &mut self.component
+    }
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
@@ -246,6 +249,9 @@ impl Slider {
     // }
     pub fn value(&self) -> f64 {
         self.value
+    }
+    pub fn set_value(&mut self, new_value: f64) {
+        self.value = new_value
     }
     pub fn min(&self) -> f64 {
         self.min

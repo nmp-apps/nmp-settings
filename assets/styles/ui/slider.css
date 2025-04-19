@@ -1,4 +1,35 @@
 .ui-slider {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ui-slider__input {
+    appearance: none;
+    -moz-appearance: textfield; /*  hide arrows */
+    width: min-content;
+    max-width: 4rem;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    color: var(--text-color);
+    text-align: end;
+    transition: outline-offset 0.05s, outline 0.05s;
+    border-radius: 8px;
+}
+
+/* hide arrows */
+.ui-slider__input::-webkit-outer-spin-button,
+.ui-slider__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.ui-slider__input:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
+}
+
+.ui-slider__slider {
     width: 16rem;
     -webkit-appearance: none;
     appearance: none;
@@ -7,19 +38,19 @@
     background: transparent;
 }
 
-.ui-slider::-webkit-slider-runnable-track {
+.ui-slider__slider::-webkit-slider-runnable-track {
     border-radius: 16px;
     background: var(--slider-track-color);
     height: 0.5rem;
     box-shadow: inset var(--private-slider-fill) 0 var(--slider-track-filled-color);
 }
 
-.ui-slider::-moz-range-track {
+.ui-slider__slider::-moz-range-track {
     background: var(--slider-track-color);
     height: 0.5rem;
 }
 
-.ui-slider::-webkit-slider-thumb {
+.ui-slider__slider::-webkit-slider-thumb {
     margin-top: -0.25rem; /* (track height in pixels / 2) - (thumb height in pixels /2) */
     -webkit-appearance: none;
     height: 1rem;
@@ -29,7 +60,7 @@
     transition: outline-offset 0.05s, outline 0.05s;
 }
 
-.ui-slider::-moz-range-thumb {
+.ui-slider__slider::-moz-range-thumb {
     border: none;
     border-radius: 50%;
     background-color: var(--slider-thumb-color);
@@ -39,18 +70,18 @@
 }
 
 /* Focus */
-.ui-slider:focus {
+.ui-slider__slider:focus {
     outline: none;
 }
 
-.ui-slider:focus::-webkit-slider-thumb {
+.ui-slider__slider:focus::-webkit-slider-thumb {
     border: 1px solid var(--focus-outline-color);
     outline: 3px solid var(--focus-outline-color);
     outline-offset: 0.125rem;
 }
 
-.ui-slider:focus::-moz-range-thumb {
+.ui-slider__slider:focus::-moz-range-thumb {
     border: 1px solid var(--focus-outline-color);
     outline: 3px solid var(--focus-outline-color);
-    outline-offset: 0.125rem;     
+    outline-offset: 0.125rem;
 }
