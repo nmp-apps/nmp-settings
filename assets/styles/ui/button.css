@@ -15,7 +15,14 @@
     color: var(--button-text-color);
     cursor: pointer;
     transition: background 0.2s,
-    border 0.2s;
+    border 0.2s,
+    outline-offset 0.05s,
+    outline 0.05s;
+}
+
+.ui-button:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
 }
 
 .ui-button:hover {
