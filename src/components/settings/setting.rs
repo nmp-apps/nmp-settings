@@ -1,11 +1,9 @@
 use std::ops::Deref;
-use std::rc::Rc;
 
-use dioxus::logger::tracing::{error, info, trace};
+use dioxus::logger::tracing::{error, trace};
 use dioxus::{document, prelude::*};
 
-use crate::components::settings::setting;
-use crate::components::{ButtonGroup, Number, Select, SelectItem, SelectValue, Slider, Switch, Text};
+use crate::components::{ButtonGroup, ButtonGroupItem, Number, Select, SelectItem, SelectValue, Slider, Switch, Text};
 use crate::get_asset;
 use crate::models::SettingComponent;
 use crate::stores::{SettingsStore, StoredSetting};
@@ -20,6 +18,43 @@ pub struct SettingProps {
 pub fn Setting(props: SettingProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
     let settings_store = use_context::<SettingsStore>();
+
+    let button_group_handler_store = settings_store.clone();
+    let button_group_handler = move |new_value: String| {
+        let setting_ref = props.setting.read();
+        let setting = setting_ref.deref();
+        let mut categorized_settings_signal = button_group_handler_store.categorized_settings(); 
+        let categorized_settings = &mut categorized_settings_signal.write();
+        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
+            panic!("Target category for changing setting value is None");
+        });
+        let category_list = categorized_settings.get_mut(&target_category);
+        match category_list {
+            Some(list) => {
+                let found_setting = list.iter_mut().find(|stored_setting| {
+                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
+                });
+                match found_setting {
+                    Some(stored_setting) => {
+                        match stored_setting.setting_mut().component_mut() {
+                            SettingComponent::ButtonGroup(component) => {
+                                trace!("Button Group changed: new value is {}, old value is {}", new_value, component.value());
+                                component.set_value(new_value);
+                            },
+                            _ => (),
+                        }
+                    },
+                    None => {
+                        error!("Can't find setting by id {}", setting.id());
+                        return
+                    }
+                }
+            },
+            None => {
+                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
+            }
+        }
+    };
 
     let number_handler_store = settings_store.clone();
     let number_handler = move |new_value: f64| {
@@ -134,8 +169,17 @@ pub fn Setting(props: SettingProps) -> Element {
 
     let component = use_memo(move || {
         match props.setting.read().setting().component() {
-            SettingComponent::ButtonGroup(data) => rsx! {
-                ButtonGroup {}
+            SettingComponent::ButtonGroup(data) => {
+                let converted_items: Vec<ButtonGroupItem> = data.items().iter().map(|item| ButtonGroupItem::new(item.text().clone(), item.value().clone())).collect();
+                let handler = button_group_handler.clone();
+                
+                rsx! {
+                    ButtonGroup {
+                        onchange: move |new_value| handler(new_value),
+                        items: converted_items,
+                        value: data.value(),
+                    }
+                }
             },
             SettingComponent::MultiSelect(data) => {
                 let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
