@@ -11,11 +11,11 @@ use crate::models::Icon;
 pub struct ListItem<T> {
     name: String,
     value: T,
-    icon: Icon
+    icon: Option<Icon>
 }
 
 impl<T> ListItem<T> {
-    pub fn new(name: String, value: T, icon: Icon) -> ListItem<T> {
+    pub fn new(name: String, value: T, icon: Option<Icon>) -> ListItem<T> {
         ListItem { name, value, icon }
     }
 
@@ -63,7 +63,12 @@ fn ListItem<T: Display + PartialEq + Clone>(props: ListItemProps<T>) -> Element 
             },
             key: item.name.clone(),
 
-            {item.icon.to_component(String::from("20px"))}
+            match item.icon {
+                Some(icon) => icon.to_component(String::from("20px")),
+                None => {
+                    rsx! {}
+                }
+            }
             "{item.name}"
         }
     }

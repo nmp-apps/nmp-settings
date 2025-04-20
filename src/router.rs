@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::components::MainLayout;
-use crate::views::{Home, CategorizedSettings};
+use crate::views::{Home, CategorizedSettings, UncategorizedSettings};
 
 
 #[derive(Debug, Clone, Routable, PartialEq)]
@@ -12,4 +12,6 @@ pub enum Route {
     Home {},
     #[route("/category/:category_name")]
     CategorizedSettings { category_name: String },
+    #[route("/uncategorized/:plugin_name")]
+    UncategorizedSettings { plugin_name: String }
 }

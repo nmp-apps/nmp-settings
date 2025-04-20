@@ -15,20 +15,9 @@ pub fn CategorizedSettings(props: CategorizedSettingsProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/views/categorized_settings.css"));
 
     let categorized_settings = settings_store.categorized_settings()();
-    let appearance_settings = categorized_settings.get(&SettingsCategory::get_by_id(props.category_name.as_str()));
-    let category_settings = match appearance_settings {
-        Some(list) => list.iter().filter_map(|v| {
-            match v.setting().category() {
-                Some(settings_category) => {
-                    if *settings_category == SettingsCategory::get_by_id(props.category_name.as_str()) {
-                        Some(v.clone())
-                    } else {
-                        None
-                    }
-                },
-                None => None 
-            }
-        }).collect(),
+    let category_settings = categorized_settings.get(&SettingsCategory::get_by_id(props.category_name.as_str()));
+    let category_settings = match category_settings {
+        Some(list) => list.clone(),
         None => vec![],
     };
 
