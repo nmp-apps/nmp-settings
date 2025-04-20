@@ -1,7 +1,7 @@
 use std::ops::Deref;
 use std::rc::Rc;
 
-use dioxus::logger::tracing::{error, trace};
+use dioxus::logger::tracing::{error, info, trace};
 use dioxus::{document, prelude::*};
 
 use crate::components::settings::setting;
@@ -40,9 +40,8 @@ pub fn Setting(props: SettingProps) -> Element {
                     Some(stored_setting) => {
                         match stored_setting.setting_mut().component_mut() {
                             SettingComponent::Number(component) => {
-                                component.set_value(new_value);
                                 trace!("Number changed: new value is {}, old value is {}", new_value, component.value());
-
+                                component.set_value(new_value);
                             },
                             _ => (),
                         }
@@ -78,9 +77,45 @@ pub fn Setting(props: SettingProps) -> Element {
                     Some(stored_setting) => {
                         match stored_setting.setting_mut().component_mut() {
                             SettingComponent::Slider(component) => {
-                                component.set_value(new_value);
                                 trace!("Slider changed: new value is {}, old value is {}", new_value, component.value());
+                                component.set_value(new_value);
+                            },
+                            _ => (),
+                        }
+                    },
+                    None => {
+                        error!("Can't find setting by id {}", setting.id());
+                        return
+                    }
+                }
+            },
+            None => {
+                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
+            }
+        }
+    };
 
+    let switch_handler_store = settings_store.clone();
+    let switch_handler = move |new_value: bool| {
+        let setting_ref = props.setting.read();
+        let setting = setting_ref.deref();
+        let mut categorized_settings_signal = switch_handler_store.categorized_settings(); 
+        let categorized_settings = &mut categorized_settings_signal.write();
+        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
+            panic!("Target category for changing setting value is None");
+        });
+        let category_list = categorized_settings.get_mut(&target_category);
+        match category_list {
+            Some(list) => {
+                let found_setting = list.iter_mut().find(|stored_setting| {
+                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
+                });
+                match found_setting {
+                    Some(stored_setting) => {
+                        match stored_setting.setting_mut().component_mut() {
+                            SettingComponent::Switch(component) => {
+                                trace!("Switch changed: new value is {}, old value is {}", new_value, component.value());
+                                component.set_value(new_value);
                             },
                             _ => (),
                         }
@@ -154,8 +189,18 @@ pub fn Setting(props: SettingProps) -> Element {
                     }
                 }
             },
-            SettingComponent::Switch(data) => rsx! {
-                Switch {}
+            SettingComponent::Switch(data) => {
+                let handler = switch_handler.clone();
+
+                rsx! {
+                    Switch {
+                        onchange: move |evt: Event<FormData>| {
+                            let value: bool = evt.data.value().parse().unwrap_or(false);
+                            handler(value);
+                        },
+                        value: data.value(),
+                    }
+                }
             },
             SettingComponent::Text(data) => rsx! {
                 Text {}
