@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::components::CategoryNavigation;
+use crate::components::{CategoryNavigation, PluginCategoryNavigation};
 use crate::get_asset;
 
 
@@ -11,8 +11,10 @@ pub fn LeftBar() -> Element {
     rsx! {
         div { class: "left-bar",
             document::Link { rel: "stylesheet", href: "{styles}" }
+
             CategoryNavigation {}
             hr { class: "left-bar__divider" }
+            PluginCategoryNavigation {}
         }
     }
 }

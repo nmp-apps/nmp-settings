@@ -13,15 +13,18 @@ pub struct SettingsStore {
     /// Settings by user friendly category
     categorized_settings: Signal<HashMap<SettingsCategory, Vec<StoredSetting>>>,
     /// Settings by owner
-    uncategorized_settings: HashMap<String, Vec<StoredSetting>>,
+    uncategorized_settings: Signal<HashMap<String, Vec<StoredSetting>>>,
 }
 
 impl SettingsStore {
     pub fn new(categorized_settings: HashMap<SettingsCategory, Vec<StoredSetting>>, uncategorized_settings: HashMap<String, Vec<StoredSetting>>) -> SettingsStore {
-        SettingsStore { categorized_settings: Signal::new(categorized_settings), uncategorized_settings }
+        SettingsStore { categorized_settings: Signal::new(categorized_settings), uncategorized_settings: Signal::new(uncategorized_settings) }
     }
     pub fn categorized_settings(&self) -> Signal<HashMap<SettingsCategory, Vec<StoredSetting>>> {
         self.categorized_settings
+    }
+    pub fn uncategorized_settings(&self) -> Signal<HashMap<String, Vec<StoredSetting>>> {
+        self.uncategorized_settings
     }
 }
 
