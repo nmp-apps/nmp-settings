@@ -168,7 +168,7 @@ impl ButtonGroupItem {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Select {
-    value: String,
+    value: Option<String>,
     items: Vec<SelectItem>
 }
 
@@ -176,8 +176,11 @@ impl Select {
     // pub fn new(setting_common: SettingCommon, value: String, items: Vec<SelectItem>) -> Select {
     //     Select { setting_common, value, items }
     // }
-    pub fn value(&self) -> &String {
+    pub fn value(&self) -> &Option<String> {
         &self.value
+    }
+    pub fn set_value(&mut self, new_value: Option<String>) {
+        self.value = new_value;
     }
     pub fn items(&self) -> &Vec<SelectItem> {
         &self.items
@@ -215,6 +218,9 @@ impl MultiSelect {
     // }
     pub fn value(&self) -> &Vec<String> {
         &self.value
+    }
+    pub fn set_value(&mut self, new_value: Vec<String>) {
+        self.value = new_value;
     }
     pub fn items(&self) -> &Vec<MultiSelectItem> {
         &self.items
