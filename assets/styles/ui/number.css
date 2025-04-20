@@ -41,7 +41,7 @@
 
 .ui-number__input {
     padding: 0px 0.5rem;
-    appearance: none;
+    /* appearance: none; */
     -moz-appearance: textfield; /*  hide arrows */
     background-color: var(--number-input-bg-color);
     color: var(--text-color);
