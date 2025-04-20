@@ -64,12 +64,11 @@ impl Switch {
     pub fn new(value: bool) -> Switch {
         Switch { value }
     }
-    pub fn value(&mut self, new_value: Option<bool>) -> bool {
-        match new_value {
-            Some(value) => self.value = value,
-            None => (),
-        }
+    pub fn value(&self) -> bool {
         self.value
+    }
+    pub fn set_value(&mut self, new_value: bool) {
+        self.value = new_value;
     }
 }
 
