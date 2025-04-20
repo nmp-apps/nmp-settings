@@ -69,23 +69,25 @@ where
             },
             SelectValue::Multiple(list) => {
                 if is_multiple.read().clone() {
-                    let length = list.len();
-                    if length <= 0 {
+                    let number_of_selected_values = list.len();
+                    if number_of_selected_values <= 0 {
                         String::from("Choose an options")
                     } else {
                         let first_item_value = list.get(0);
-                        let values_without_first: String = if length == 1 {
+                        let more_values_selected: String = if number_of_selected_values == 1 {
                             String::from("")
                         } else {
-                            let without_first = length - 1;
-                            without_first.to_string()
+                            let without_first = number_of_selected_values - 1;
+                            format!(" +{}", without_first)
                         };
                         match first_item_value {
                             Some(value) => {
                                 let list = props.items.read();
                                 let found_item = list.iter().find(|item| item.value == *value);
                                 match found_item {
-                                    Some(item) => format!("{} +{}", item.text, values_without_first),
+                                    Some(item) => {
+                                        format!("{}{}", item.text, more_values_selected)
+                                    },
                                     None => {
                                         error!("first selected value {:?} not found in select items list", value);
                                         String::from("Choose an option")

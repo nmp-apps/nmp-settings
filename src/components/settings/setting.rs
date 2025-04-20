@@ -93,6 +93,61 @@ pub fn Setting(props: SettingProps) -> Element {
         }
     };
 
+    let select_handler_store = settings_store.clone();
+    let select_handler = move |new_value: SelectValue<String>| {
+        let setting_ref = props.setting.read();
+        let setting = setting_ref.deref();
+        let mut categorized_settings_signal = select_handler_store.categorized_settings(); 
+        let categorized_settings = &mut categorized_settings_signal.write();
+        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
+            panic!("Target category for changing setting value is None");
+        });
+        let category_list = categorized_settings.get_mut(&target_category);
+        match category_list {
+            Some(list) => {
+                let found_setting = list.iter_mut().find(|stored_setting| {
+                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
+                });
+                match found_setting {
+                    Some(stored_setting) => {
+                        match stored_setting.setting_mut().component_mut() {
+                            SettingComponent::Select(component) => {
+                                match new_value {
+                                    SelectValue::Single(new_value) => {
+                                        trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
+                                        component.set_value(new_value);
+                                    },
+                                    SelectValue::Multiple(_) => {
+                                        error!("Value can't be multiple in select");
+                                    }
+                                }
+                            },
+                            SettingComponent::MultiSelect(component) => {
+                                match new_value {
+                                    SelectValue::Multiple(new_value) => {
+                                        trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
+                                        component.set_value(new_value);
+                                    },
+                                    SelectValue::Single(_) => {
+                                        error!("Value can't be single in multiselect");
+                                    }
+                                }
+                            },
+                            _ => (),
+                        }
+                    },
+                    None => {
+                        error!("Can't find setting by id {}", setting.id());
+                        return
+                    }
+                }
+            },
+            None => {
+                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
+            }
+        }
+    };
+
     let slider_handler_store = settings_store.clone();
     let slider_handler = move |new_value: f64| {
         let setting_ref = props.setting.read();
@@ -182,16 +237,17 @@ pub fn Setting(props: SettingProps) -> Element {
                 }
             },
             SettingComponent::MultiSelect(data) => {
-                let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
+                let converted_items: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
+                let handler = select_handler.clone();
 
                 rsx! {
                     Select {
                         multiple: true,
-                        items: new_vec,
+                        items: converted_items,
                         value: SelectValue::Multiple(data.value().clone()),
-                        onclick: move |v| select_handler(v),
+                        onclick: move |v| handler(v),
                     }
                 }
             },
@@ -211,12 +267,13 @@ pub fn Setting(props: SettingProps) -> Element {
                 let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
+                let handler = select_handler.clone();
 
                 rsx! {
                     Select {
                         items: new_vec,
-                        value: SelectValue::Single(Some(data.value().clone())),
-                        onclick: move |v| select_handler(v),
+                        value: SelectValue::Single(data.value().clone()),
+                        onclick: move |v| handler(v),
                     }
                 }
             },
@@ -266,8 +323,4 @@ pub fn Setting(props: SettingProps) -> Element {
             div { class: "setting__actions", {component} }
         }
     }
-}
-
-fn select_handler<T: std::fmt::Debug>(selected_value: SelectValue<T>) {
-    println!("{:?}", selected_value);
 }
