@@ -46,7 +46,7 @@ pub fn Number(props: NumberProps) -> Element {
         } else {
             let cv = props.value.read().deref().clone();
             let result_float = cv + step;
-            let formatted_result = (result_float * 100.0).round() / 100.0;
+            let formatted_result = round_float(result_float);
             props.oninput.call(formatted_result);
         }
     };
@@ -65,7 +65,7 @@ pub fn Number(props: NumberProps) -> Element {
         } else {
             let cv = props.value.read().deref().clone();
             let result_float = cv - step;
-            let formatted_result = (result_float * 100.0).round() / 100.0;
+            let formatted_result = round_float(result_float);
             props.oninput.call(formatted_result);
         }
     };
@@ -95,4 +95,9 @@ pub fn Number(props: NumberProps) -> Element {
             }
         }
     }
+}
+
+fn round_float(float: f64) -> f64 {
+    const VALUE_FOR_ROUND: f64 = 10000000.0;
+    (float * VALUE_FOR_ROUND).round() / VALUE_FOR_ROUND
 }
