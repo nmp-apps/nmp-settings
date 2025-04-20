@@ -16,10 +16,6 @@ pub struct SliderProps {
 #[component]
 pub fn Slider(props: SliderProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/ui/slider.css"));
-    // let mut value = use_signal(|| 0.0);
-    // let min_value = use_signal(|| 0.0);
-    // let max_value = use_signal(|| 100.0);
-    // let step = use_signal(|| 0.1);
 
     let filled_part_rem = use_memo(move || {
         let value_ref = props.value.read();

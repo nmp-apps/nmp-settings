@@ -112,6 +112,9 @@ impl Number {
     pub fn value(&self) -> f64 {
         self.value
     }
+    pub fn set_value(&mut self, new_value: f64) {
+        self.value = new_value
+    }
     pub fn min(&self) -> f64 {
         self.min
     }
