@@ -61,9 +61,9 @@ pub struct Switch {
 }
 
 impl Switch {
-    pub fn new(value: bool) -> Switch {
-        Switch { value }
-    }
+    // pub fn new(value: bool) -> Switch {
+    //     Switch { value }
+    // }
     pub fn value(&self) -> bool {
         self.value
     }
@@ -139,6 +139,9 @@ impl ButtonGroup {
     pub fn value(&self) -> &String {
         &self.value
     }
+    pub fn set_value(&mut self, new_value: String) {
+        self.value = new_value;
+    }
     pub fn items(&self) -> &Vec<ButtonGroupItem> {
         &self.items
     }
@@ -151,9 +154,9 @@ pub struct ButtonGroupItem {
 }
 
 impl ButtonGroupItem {
-    pub fn new(text: String, value: String) -> ButtonGroupItem {
-        ButtonGroupItem { text, value }
-    }
+    // pub fn new(text: String, value: String) -> ButtonGroupItem {
+    //     ButtonGroupItem { text, value }
+    // }
     pub fn text(&self) -> &String {
         &self.text
     }

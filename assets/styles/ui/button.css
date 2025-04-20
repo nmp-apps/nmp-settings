@@ -8,7 +8,6 @@
     align-items: center;
     gap: 0.125rem;
     border-radius: 8px;
-    border: none;
     background: none;
     border: 2px solid var(--button-border-color);
     box-shadow: none;
@@ -38,7 +37,7 @@
 }
 
 .ui-button.disabled {
-    border: none;
+    border: 2px solid var(--button-disabled-bg-color);
     cursor: default;
     background: var(--button-disabled-bg-color);
     color: var(--button-disabled-text-color);
@@ -46,22 +45,24 @@
 
 /* primary button */
 .ui-button.primary {
-    border: none;
+    border: 2px solid var(--button-primary-bg-color);
     background: var(--button-primary-bg-color);
     color: var(--button-primary-text-color);
 }
 
 .ui-button.primary:hover {
+    border: 2px solid var(--button-primary-hover-bg-color);
     background: var(--button-primary-hover-bg-color);
 }
 
 .ui-button.primary:active {
+    border: 2px solid var(--button-primary-active-bg-color);
     background: var(--button-primary-active-bg-color);
 }
 
 .ui-button.primary.disabled {
-    border: none;
     cursor: default;
+    border: 2px solid var(--button-primary-disabled-bg-color);
     background: var(--button-primary-disabled-bg-color);
     color: var(--button-primary-disabled-text-color);
 }
