@@ -66,4 +66,10 @@
     --slider-track-color: rgba(255, 255, 255, 0.2);
     --slider-track-filled-color: rgba(255, 255, 255, 0.5);
     --slider-thumb-color: rgba(204, 204, 204, 1);
+
+    /* Text */
+    --text-bg-color: rgba(15, 17, 22, 1);
+    --text-border-color: rgba(255, 255, 255, 0.2);
+    --text-selection-bg-color: var(--text-secondary-color);
+    --text-selection-text-color: var(--text-bg-color);
 }

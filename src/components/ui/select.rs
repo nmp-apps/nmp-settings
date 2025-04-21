@@ -164,6 +164,12 @@ where
         }
     };
 
+    let mut item_keypress_handler = move |evt: Event<KeyboardData>, item: SelectItem<T>| {
+        if evt.code() == Code::Enter || evt.code() == Code::Space {
+            select_handler(item);
+        }
+    };
+
     rsx! {
         div { class: "ui-select", class: if is_opened() { "opened" } else { "" },
             document::Stylesheet { href: "{styles}" }
@@ -179,7 +185,12 @@ where
                 for item in props.items.read().clone() {
                     li {
                         class: "ui-select__item",
-                        onclick: move |_| select_handler(item.clone()),
+                        tabindex: if is_opened() { "0" } else { "-1" },
+                        onclick: {
+                            let item = item.clone();
+                            move |_| select_handler(item.clone())
+                        },
+                        onkeypress: move |evt| item_keypress_handler(evt, item.clone()),
                         span { class: "ui-select__item-text", "{item.text}" }
                         if is_selected_value(item.clone(), props.value) {
                             CheckIcon { class: "ui-select__item-icon" }

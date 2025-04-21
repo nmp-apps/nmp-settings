@@ -222,6 +222,43 @@ pub fn Setting(props: SettingProps) -> Element {
         }
     };
 
+    let text_handler_store = settings_store.clone();
+    let text_handler = move |new_value: String| {
+        let setting_ref = props.setting.read();
+        let setting = setting_ref.deref();
+        let mut categorized_settings_signal = text_handler_store.categorized_settings(); 
+        let categorized_settings = &mut categorized_settings_signal.write();
+        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
+            panic!("Target category for changing setting value is None");
+        });
+        let category_list = categorized_settings.get_mut(&target_category);
+        match category_list {
+            Some(list) => {
+                let found_setting = list.iter_mut().find(|stored_setting| {
+                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
+                });
+                match found_setting {
+                    Some(stored_setting) => {
+                        match stored_setting.setting_mut().component_mut() {
+                            SettingComponent::Text(component) => {
+                                trace!("Text changed: new value is {}, old value is {}", new_value, component.value());
+                                component.set_value(new_value);
+                            },
+                            _ => (),
+                        }
+                    },
+                    None => {
+                        error!("Can't find setting by id {}", setting.id());
+                        return
+                    }
+                }
+            },
+            None => {
+                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
+            }
+        }
+    };
+
     let component = use_memo(move || {
         match props.setting.read().setting().component() {
             SettingComponent::ButtonGroup(data) => {
@@ -303,8 +340,17 @@ pub fn Setting(props: SettingProps) -> Element {
                     }
                 }
             },
-            SettingComponent::Text(data) => rsx! {
-                Text {}
+            SettingComponent::Text(data) => {
+                let handler = text_handler.clone();
+
+                rsx! {
+                    Text {
+                        oninput: move |new_value| handler(new_value),
+                        value: data.value(),
+                        min_length: data.min_length(),
+                        max_length: data.max_length(),
+                    }
+                }
             },
         }
     });

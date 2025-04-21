@@ -79,6 +79,11 @@
     background-color: var(--select-item-hover-bg-color);
 }
 
+.ui-select__item:focus {
+    background-color: var(--select-item-hover-bg-color);
+    outline: none;
+}
+
 .ui-select__item-text {
 }
 
