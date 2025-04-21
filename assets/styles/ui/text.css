@@ -1,0 +1,25 @@
+.ui-text {
+}
+
+.ui-text__input {
+    height: 2rem;
+    width: 12rem;
+    padding: 0 0.5rem;
+    text-align: start;
+    border: 2px solid var(--text-border-color);
+    border-radius: 8px;
+    background-color: var(--text-bg-color);
+    color: var(--text-color);
+    font-size: 1.125rem;
+    transition: outline-offset 0.05s, outline 0.05s;
+}
+
+.ui-text__input::selection {
+    background-color: var(--text-selection-bg-color);
+    color: var(--text-selection-text-color);
+}
+
+.ui-text__input:focus {
+    outline: 3px solid var(--focus-outline-color);
+    outline-offset: 0.125rem;
+}

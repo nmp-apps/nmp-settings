@@ -87,6 +87,9 @@ impl Text {
     pub fn value(&self) -> &String {
         &self.value
     }
+    pub fn set_value(&mut self, new_value: String) {
+        self.value = new_value
+    }
     pub fn min_length(&self) -> u32 {
         self.min_length
     }
