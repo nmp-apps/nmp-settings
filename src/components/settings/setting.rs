@@ -7,6 +7,7 @@ use crate::components::{ButtonGroup, ButtonGroupItem, Number, Select, SelectItem
 use crate::get_asset;
 use crate::models::SettingComponent;
 use crate::stores::{SettingsStore, StoredSetting};
+use crate::utils::mutate_setting_value;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SettingProps {
@@ -19,251 +20,143 @@ pub fn Setting(props: SettingProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
     let settings_store = use_context::<SettingsStore>();
 
-    let button_group_handler_store = settings_store.clone();
+    let mut button_group_handler_store = settings_store.clone();
     let button_group_handler = move |new_value: String| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = button_group_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::ButtonGroup(component) => {
-                                trace!("Button Group changed: new value is {}, old value is {}", new_value, component.value());
-                                component.set_value(new_value);
-                            },
-                            _ => (),
-                        }
+        mutate_setting_value(
+            setting,
+            &mut button_group_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::ButtonGroup(component) => {
+                        trace!("Button Group changed: new value is {}, old value is {}", new_value, component.value());
+                        component.set_value(new_value);
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
-    let number_handler_store = settings_store.clone();
+    let mut number_handler_store = settings_store.clone();
     let number_handler = move |new_value: f64| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = number_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::Number(component) => {
-                                trace!("Number changed: new value is {}, old value is {}", new_value, component.value());
-                                component.set_value(new_value);
-                            },
-                            _ => (),
-                        }
+        mutate_setting_value(
+            setting,
+            &mut number_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::Number(component) => {
+                        trace!("Number changed: new value is {}, old value is {}", new_value, component.value());
+                        component.set_value(new_value);
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
-    let select_handler_store = settings_store.clone();
+    let mut select_handler_store = settings_store.clone();
     let select_handler = move |new_value: SelectValue<String>| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = select_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::Select(component) => {
-                                match new_value {
-                                    SelectValue::Single(new_value) => {
-                                        trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
-                                        component.set_value(new_value);
-                                    },
-                                    SelectValue::Multiple(_) => {
-                                        error!("Value can't be multiple in select");
-                                    }
-                                }
+        mutate_setting_value(
+            setting,
+            &mut select_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::Select(component) => {
+                        match new_value {
+                            SelectValue::Single(new_value) => {
+                                trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
+                                component.set_value(new_value);
                             },
-                            SettingComponent::MultiSelect(component) => {
-                                match new_value {
-                                    SelectValue::Multiple(new_value) => {
-                                        trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
-                                        component.set_value(new_value);
-                                    },
-                                    SelectValue::Single(_) => {
-                                        error!("Value can't be single in multiselect");
-                                    }
-                                }
-                            },
-                            _ => (),
+                            SelectValue::Multiple(_) => {
+                                error!("Value can't be multiple in select");
+                            }
                         }
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    SettingComponent::MultiSelect(component) => {
+                        match new_value {
+                            SelectValue::Multiple(new_value) => {
+                                trace!("Slider changed: new value is {:?}, old value is {:?}", new_value, component.value());
+                                component.set_value(new_value);
+                            },
+                            SelectValue::Single(_) => {
+                                error!("Value can't be single in multiselect");
+                            }
+                        }
+                    },
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
-    let slider_handler_store = settings_store.clone();
+    let mut slider_handler_store = settings_store.clone();
     let slider_handler = move |new_value: f64| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = slider_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::Slider(component) => {
-                                trace!("Slider changed: new value is {}, old value is {}", new_value, component.value());
-                                component.set_value(new_value);
-                            },
-                            _ => (),
-                        }
+        mutate_setting_value(
+            setting,
+            &mut slider_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::Slider(component) => {
+                        trace!("Slider changed: new value is {}, old value is {}", new_value, component.value());
+                        component.set_value(new_value);
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
-    let switch_handler_store = settings_store.clone();
+    let mut switch_handler_store = settings_store.clone();
     let switch_handler = move |new_value: bool| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = switch_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::Switch(component) => {
-                                trace!("Switch changed: new value is {}, old value is {}", new_value, component.value());
-                                component.set_value(new_value);
-                            },
-                            _ => (),
-                        }
+        mutate_setting_value(
+            setting,
+            &mut switch_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::Switch(component) => {
+                        trace!("Switch changed: new value is {}, old value is {}", new_value, component.value());
+                        component.set_value(new_value);
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
-    let text_handler_store = settings_store.clone();
+    let mut text_handler_store = settings_store.clone();
     let text_handler = move |new_value: String| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        let mut categorized_settings_signal = text_handler_store.categorized_settings(); 
-        let categorized_settings = &mut categorized_settings_signal.write();
-        let target_category = setting.setting().category().as_ref().unwrap_or_else(|| {
-            panic!("Target category for changing setting value is None");
-        });
-        let category_list = categorized_settings.get_mut(&target_category);
-        match category_list {
-            Some(list) => {
-                let found_setting = list.iter_mut().find(|stored_setting| {
-                    stored_setting.id() == setting.id() && stored_setting.setting().component() == setting.setting().component()
-                });
-                match found_setting {
-                    Some(stored_setting) => {
-                        match stored_setting.setting_mut().component_mut() {
-                            SettingComponent::Text(component) => {
-                                trace!("Text changed: new value is {}, old value is {}", new_value, component.value());
-                                component.set_value(new_value);
-                            },
-                            _ => (),
-                        }
+        mutate_setting_value(
+            setting,
+            &mut text_handler_store,
+            |setting: &mut StoredSetting| {
+                match setting.setting_mut().component_mut() {
+                    SettingComponent::Text(component) => {
+                        trace!("Text changed: new value is {}, old value is {}", new_value, component.value());
+                        component.set_value(new_value);
                     },
-                    None => {
-                        error!("Can't find setting by id {}", setting.id());
-                        return
-                    }
+                    _ => (),
                 }
-            },
-            None => {
-                error!("Can't find list of settings by category \"{}\"", target_category.get_name());
             }
-        }
+        );
     };
 
     let component = use_memo(move || {
         match props.setting.read().setting().component() {
             SettingComponent::ButtonGroup(data) => {
                 let converted_items: Vec<ButtonGroupItem> = data.items().iter().map(|item| ButtonGroupItem::new(item.text().clone(), item.value().clone())).collect();
-                let handler = button_group_handler.clone();
+                let mut handler = button_group_handler.clone();
                 
                 rsx! {
                     ButtonGroup {
@@ -277,7 +170,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 let converted_items: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
-                let handler = select_handler.clone();
+                let mut handler = select_handler.clone();
 
                 rsx! {
                     Select {
@@ -289,7 +182,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 }
             },
             SettingComponent::Number(data) => {
-                let handler = number_handler.clone();
+                let mut handler = number_handler.clone();
                 rsx! {
                     Number {
                         min: data.min(),
@@ -304,7 +197,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 let new_vec: Vec<SelectItem<String>> = data.items().iter().map(|item| {
                     SelectItem::new(item.text().clone(), item.value().clone())
                 }).collect();
-                let handler = select_handler.clone();
+                let mut handler = select_handler.clone();
 
                 rsx! {
                     Select {
@@ -315,7 +208,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 }
             },
             SettingComponent::Slider(data) => {
-                let handler = slider_handler.clone();
+                let mut handler = slider_handler.clone();
                 
                 rsx! {
                     Slider {
@@ -328,7 +221,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 }
             },
             SettingComponent::Switch(data) => {
-                let handler = switch_handler.clone();
+                let mut handler = switch_handler.clone();
 
                 rsx! {
                     Switch {
@@ -341,7 +234,7 @@ pub fn Setting(props: SettingProps) -> Element {
                 }
             },
             SettingComponent::Text(data) => {
-                let handler = text_handler.clone();
+                let mut handler = text_handler.clone();
 
                 rsx! {
                     Text {

@@ -1,9 +1,11 @@
 use std::collections::HashMap;
+use std::ops::Deref;
 
 use dioxus::hooks::{use_context, use_context_provider};
 use dioxus::logger::tracing::info;
 use dioxus::signals::Signal;
 use crate::models::{Plugin, Setting, SettingsCategory};
+use crate::utils::parse_settings_from_plugins;
 
 use super::PluginsStore;
 
@@ -20,11 +22,17 @@ impl SettingsStore {
     pub fn new(categorized_settings: HashMap<SettingsCategory, Vec<StoredSetting>>, uncategorized_settings: HashMap<String, Vec<StoredSetting>>) -> SettingsStore {
         SettingsStore { categorized_settings: Signal::new(categorized_settings), uncategorized_settings: Signal::new(uncategorized_settings) }
     }
-    pub fn categorized_settings(&self) -> Signal<HashMap<SettingsCategory, Vec<StoredSetting>>> {
-        self.categorized_settings
+    pub fn categorized_settings(&self) -> &Signal<HashMap<SettingsCategory, Vec<StoredSetting>>> {
+        &self.categorized_settings
+    }
+    pub fn categorized_settings_mut(&mut self) -> &mut Signal<HashMap<SettingsCategory, Vec<StoredSetting>>> {
+        &mut self.categorized_settings
     }
     pub fn uncategorized_settings(&self) -> Signal<HashMap<String, Vec<StoredSetting>>> {
         self.uncategorized_settings
+    }
+    pub fn uncategorized_settings_mut(&mut self) -> &mut Signal<HashMap<String, Vec<StoredSetting>>> {
+        &mut self.uncategorized_settings
     }
 }
 
@@ -57,81 +65,6 @@ impl StoredSetting {
 pub fn use_settings_store() {
     info!("Init settings store...");
     let plugins = use_context::<PluginsStore>().get_plugins().clone();
-    let result = get_category_settings(plugins);
-    use_context_provider(|| SettingsStore::new(result.0, result.1));
-}
-
-/// Parses loaded plugins data and sorts settings into categories
-fn get_category_settings(plugins: Vec<Plugin>) -> (HashMap<SettingsCategory, Vec<StoredSetting>>, HashMap<String, Vec<StoredSetting>>) {
-    let mut categorized: HashMap<SettingsCategory, Vec<StoredSetting>> = HashMap::new();
-    let mut uncategorized: HashMap<String, Vec<StoredSetting>> = HashMap::new();
-    
-    plugins.iter().for_each(|plugin| {
-        let plugin_name = plugin.get_name();
-        plugin.get_settings().iter().for_each(|setting| {
-            match setting.category() {
-                // categorized setting
-                Some(category) => {
-                    match categorized.get_mut(&category) {
-                        // list exists
-                        Some(category_settings) => {
-                            let setting_id = format!("{}:{}", category.get_id(), category_settings.len() + 1);
-                            category_settings.push(
-                                StoredSetting::new(
-                                    setting_id,
-                                    plugin_name.clone(), 
-                                    setting.clone())
-                            )
-                        },
-                        // new list
-                        None => {
-                            let setting_id = format!("{}:{}", category.get_id(), 1);
-                            categorized.insert(
-                                category.clone(),
-                                vec![
-                                    StoredSetting::new(
-                                        setting_id,
-                                        plugin_name.clone(),
-                                        setting.clone()
-                                    )
-                                ],
-                            );
-                        },
-                    }
-                },
-                // setting in plugin category
-                None => {
-                    match uncategorized.get_mut(&plugin_name) {
-                        // list exists
-                        Some(plugin_settings) => {
-                            let setting_id = format!("{}:{}", plugin_name.clone(), plugin_settings.len() + 1);
-                            plugin_settings.push(
-                                StoredSetting::new(
-                                    setting_id,
-                                    plugin_name.clone(), 
-                                    setting.clone()
-                                )
-                            )
-                        },
-                        // new list
-                        None => {
-                            let setting_id = format!("{}:{}", plugin_name.clone(), 1);
-                            uncategorized.insert(
-                                plugin_name.clone(),
-                                vec![
-                                    StoredSetting::new(
-                                        setting_id,
-                                        plugin_name.clone(),
-                                        setting.clone()
-                                    )
-                                ]
-                            );
-                        }
-                    }
-                }
-            }
-        });
-    });
-
-    (categorized, uncategorized)
+    let parsed_settings = parse_settings_from_plugins(plugins);
+    use_context_provider(|| SettingsStore::new(parsed_settings.0, parsed_settings.1));
 }

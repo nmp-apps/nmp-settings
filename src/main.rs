@@ -12,6 +12,7 @@ use dioxus::desktop::{
 use dioxus::logger::tracing::Level;
 
 mod macros; // must be defined before all
+mod utils;
 mod stores;
 mod router;
 mod components;
