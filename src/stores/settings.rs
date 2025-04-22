@@ -1,10 +1,9 @@
 use std::collections::HashMap;
-use std::ops::Deref;
 
 use dioxus::hooks::{use_context, use_context_provider};
 use dioxus::logger::tracing::{error, info};
 use dioxus::signals::{Signal, Writable};
-use crate::models::{Plugin, Setting, SettingsCategory};
+use crate::models::{Setting, SettingsCategory};
 use crate::utils::parse_settings_from_plugins;
 
 use super::PluginsStore;

@@ -22,6 +22,10 @@ pub fn CategoryNavigation() -> Element {
     };
 
     rsx! {
-        List::<String> { items: list_items, onclick: category_click_handler }
+        List::<String> {
+            items: list_items,
+            capitalized: true,
+            onclick: category_click_handler,
+        }
     }
 }

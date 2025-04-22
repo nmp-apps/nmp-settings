@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 
 use crate::components::SettingsList;
-use crate::models::SettingsCategory;
 use crate::stores::SettingsStore;
 use crate::get_asset;
 #[derive(PartialEq, Props, Clone)]

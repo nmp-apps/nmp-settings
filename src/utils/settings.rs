@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 
-use dioxus::{logger::tracing::error, signals::{Signal, Writable}};
-
-use crate::{models::{Plugin, SettingsCategory}, stores::{SettingsStore, StoredSetting}};
+use crate::models::{Plugin, SettingsCategory};
+use crate::stores::StoredSetting;
 
 /// Parses loaded plugins data and sorts settings into categories -> (categorized, uncategorized)
 pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCategory, Vec<StoredSetting>>, HashMap<String, Vec<StoredSetting>>) {
