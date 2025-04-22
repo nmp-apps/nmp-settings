@@ -7,7 +7,6 @@ use crate::components::{ButtonGroup, ButtonGroupItem, Number, Select, SelectItem
 use crate::get_asset;
 use crate::models::SettingComponent;
 use crate::stores::{SettingsStore, StoredSetting};
-use crate::utils::mutate_setting_value;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SettingProps {
@@ -24,9 +23,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let button_group_handler = move |new_value: String| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        button_group_handler_store.mutate_setting_value(
             setting,
-            &mut button_group_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::ButtonGroup(component) => {
@@ -43,9 +41,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let number_handler = move |new_value: f64| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        number_handler_store.mutate_setting_value(
             setting,
-            &mut number_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::Number(component) => {
@@ -62,9 +59,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let select_handler = move |new_value: SelectValue<String>| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        select_handler_store.mutate_setting_value(
             setting,
-            &mut select_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::Select(component) => {
@@ -99,9 +95,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let slider_handler = move |new_value: f64| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        slider_handler_store.mutate_setting_value(
             setting,
-            &mut slider_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::Slider(component) => {
@@ -118,9 +113,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let switch_handler = move |new_value: bool| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        switch_handler_store.mutate_setting_value(
             setting,
-            &mut switch_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::Switch(component) => {
@@ -137,9 +131,8 @@ pub fn Setting(props: SettingProps) -> Element {
     let text_handler = move |new_value: String| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
-        mutate_setting_value(
+        text_handler_store.mutate_setting_value(
             setting,
-            &mut text_handler_store,
             |setting: &mut StoredSetting| {
                 match setting.setting_mut().component_mut() {
                     SettingComponent::Text(component) => {

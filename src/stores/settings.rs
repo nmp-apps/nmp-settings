@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::ops::Deref;
 
 use dioxus::hooks::{use_context, use_context_provider};
-use dioxus::logger::tracing::info;
-use dioxus::signals::Signal;
+use dioxus::logger::tracing::{error, info};
+use dioxus::signals::{Signal, Writable};
 use crate::models::{Plugin, Setting, SettingsCategory};
 use crate::utils::parse_settings_from_plugins;
 
@@ -33,6 +33,64 @@ impl SettingsStore {
     }
     pub fn uncategorized_settings_mut(&mut self) -> &mut Signal<HashMap<String, Vec<StoredSetting>>> {
         &mut self.uncategorized_settings
+    }
+    /// Finds setting in settings store then calls callback with found setting
+    pub fn mutate_setting_value<F, R>(
+        &mut self,
+        setting: &StoredSetting,
+        callback: F
+    ) -> ()
+    where
+        F: FnOnce(&mut StoredSetting) -> R
+    {
+        match setting.setting().category().clone() {
+            // categorized
+            Some(category) => {
+                let mut settings = self
+                    .categorized_settings_mut().write();
+                match settings.get_mut(&category) {
+                    Some(list) => {
+                        match list.iter_mut().find(|stored_setting| {
+                            stored_setting.id() == setting.id()
+                        }) {
+                            Some(target_setting) => {
+                                callback(target_setting);
+                            },
+                            None => {
+                                error!("Can't find list of settings by id \"{}\"", setting.id());
+                            }
+                        }
+                    },
+                    None => {
+                        error!("Can't find list of settings by category \"{}\"", category.get_name());
+                    }
+                }
+            },
+            // uncategorized
+            None => {
+                let mut settings = self
+                    .uncategorized_settings_mut()
+                    .write();
+                match settings.get_mut(setting.owner()) {
+                    Some(list) => {
+                        match list.iter_mut().find(|stored_setting| {
+                            stored_setting.id() == setting.id()
+                        }) {
+                            Some(target_setting) => {
+                                callback(target_setting);
+                            },
+                            None => {
+                                error!("Can't find list of settings by id \"{}\"", setting.id());
+                            }
+                        }
+                    },
+                    None => {
+                        error!("Can't find list of settings by owner category \"{}\"", setting.owner());
+                    }
+                }
+    
+            },
+        }
     }
 }
 
