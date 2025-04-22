@@ -9,12 +9,15 @@
     gap: 0.5rem;
     border: none;
     list-style: none;
-    text-transform: capitalize;
     color: var(--list-item-text-color);
     background-color: var(--list-item-bg-color);
     cursor: pointer;
     border-radius: 8px;
     transition: background-color 0.15s;
+}
+
+.ui-list__item.capitalized {
+    text-transform: capitalize;
 }
 
 .ui-list__item:hover {

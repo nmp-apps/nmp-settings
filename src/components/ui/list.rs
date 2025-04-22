@@ -26,6 +26,7 @@ impl<T> ListItem<T> {
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ListProps<T: 'static + PartialEq + Clone> {
+    capitalized: ReadOnlySignal<Option<bool>>,
     items: Vec<ListItem<T>>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
@@ -38,7 +39,11 @@ pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
             document::Link { rel: "stylesheet", href: "{styles}" }
 
             for item in props.items {
-                ListItem { item, onclick: props.onclick.clone() }
+                ListItem {
+                    item,
+                    capitalized: props.capitalized,
+                    onclick: props.onclick.clone(),
+                }
             }
         }
     }
@@ -46,6 +51,7 @@ pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ListItemProps<T: 'static + PartialEq + Clone> {
+    capitalized: ReadOnlySignal<Option<bool>>,
     item: ListItem<T>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
@@ -53,9 +59,11 @@ pub struct ListItemProps<T: 'static + PartialEq + Clone> {
 #[component]
 fn ListItem<T: Display + PartialEq + Clone>(props: ListItemProps<T>) -> Element {
     let item = props.item.clone();
+    let capitalized = use_memo(move || props.capitalized.read().unwrap_or(false));
     rsx! {
         li {
             class: "ui-list__item",
+            class: if capitalized() { "capitalized" } else { "" },
             onclick: move |_| {
                 if let Some(handler) = props.onclick {
                     handler.call(props.item.clone())
