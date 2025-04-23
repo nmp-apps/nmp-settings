@@ -2,7 +2,7 @@ use dioxus::desktop::{use_window, DesktopContext};
 use dioxus::prelude::*;
 
 use crate::get_asset;
-use crate::components::{Button, IconButton, Switch};
+use crate::components::{IconButton, SaveSettingsButton, Switch};
 use crate::models::Icon;
 
 
@@ -56,7 +56,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
                     value: is_advanced_settings_enabled(),
                     onchange: move |event: Event<FormData>| is_advanced_settings_enabled.set(event.checked()),
                 }
-                Button { title: "Save changes", primary: true, "Save" }
+                SaveSettingsButton {}
                 div { class: "top-bar__window-actions",
                     IconButton {
                         onclick: move |_| click_minimize_handler(),

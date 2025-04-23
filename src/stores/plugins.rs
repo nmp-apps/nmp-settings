@@ -5,7 +5,7 @@ use crate::models::Plugin;
 use crate::utils::load_plugins;
 
 /// Initial Plugins Data. Immutable!
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct PluginsStore {
     plugins: Vec<Plugin>
 }
