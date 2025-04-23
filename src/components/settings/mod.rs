@@ -1,5 +1,11 @@
+mod button_group_setting;
+pub use button_group_setting::*;
+
 mod save_settings_button;
 pub use save_settings_button::*;
+
+mod select_setting;
+pub use select_setting::*;
 
 mod setting;
 pub use setting::*;
