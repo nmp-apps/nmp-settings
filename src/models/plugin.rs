@@ -56,4 +56,7 @@ impl Plugin {
     pub fn get_settings(&self) -> &Vec<Setting> {
         &self.settings
     }
+    pub fn get_settings_mut(&mut self) -> &mut Vec<Setting> {
+        &mut self.settings
+    }
 }

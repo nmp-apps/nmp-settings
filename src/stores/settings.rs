@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::ops::Deref;
 
 use dioxus::hooks::{use_context, use_context_provider};
 use dioxus::logger::tracing::{error, info, trace};
@@ -9,7 +10,7 @@ use crate::utils::parse_settings_from_plugins;
 use super::PluginsStore;
 
 /// Settings of plugins
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub struct SettingsStore {
     /// Settings by user friendly category
     categorized_settings: Signal<HashMap<SettingsCategory, Vec<StoredSetting>>>,
@@ -44,6 +45,41 @@ impl SettingsStore {
     }
     pub fn changed_settings_mut(&mut self) -> &mut Signal<HashMap<String, Setting>> {
         &mut self.changed_settings
+    }
+    /// Finds setting in categorized or uncategorized lists and returns it's clone
+    pub fn find_setting(&self, setting: &Setting, plugin_name: &String) -> Option<StoredSetting>{
+        match setting.category() {
+            // Try to find in categorized settings
+            Some(category) => {
+                match self.categorized_settings().read().get(&category) {
+                    Some(settings_list) => {
+                        settings_list.iter().find(|stored_setting| {
+                            stored_setting.setting().category() == setting.category() &&
+                            stored_setting.setting().title() == setting.title()
+                        }).cloned()
+                    },
+                    None => {
+                        trace!("Setting not found {:#?}", setting);
+                        return None;
+                    }
+                }
+            },
+            // Try to find by setting owner plugin
+            None => {
+                match self.uncategorized_settings().read().get(plugin_name) {
+                    Some(settings_list) => {
+                        settings_list.iter().find(|stored_setting| {
+                            stored_setting.setting().category() == setting.category() &&
+                            stored_setting.setting().title() == setting.title()
+                        }).cloned()
+                    },
+                    None => {
+                        trace!("Setting not found {:#?}", setting);
+                        None
+                    }
+                }
+            }
+        }
     }
     /// Finds setting in settings store then calls callback with found setting
     pub fn mutate_setting_value<F, R>(

@@ -17,7 +17,7 @@ pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCat
                     match categorized.get_mut(&category) {
                         // list exists
                         Some(category_settings) => {
-                            let setting_id = format!("{}:{}", category.get_id(), category_settings.len() + 1);
+                            let setting_id = format!("{}:{}:{}", plugin_name, category.get_id(), category_settings.len() + 1);
                             category_settings.push(
                                 StoredSetting::new(
                                     setting_id,
@@ -27,7 +27,7 @@ pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCat
                         },
                         // new list
                         None => {
-                            let setting_id = format!("{}:{}", category.get_id(), 1);
+                            let setting_id = format!("{}:{}:{}", plugin_name, category.get_id(), 1);
                             categorized.insert(
                                 category.clone(),
                                 vec![
@@ -46,7 +46,7 @@ pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCat
                     match uncategorized.get_mut(&plugin_name) {
                         // list exists
                         Some(plugin_settings) => {
-                            let setting_id = format!("{}:{}", plugin_name.clone(), plugin_settings.len() + 1);
+                            let setting_id = format!("{}:{}", plugin_name, plugin_settings.len() + 1);
                             plugin_settings.push(
                                 StoredSetting::new(
                                     setting_id,
@@ -57,7 +57,7 @@ pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCat
                         },
                         // new list
                         None => {
-                            let setting_id = format!("{}:{}", plugin_name.clone(), 1);
+                            let setting_id = format!("{}:{}", plugin_name, 1);
                             uncategorized.insert(
                                 plugin_name.clone(),
                                 vec![
