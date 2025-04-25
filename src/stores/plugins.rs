@@ -17,6 +17,9 @@ impl PluginsStore {
     pub fn get_plugins(&self) -> &Vec<Plugin> {
         &self.plugins
     }
+    pub fn get_plugins_mut(&mut self) -> &mut Vec<Plugin> {
+        &mut self.plugins
+    }
 }
 
 /// Plugins store. Immutable! Lives only until the component is dropped.
