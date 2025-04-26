@@ -1,5 +1,4 @@
 use std::collections::HashMap;
-use std::ops::Deref;
 
 use dioxus::hooks::{use_context, use_context_provider};
 use dioxus::logger::tracing::{error, info, trace};
