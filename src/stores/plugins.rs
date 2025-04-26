@@ -4,7 +4,7 @@ use dioxus::logger::tracing::{error, trace};
 use crate::models::Plugin;
 use crate::utils::load_plugins;
 
-/// Initial Plugins Data. Immutable!
+/// Initial Plugins Data
 #[derive(Clone, Debug)]
 pub struct PluginsStore {
     plugins: Vec<Plugin>
