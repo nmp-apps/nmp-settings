@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 use crate::models::{Plugin, Setting};
 use crate::stores::{PluginsStore, SettingsStore};
 use crate::components::Button;
-use crate::utils::{load_plugins, parse_plugins, parse_settings_from_plugins, send_data_to_plugins};
+use crate::utils::{parse_plugins, parse_settings_from_plugins, send_data_to_plugins};
 
 #[component]
 pub fn SaveSettingsButton() -> Element {
