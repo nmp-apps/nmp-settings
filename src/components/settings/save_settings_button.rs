@@ -6,11 +6,11 @@ use dioxus::prelude::*;
 use crate::models::{Plugin, Setting};
 use crate::stores::{PluginsStore, SettingsStore};
 use crate::components::Button;
-use crate::utils::send_data_to_plugins;
+use crate::utils::{load_plugins, parse_settings_from_plugins, send_data_to_plugins};
 
 #[component]
 pub fn SaveSettingsButton() -> Element {
-    let settings_store = use_context::<SettingsStore>();
+    let mut settings_store = use_context::<SettingsStore>();
     let mut plugins_store = use_context::<PluginsStore>();
 
     let settings_store_clone = settings_store.clone();
@@ -87,7 +87,30 @@ pub fn SaveSettingsButton() -> Element {
         }
 
         if changed_plugins.len() > 0 {
-            send_data_to_plugins(changed_plugins);
+            send_data_to_plugins(&changed_plugins);
+        }
+        let settings_store_mut = &mut settings_store;
+        
+        {
+            let mut changed_settings = settings_store_mut.changed_settings_mut().write();
+            changed_settings.clear();
+        }
+        
+        let response_plugins = load_plugins(Some(changed_plugins.keys().cloned().collect()));
+        response_plugins.iter().for_each(|plugin| {
+            plugins_store.set_plugin(plugin.clone());
+        });
+        // parse all settings to save settings order 
+        let stored_plugins = plugins_store.get_plugins().clone();
+        let (parsed_categorized, parsed_uncategorized) = parse_settings_from_plugins(stored_plugins);
+
+        {
+            let categorized_settings_mut = settings_store_mut.categorized_settings_mut();
+            categorized_settings_mut.set(parsed_categorized);
+        }
+        {
+            let uncategorized_settings_mut = settings_store_mut.uncategorized_settings_mut();
+            uncategorized_settings_mut.set(parsed_uncategorized);
         }
     };
 
