@@ -47,6 +47,16 @@ impl Plugin {
         };
         Ok(plugin)
     }
+    pub fn from_str(json: &str) -> Result<Plugin, &str> {
+        let plugin: Plugin = match serde_json::from_str(json) {
+            Ok(v) => v,
+            Err(e) => {
+                error!("Parsing plugin data error, {}", e);
+                return Err("Parsing plugin data error")
+            },
+        };
+        Ok(plugin)
+    }
     fn check_version(&self) -> bool {
         todo!("Check version is not implemented yet");
     }

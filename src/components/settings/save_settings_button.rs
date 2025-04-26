@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 use crate::models::{Plugin, Setting};
 use crate::stores::{PluginsStore, SettingsStore};
 use crate::components::Button;
-use crate::utils::{load_plugins, parse_settings_from_plugins, send_data_to_plugins};
+use crate::utils::{load_plugins, parse_plugins, parse_settings_from_plugins, send_data_to_plugins};
 
 #[component]
 pub fn SaveSettingsButton() -> Element {
@@ -86,8 +86,9 @@ pub fn SaveSettingsButton() -> Element {
             }
         }
 
+        let mut updated_plugins_data: Vec<String> = vec![];
         if changed_plugins.len() > 0 {
-            send_data_to_plugins(&changed_plugins);
+            updated_plugins_data = send_data_to_plugins(&changed_plugins);
         }
         let settings_store_mut = &mut settings_store;
         
@@ -96,7 +97,7 @@ pub fn SaveSettingsButton() -> Element {
             changed_settings.clear();
         }
         
-        let response_plugins = load_plugins(Some(changed_plugins.keys().cloned().collect()));
+        let response_plugins = parse_plugins(updated_plugins_data);
         response_plugins.iter().for_each(|plugin| {
             plugins_store.set_plugin(plugin.clone());
         });

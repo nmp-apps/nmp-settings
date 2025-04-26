@@ -15,7 +15,9 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> Vec<Plugin> {
         Some(plugin_names) => {
             let mut plugin_list = vec![];
             plugin_names.iter().for_each(|name| {
-                let plugin = Plugin::from_command(TEST_PLUGIN_PATH);
+                let plugin = Plugin::from_command(
+                    TEST_PLUGIN_PATH // for prod change to "name" argument
+                );
 
                 match plugin {
                     Ok(plugin) => {
@@ -46,8 +48,22 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> Vec<Plugin> {
     
 }
 
+/// Receives JSONs and returns Plugins
+pub fn parse_plugins(plugins_data: Vec<String>) -> Vec<Plugin> {
+    let mut plugins: Vec<Plugin> = vec![];
+    for plugin_data in plugins_data {
+        let plugin_result = Plugin::from_str(&plugin_data);
+        match plugin_result {
+            Ok(plugin) => plugins.push(plugin),
+            Err(_) => ()
+        }
+    }
+    plugins
+}
+
 // TODO: leave this version for dev and make a version for prod build
-pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) {
+pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> Vec<String> {
+    let mut updated_plugins_data = vec![];
     for (plugin_name, plugin) in changed_plugins {
         let serialized_plugin = serde_json::to_string(&plugin);
         let data = match serialized_plugin {
@@ -59,9 +75,25 @@ pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) {
         };
         let plugin_name = TEST_PLUGIN_PATH;
         let mut command = Command::new(plugin_name);
-        let _ = command
+        let response = command
             .arg("--json")
             .arg(data)
-            .spawn();
+            .output();
+        let stdout = match response {
+            Ok(output) => output.stdout,
+            Err(err) => {
+                error!("Failed on updating plugins data:\n{:#?}", err);
+                continue;
+            }
+        };
+        let json_data = match str::from_utf8(&stdout) {
+            Ok(v) => v,
+            Err(_) => {
+                error!("Can't read plugin output data");
+                continue;
+            },
+        };
+        updated_plugins_data.push(String::from(json_data));
     }
+    updated_plugins_data
 }
