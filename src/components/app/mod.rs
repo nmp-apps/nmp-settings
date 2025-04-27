@@ -1,3 +1,6 @@
+mod dialogs;
+pub use dialogs::*;
+
 mod top_bar;
 pub use top_bar::TopBar;
 

@@ -1,0 +1,25 @@
+.closing-app {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 12px;
+    height: 100%;
+}
+
+.closing-app__title {
+    font-size: 24px;
+    font-weight: 400;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.closing-app__actions {
+    display: flex;
+    gap: 12px;
+}
+
+.closing-app__actions > button {
+    height: 40px;
+    width: 70px;
+}
