@@ -10,6 +10,8 @@ pub struct NumberProps {
     min: ReadOnlySignal<f64>,
     max: ReadOnlySignal<f64>,
     step: ReadOnlySignal<f64>,
+    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
+    disabled: ReadOnlySignal<bool>,
     oninput: EventHandler<f64>
 }
 
@@ -71,7 +73,9 @@ pub fn Number(props: NumberProps) -> Element {
     };
 
     rsx! {
-        div { class: "ui-number",
+        div {
+            class: "ui-number",
+            class: if props.disabled.read().clone() { "disabled" },
             document::Stylesheet { href: "{styles}" }
 
             button {
@@ -86,6 +90,7 @@ pub fn Number(props: NumberProps) -> Element {
                 max: "{props.max}",
                 value: "{props.value}",
                 step: "{props.step}",
+                disabled: *props.disabled.read(),
                 oninput: input_handler,
             }
             button {

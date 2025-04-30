@@ -10,7 +10,8 @@ use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
 #[derive(PartialEq, Clone, Props)]
 pub struct NumberSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Number>
+    data: ReadOnlySignal<Number>,
+    disabled: ReadOnlySignal<Option<bool>>
 }
 
 #[component]
@@ -54,6 +55,10 @@ pub fn NumberSetting(props: NumberSettingProps) -> Element {
             step: props.data.read().step(),
             value: props.data.read().value(),
             oninput: move |new_value| handler(new_value),
+            disabled: match *props.disabled.read() {
+                Some(v) => v,
+                None => false,
+            },
         }
     }
 }
