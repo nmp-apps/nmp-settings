@@ -66,6 +66,10 @@
     --slider-track-color: rgba(255, 255, 255, 0.2);
     --slider-track-filled-color: rgba(255, 255, 255, 0.5);
     --slider-thumb-color: rgba(204, 204, 204, 1);
+    --slider-disabled-text-color: rgba(255, 255, 255, 0.25);
+    --slider-disabled-track-color: rgba(255, 255, 255, 0.1);
+    --slider-disabled-track-filled-color: rgba(255, 255, 255, 0.15);
+    --slider-disabled-thumb-color: rgb(106, 106, 106);
 
     /* Text */
     --text-bg-color: rgba(15, 17, 22, 1);
