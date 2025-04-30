@@ -7,7 +7,9 @@ pub struct TextProps {
     value: ReadOnlySignal<String>,
     min_length: ReadOnlySignal<u32>,
     max_length: ReadOnlySignal<u32>,
-    oninput: Option<EventHandler<String>>
+    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
+    disabled: ReadOnlySignal<bool>,
+    oninput: Option<EventHandler<String>>,
 }
 
 #[component]
@@ -36,7 +38,9 @@ pub fn Text(props: TextProps) -> Element {
     };
 
     rsx! {
-        div { class: "ui-text",
+        div {
+            class: "ui-text",
+            class: if props.disabled.read().clone() { "disabled" },
             document::Link { rel: "stylesheet", href: "{styles}" }
             input {
                 class: "ui-text__input",
@@ -45,6 +49,7 @@ pub fn Text(props: TextProps) -> Element {
                 minlength: props.min_length,
                 maxlength: props.max_length,
                 oninput: input_handler,
+                disabled: *props.disabled.read(),
             }
         }
     }

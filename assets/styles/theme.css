@@ -72,4 +72,7 @@
     --text-border-color: rgba(255, 255, 255, 0.2);
     --text-selection-bg-color: var(--text-secondary-color);
     --text-selection-text-color: var(--text-bg-color);
+    --text-disabled-border-color: rgba(255, 255, 255, 0.15);
+    --text-disabled-bg-color: rgba(255, 255, 255, 0.15);
+    --text-disabled-text-color: rgba(255, 255, 255, 0.25);
 }

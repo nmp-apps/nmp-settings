@@ -45,7 +45,7 @@ pub fn Setting(props: SettingProps) -> Element {
                     ButtonGroupSetting {
                         data: data.clone(),
                         setting: props.setting,
-                        disabled: is_disabled,
+                        disabled: is_disabled(),
                     }
                 }
             },
@@ -86,7 +86,11 @@ pub fn Setting(props: SettingProps) -> Element {
             },
             SettingComponent::Text(data) => {
                 rsx! {
-                    TextSetting { data: data.clone(), setting: props.setting }
+                    TextSetting {
+                        data: data.clone(),
+                        setting: props.setting,
+                        disabled: is_disabled(),
+                    }
                 }
             },
         }

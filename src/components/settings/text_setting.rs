@@ -10,7 +10,8 @@ use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
 #[derive(PartialEq, Clone, Props)]
 pub struct TextSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Text>
+    data: ReadOnlySignal<Text>,
+    disabled: ReadOnlySignal<Option<bool>>
 }
 
 #[component]
@@ -54,6 +55,10 @@ pub fn TextSetting(props: TextSettingProps) -> Element {
             value: props.data.read().value(),
             min_length: props.data.read().min_length(),
             max_length: props.data.read().max_length(),
+            disabled: match *props.disabled.read() {
+                Some(v) => v,
+                None => false,
+            },
         }
     }
 }

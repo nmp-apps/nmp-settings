@@ -1,6 +1,10 @@
 .ui-text {
 }
 
+.ui-text.disabled {
+    pointer-events: none;
+}
+
 .ui-text__input {
     height: 2rem;
     width: 12rem;
@@ -22,4 +26,11 @@
 .ui-text__input:focus {
     outline: 3px solid var(--focus-outline-color);
     outline-offset: 0.125rem;
+}
+
+.ui-text.disabled > .ui-text__input {
+    pointer-events: none;
+    border-color: var(--text-disabled-border-color);
+    background: var(--text-disabled-bg-color);
+    color: var(--text-disabled-text-color);
 }
