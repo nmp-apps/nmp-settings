@@ -5,6 +5,10 @@
     height: 2rem;
 }
 
+.ui-number.disabled {
+    pointer-events: none;
+}
+
 .ui-number__step-button {
     padding: 0 0.75rem;
     height: 100%;
@@ -29,6 +33,14 @@
     background: var(--number-input-active-bg-color);
     transition: background 0.04s,
     border 0.04s;
+}
+
+.ui-number.disabled > .ui-number__step-button {
+    pointer-events: none;
+    cursor: default;
+    color: var(--number-input-disabled-text-color);
+    border-color: var(--number-input-disabled-border-color);
+    background: var(--number-input-disabled-bg-color);
 }
 
 .ui-number__step-button.left {
@@ -63,4 +75,12 @@
 .ui-number__input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.ui-number.disabled > .ui-number__input {
+    pointer-events: none;
+    user-select: none;
+    color: var(--number-input-disabled-text-color);
+    border-color: var(--number-input-disabled-border-color);
+    background: var(--number-input-disabled-bg-color);
 }

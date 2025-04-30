@@ -54,6 +54,9 @@
     --number-input-bg-color: transparent;
     --number-input-active-border-color: rgba(255, 255, 255, 0.3);
     --number-input-active-bg-color: rgba(255, 255, 255, 0.1);
+    --number-input-disabled-text-color: rgba(255, 255, 255, 0.25);
+    --number-input-disabled-border-color: rgba(255, 255, 255, 0.15);;
+    --number-input-disabled-bg-color: rgba(255, 255, 255, 0.15);
 
     /* Select */
     --select-bg-color: rgba(15, 17, 22, 1);

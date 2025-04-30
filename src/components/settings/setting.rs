@@ -59,7 +59,11 @@ pub fn Setting(props: SettingProps) -> Element {
             },
             SettingComponent::Number(data) => {
                 rsx! {
-                    NumberSetting { data: data.clone(), setting: props.setting }
+                    NumberSetting {
+                        data: data.clone(),
+                        setting: props.setting,
+                        disabled: is_disabled(),
+                    }
                 }
             },
             SettingComponent::Select(data) => {
