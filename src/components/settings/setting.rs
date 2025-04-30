@@ -11,7 +11,7 @@ use crate::components::{
 };
 use crate::get_asset;
 use crate::models::SettingComponent;
-use crate::stores::StoredSetting;
+use crate::stores::{PluginsStore, StoredSetting};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SettingProps {
@@ -21,13 +21,32 @@ pub struct SettingProps {
 /// Main Setting component
 #[component]
 pub fn Setting(props: SettingProps) -> Element {
+    let plugins_store = use_context::<PluginsStore>();
     let styles: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
+    let is_disabled = use_memo(move || {
+        let disabled_plugins = plugins_store.get_disabled_plugins().read().clone();
+        let found_plugin = disabled_plugins.iter().find(|disabled_plugin| {
+            let setting = props.setting.read();
+            let setting_plugin_name = setting.owner();
+            let disabled_plugin_name = disabled_plugin.name();
+            setting_plugin_name == disabled_plugin_name
+        });
+        if let Some(_) = found_plugin {
+            true
+        } else {
+            false
+        }
+    });
 
     let component = use_memo(move || {
         match props.setting.read().setting().component() {
             SettingComponent::ButtonGroup(data) => {
                 rsx! {
-                    ButtonGroupSetting { data: data.clone(), setting: props.setting }
+                    ButtonGroupSetting {
+                        data: data.clone(),
+                        setting: props.setting,
+                        disabled: is_disabled,
+                    }
                 }
             },
             SettingComponent::MultiSelect(data) => {
@@ -58,7 +77,11 @@ pub fn Setting(props: SettingProps) -> Element {
             },
             SettingComponent::Switch(data) => {
                 rsx! {
-                    SwitchSetting { data: data.clone(), setting: props.setting }
+                    SwitchSetting {
+                        data: data.clone(),
+                        setting: props.setting,
+                        disabled: is_disabled(),
+                    }
                 }
             },
             SettingComponent::Text(data) => {

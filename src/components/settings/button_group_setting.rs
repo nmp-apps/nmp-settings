@@ -10,7 +10,8 @@ use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
 #[derive(PartialEq, Clone, Props)]
 pub struct ButtonGroupSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<ButtonGroupModel>
+    data: ReadOnlySignal<ButtonGroupModel>,
+    disabled: ReadOnlySignal<bool>
 }
 
 #[component]
@@ -64,6 +65,7 @@ pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
             onchange: move |new_value| handler(new_value),
             items: converted_items(),
             value: props.data.read().value(),
+            disabled: props.disabled,
         }
     }
 }
