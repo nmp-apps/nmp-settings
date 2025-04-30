@@ -10,6 +10,8 @@ pub struct SliderProps {
     min: ReadOnlySignal<f64>,
     max: ReadOnlySignal<f64>,
     step: ReadOnlySignal<f64>,
+    #[props(default = ReadOnlySignal::new(use_signal(|| false)))]
+    disabled: ReadOnlySignal<bool>,
     oninput: EventHandler<f64>
 }
 
@@ -48,7 +50,7 @@ pub fn Slider(props: SliderProps) -> Element {
     };
 
     rsx! {
-        div { class: "ui-slider",
+        div { class: "ui-slider", class: if *props.disabled.read() { "disabled" },
             document::Stylesheet { href: "{styles}" }
             input {
                 class: "ui-slider__input",
@@ -56,6 +58,7 @@ pub fn Slider(props: SliderProps) -> Element {
                 max: "{props.max}",
                 value: "{props.value}",
                 r#type: "number",
+                disabled: *props.disabled.read(),
                 oninput: input_handler,
             }
             input {
@@ -66,6 +69,7 @@ pub fn Slider(props: SliderProps) -> Element {
                 max: "{props.max}",
                 step: "{props.step}",
                 value: "{props.value}",
+                disabled: *props.disabled.read(),
                 oninput: slider_handler,
             }
         }

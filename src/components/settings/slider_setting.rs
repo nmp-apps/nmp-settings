@@ -10,7 +10,8 @@ use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
 #[derive(PartialEq, Clone, Props)]
 pub struct SliderSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Slider>
+    data: ReadOnlySignal<Slider>,
+    disabled: ReadOnlySignal<Option<bool>>
 }
 
 #[component]
@@ -54,6 +55,10 @@ pub fn SliderSetting(props: SliderSettingProps) -> Element {
             max: props.data.read().max(),
             step: props.data.read().step(),
             value: props.data.read().value(),
+            disabled: match *props.disabled.read() {
+                Some(v) => v,
+                None => false,
+            },
         }
     }
 }

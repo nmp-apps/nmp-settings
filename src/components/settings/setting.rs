@@ -72,7 +72,11 @@ pub fn Setting(props: SettingProps) -> Element {
             },
             SettingComponent::Slider(data) => {
                 rsx! {
-                    SliderSetting { data: data.clone(), setting: props.setting }
+                    SliderSetting {
+                        data: data.clone(),
+                        setting: props.setting,
+                        disabled: is_disabled(),
+                    }
                 }
             },
             SettingComponent::Switch(data) => {
