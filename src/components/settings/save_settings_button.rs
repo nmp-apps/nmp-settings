@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 
-use crate::models::{Plugin, Setting};
+use crate::models::{DisabledPlugin, Plugin, Setting};
 use crate::stores::{PluginsStore, SettingsStore};
 use crate::components::Button;
 use crate::utils::{parse_plugins, parse_settings_from_plugins, send_data_to_plugins};
@@ -30,8 +30,8 @@ pub fn SaveSettingsButton() -> Element {
                 },
             };
             
-            let plugins = plugins_store.get_plugins_mut();
-            let plugin = match plugins.iter_mut().find(|plugin| plugin.get_name() == String::from(*plugin_name)) {
+            let stored_plugins = plugins_store.get_plugins_mut();
+            let plugin = match stored_plugins.iter_mut().find(|plugin| plugin.get_name() == String::from(*plugin_name)) {
                 Some(plugin) => plugin,
                 None => {
                     error!("Plugin [{}] not found", plugin_name);
@@ -86,9 +86,14 @@ pub fn SaveSettingsButton() -> Element {
             }
         }
 
-        let mut updated_plugins_data: Vec<String> = vec![];
+        let mut updated_plugins_data: HashMap<String, String> = HashMap::new();
+        let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
         if changed_plugins.len() > 0 {
-            updated_plugins_data = send_data_to_plugins(&changed_plugins);
+            let (updated, disabled) = send_data_to_plugins(&changed_plugins);
+            updated.into_iter().for_each(|(name, data)| {
+                updated_plugins_data.insert(name, data);
+            });
+            disabled_plugins.extend(disabled);
         }
         let settings_store_mut = &mut settings_store;
         
@@ -97,10 +102,26 @@ pub fn SaveSettingsButton() -> Element {
             changed_settings.clear();
         }
         
-        let response_plugins = parse_plugins(updated_plugins_data);
-        response_plugins.iter().for_each(|plugin| {
-            plugins_store.set_plugin(plugin.clone());
+        let (parsed, disabled) = parse_plugins(updated_plugins_data);
+        parsed.into_iter().for_each(|plugin| {
+            plugins_store.set_plugin(plugin);
         });
+        disabled.into_iter().for_each(|plugin| {
+            if !disabled_plugins.contains(&plugin) {
+                disabled_plugins.push(plugin);
+            }
+        });
+
+        // update disabled plugins
+        {
+            let stored_disabled_plugins = &mut plugins_store.get_disabled_plugins_mut().write();
+            disabled_plugins.into_iter().for_each(|plugin| {
+                if !stored_disabled_plugins.contains(&plugin) {
+                    stored_disabled_plugins.push(plugin);
+                }
+            });
+        }
+
         // parse all settings to save settings order 
         let stored_plugins = plugins_store.get_plugins().clone();
         let (parsed_categorized, parsed_uncategorized) = parse_settings_from_plugins(stored_plugins);
