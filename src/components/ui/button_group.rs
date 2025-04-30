@@ -6,7 +6,8 @@ use crate::{components::Button, get_asset};
 pub struct ButtonGroupProps {
     value: ReadOnlySignal<String>,
     items: ReadOnlySignal<Vec<ButtonGroupItem>>,
-    onchange: Option<EventHandler<String>>
+    onchange: Option<EventHandler<String>>,
+    disabled: ReadOnlySignal<bool>,
 }
 
 #[derive(PartialEq, Clone)]
@@ -37,6 +38,7 @@ pub fn ButtonGroup(props: ButtonGroupProps) -> Element {
                             handler.call(item.value.clone())
                         }
                     },
+                    disabled: *props.disabled.read(),
                     "{item.text}"
                 }
             }

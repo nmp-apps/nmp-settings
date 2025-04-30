@@ -9,4 +9,7 @@ impl DisabledPlugin {
     pub fn new(plugin_name: String, plugin_version: Option<String>, nmp_settings_version: Option<String>) -> DisabledPlugin {
         DisabledPlugin { plugin_name, plugin_version, nmp_settings_version }
     }
+    pub fn name(&self) -> &String {
+        &self.plugin_name
+    }
 }

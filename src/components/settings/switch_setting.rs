@@ -10,7 +10,8 @@ use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
 #[derive(PartialEq, Clone, Props)]
 pub struct SwitchSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Switch>
+    data: ReadOnlySignal<Switch>,
+    disabled: ReadOnlySignal<Option<bool>>
 }
 
 #[component]
@@ -54,6 +55,10 @@ pub fn SwitchSetting(props: SwitchSettingProps) -> Element {
                 handler(value);
             },
             value: props.data.read().value(),
+            disabled: match *props.disabled.read() {
+                Some(v) => v,
+                None => false,
+            },
         }
     }
 }

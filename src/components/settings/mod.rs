@@ -19,8 +19,8 @@ pub use settings_list::*;
 mod slider_setting;
 pub use slider_setting::*;
 
-mod switch;
-pub use switch::*;
+mod switch_setting;
+pub use switch_setting::*;
 
 mod text_setting;
 pub use text_setting::*;

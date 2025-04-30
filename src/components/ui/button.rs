@@ -7,20 +7,40 @@ pub struct ButtonProps {
     children: Option<Element>,
     title: Option<String>,
     #[props(default = false)]
-    primary: bool,
+    primary: ReadOnlySignal<Option<bool>>,
     #[props(default = false)]
-    disabled: bool,
+    disabled: ReadOnlySignal<Option<bool>>,
     onclick: Option<EventHandler<MouseEvent>>
 }
 
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
+
+    let classes = use_memo(move || {
+        let mut result = vec!["ui-button"];
+        match *props.disabled.read() {
+            Some(v) => {
+                if v {
+                    result.push("disabled");
+                }
+            },
+            None => (),
+        }
+        match *props.primary.read() {
+            Some(v) => {
+                if v {
+                    result.push("primary");
+                }
+            },
+            None => (),
+        }
+        result.join(" ")
+    });
+
     rsx! {
         button {
-            class: "ui-button",
-            class: if props.primary { "primary" },
-            class: if props.disabled { "disabled" },
+            class: classes,
 
             disabled: props.disabled,
             title: props.title.unwrap_or(String::new()),
