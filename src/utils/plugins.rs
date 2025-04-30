@@ -54,14 +54,15 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
 
 /// In release version takes plugins installed by user
 #[cfg(not(debug_assertions))]
-pub fn load_plugins(plugins: Option<Vec<String>>) -> Vec<Plugin> {
+pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
     info!("Loading plugins...");
+        let mut enabled_plugins: Vec<Plugin> = vec![];
+        let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
     match plugins {
         Some(plugin_names) => {
             let full_names = plugin_names.iter().map(|name| {
                 format!("nmp-settings-plugin-{}", name)
             });
-            let mut plugin_list = vec![];
             full_names.for_each(|name| {
                 let plugin = Plugin::from_command(
                     name.as_str()
@@ -69,34 +70,35 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> Vec<Plugin> {
 
                 match plugin {
                     Ok(plugin) => {
-                        plugin_list.push(plugin);
+                        enabled_plugins.push(plugin);
                     },
-                    Err(e) => {
-                        error!(e);
+                    Err(disabled_plugin) => {
+                        error!("Found {:?}", disabled_plugin);
+                        disabled_plugins.push(disabled_plugin);
                     },
                 }
             });
-            plugin_list
         },
         None => {
             let plugin_paths: Vec<String> = find_apps_by_name("nmp-settings-plugin-");
-            let mut plugins: Vec<Plugin> = vec![];
 
             plugin_paths.iter().for_each(|plugin_path| {
                 let plugin = Plugin::from_command(plugin_path);
                 match plugin {
                     Ok(plugin) => {
-                        plugins.push(plugin);
+                        enabled_plugins.push(plugin);
                     },
-                    Err(e) => {
-                        error!(e);
+                    Err(disabled_plugin) => {
+                        error!("Found {:?}", disabled_plugin);
+                        disabled_plugins.push(disabled_plugin);
                     },
                 }
 
             });
-            plugins
         }
-    }    
+    }
+    (enabled_plugins, disabled_plugins)
+
 }
 
 /// Receives JSONs and returns Plugins
@@ -157,19 +159,21 @@ pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> (HashM
 
 /// In release version takes plugins installed by user
 #[cfg(not(debug_assertions))]
-pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> Vec<String> {
-    let mut updated_plugins_data = vec![];
+pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> (HashMap<String, String>, Vec<DisabledPlugin>) {
+    let mut updated_plugins_data: HashMap<String, String> = HashMap::new();
+    let mut disabled_plugins = vec![];
     for (plugin_name, plugin) in changed_plugins {
         let serialized_plugin = serde_json::to_string(&plugin);
         let data = match serialized_plugin {
             Ok(data) => data,
             Err(err) => {
                 error!("{:?}", err);
+                disabled_plugins.push(DisabledPlugin::new(truncate_plugin_name(&plugin_name), None, None));
                 continue;
             }
         };
-        let plugin_name = format!("nmp-settings-plugin-{}", plugin_name);
-        let mut command = Command::new(plugin_name);
+        let command_name = format!("nmp-settings-plugin-{}", plugin_name);
+        let mut command = Command::new(command_name);
         let response = command
             .arg("--json")
             .arg(data)
@@ -178,6 +182,7 @@ pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> Vec<St
             Ok(output) => output.stdout,
             Err(err) => {
                 error!("Failed on updating plugins data:\n{:#?}", err);
+                disabled_plugins.push(DisabledPlugin::new(truncate_plugin_name(&plugin_name), None, None));
                 continue;
             }
         };
@@ -185,12 +190,13 @@ pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> Vec<St
             Ok(v) => v,
             Err(_) => {
                 error!("Can't read plugin output data");
+                disabled_plugins.push(DisabledPlugin::new(truncate_plugin_name(&plugin_name), None, None));
                 continue;
             },
         };
-        updated_plugins_data.push(String::from(json_data));
+        updated_plugins_data.insert(plugin_name.clone(),String::from(json_data));
     }
-    updated_plugins_data
+    (updated_plugins_data, disabled_plugins)
 }
 
 pub fn truncate_plugin_name(full_name: &str) -> String {
