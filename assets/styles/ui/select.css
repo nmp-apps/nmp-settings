@@ -4,6 +4,10 @@
     position: relative;
 }
 
+.ui-select.disabled {
+    pointer-events: none;
+}
+
 .ui-select__button {
     width: 100%;
     cursor: pointer;
@@ -26,6 +30,13 @@
 
 .ui-select.opened .ui-select__button {
     border-radius: 8px 8px 0 0;
+}
+
+.ui-select.disabled > .ui-select__button {
+    border-color: var(--select-disabled-border-color);
+    cursor: default;
+    background: var(--select-disabled-bg-color);
+    color: var(--select-disabled-text-color);
 }
 
 .ui-select__arrow-icon {

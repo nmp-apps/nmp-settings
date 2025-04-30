@@ -9,6 +9,8 @@ pub struct SelectProps<T: 'static + std::clone::Clone + std::cmp::PartialEq + st
     multiple: ReadOnlySignal<Option<bool>>,
     items: ReadOnlySignal<Vec<SelectItem<T>>>,
     value: ReadOnlySignal<SelectValue<T>>,
+    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
+    disabled: ReadOnlySignal<bool>,
     onclick: EventHandler<SelectValue<T>>
 }
 
@@ -171,11 +173,15 @@ where
     };
 
     rsx! {
-        div { class: "ui-select", class: if is_opened() { "opened" } else { "" },
+        div {
+            class: "ui-select",
+            class: if is_opened() { "opened" } else { "" },
+            class: if props.disabled.read().clone() { "disabled" },
             document::Stylesheet { href: "{styles}" }
 
             button {
                 class: "ui-select__button",
+                disabled: *props.disabled.read(),
                 onclick: move |_| is_opened.set(!is_opened()),
                 span { "{select_button_text}" }
                 KeyboardArrowUpIcon { class: "ui-select__arrow-icon" }
