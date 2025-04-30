@@ -7,6 +7,12 @@
     --layout-border-color: rgb(255, 255, 255, 0.5);
     --divider-color: rgba(255, 255, 255, 0.15);
 
+    /* Setting */
+    --setting-title-color: var(--text-color);
+    --setting-description-color: var(--text-secondary-color);
+    --setting-disabled-title-color: rgb(120, 120, 120);
+    --setting-disabled-description-color: rgb(90, 90, 90);
+
     /* Button - secondary [default] */
     --button-border-color: rgba(255, 255, 255, 0.2);
     --button-text-color: rgba(255, 255, 255, 0.8);

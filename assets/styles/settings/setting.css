@@ -14,6 +14,11 @@
 .setting__content h6 {
     font-size: 20px;
     font-weight: 400;
+    color: var(--setting-title-color);
+}
+
+.setting.disabled .setting__content h6 {
+    color: var(--setting-disabled-title-color);
 }
 
 .setting__content h6:has(+ p) {
@@ -23,7 +28,11 @@
 .setting__content p {
     font-size: 14px;
     font-weight: 300;
-    color: var(--text-secondary-color);
+    color: var(--setting-description-color);
+}
+
+.setting.disabled .setting__content p {
+    color: var(--setting-disabled-description-color);
 }
 
 .setting__actions {

@@ -107,7 +107,7 @@ pub fn Setting(props: SettingProps) -> Element {
     });
 
     rsx! {
-        div { class: "setting",
+        div { class: "setting", class: if is_disabled() { "disabled" },
             document::Stylesheet { href: "{styles}" }
 
             div { class: "setting__content",
