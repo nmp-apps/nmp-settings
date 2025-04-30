@@ -1,8 +1,10 @@
 use std::process::Command;
 use serde::{Deserialize, Serialize};
-use dioxus::logger::tracing::error;
+use dioxus::logger::tracing::{error, warn};
 
-use super::Setting;
+use crate::utils::{plugin_check_version, truncate_plugin_name};
+
+use super::{DisabledPlugin, Setting};
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -22,37 +24,46 @@ impl Plugin {
     //         settings,
     //     }
     // }
-    pub fn from_command(command: &str) -> Result<Plugin, &str> {
-        let mut command = Command::new(command);
+    pub fn from_command(command_name: &str) -> Result<Plugin, DisabledPlugin> {
+        
+        let is_check_version_valid = plugin_check_version(command_name);
+        
+        if !is_check_version_valid {
+            warn!("Plugin version check by command {} is not valid.", command_name);
+            return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
+        }
+
+        let mut command = Command::new(command_name);
+
         let stdout = match command.arg("--json").output() {
             Ok(v) => v.stdout,
-            Err(_) => {
-                error!("Can't get plugin output data");
-                return Err("Can't get plugin output data")
+            Err(e) => {
+                error!("Can't get plugin {} output data: {}", command_name, e);
+                return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             }
         };
         let json = match str::from_utf8(&stdout) {
             Ok(v) => v,
-            Err(_) => {
-                error!("Can't read plugin output data");
-                return Err("Can't read plugin output data")
+            Err(e) => {
+                error!("Can't read plugin {} output data {}", command_name, e);
+                return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             },
         };
         let plugin: Plugin = match serde_json::from_str(json) {
             Ok(v) => v,
             Err(e) => {
-                error!("Parsing plugin data error, {}", e);
-                return Err("Parsing plugin data error")
+                error!("Parsing plugin {} data error: {}", command_name, e);
+                return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             },
         };
         Ok(plugin)
     }
-    pub fn from_str(json: &str) -> Result<Plugin, &str> {
+    pub fn from_str(plugin_name: &str, json: &str) -> Result<Plugin, DisabledPlugin> {
         let plugin: Plugin = match serde_json::from_str(json) {
             Ok(v) => v,
             Err(e) => {
                 error!("Parsing plugin data error, {}", e);
-                return Err("Parsing plugin data error")
+                return Err(DisabledPlugin::new(truncate_plugin_name(plugin_name), None, None));
             },
         };
         Ok(plugin)
