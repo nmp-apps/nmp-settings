@@ -54,6 +54,7 @@ pub fn Setting(props: SettingProps) -> Element {
                     SelectSetting {
                         data: SelectSettingData::Multiple(data.clone()),
                         setting: props.setting,
+                        disabled: is_disabled(),
                     }
                 }
             },
@@ -71,6 +72,7 @@ pub fn Setting(props: SettingProps) -> Element {
                     SelectSetting {
                         data: SelectSettingData::Single(data.clone()),
                         setting: props.setting,
+                        disabled: is_disabled(),
                     }
                 }
             },

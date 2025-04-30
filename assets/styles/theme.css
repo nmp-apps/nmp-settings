@@ -64,6 +64,9 @@
     --select-item-text-color: rgba(255, 255, 255, 0.8);
     --select-item-bg-color: transparent;
     --select-item-hover-bg-color: rgba(255, 255, 255, 0.05);
+    --select-disabled-border-color: rgba(255, 255, 255, 0.15);
+    --select-disabled-bg-color: rgba(255, 255, 255, 0.15);
+    --select-disabled-text-color: rgba(255, 255, 255, 0.25);
 
     /* Slider */
     --slider-track-color: rgba(255, 255, 255, 0.2);

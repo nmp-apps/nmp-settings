@@ -10,7 +10,8 @@ use crate::models::{MultiSelect, Select as SelectModel, SettingComponent};
 #[derive(PartialEq, Clone, Props)]
 pub struct SelectSettingProps {
     setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<SelectSettingData>
+    data: ReadOnlySignal<SelectSettingData>,
+    disabled: ReadOnlySignal<Option<bool>>
 }
 
 pub enum SelectSettingData {
@@ -126,6 +127,10 @@ pub fn SelectSetting(props: SelectSettingProps) -> Element {
                             items: converted_items,
                             value: SelectValue::Multiple(data.value().clone()),
                             onclick: move |v| handler(v),
+                            disabled: match *props.disabled.read() {
+                                Some(v) => v,
+                                None => false,
+                            },
                         }
                     }
                 }
@@ -135,6 +140,10 @@ pub fn SelectSetting(props: SelectSettingProps) -> Element {
                             items: converted_items,
                             value: SelectValue::Single(data.value().clone()),
                             onclick: move |v| handler(v),
+                            disabled: match *props.disabled.read() {
+                                Some(v) => v,
+                                None => false,
+                            },
                         }
                     }
                 }
