@@ -58,6 +58,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
                             .with_closable(true)
                             .with_focused(true)
                             .with_decorations(false)
+                            .with_visible(false) // prevents performance issues on opening with decorations = false
                             .with_inner_size_constraints(
                                 WindowSizeConstraints::new(
                                     Option::Some(PixelUnit::Logical(LogicalUnit::new(650.0))),
