@@ -1,8 +1,11 @@
 use std::{
     env,
     fs,
-    // path::PathBuf
+    path::PathBuf,
 };
+
+use dioxus::logger::tracing::error;
+use directories_next::ProjectDirs;
 
 /// Find path of executables by partial name
 pub fn find_apps_by_name(partial_name: &str) -> Vec<String> {
@@ -51,4 +54,29 @@ pub fn find_apps_by_name(partial_name: &str) -> Vec<String> {
         }
     }
     found_apps
+}
+
+/// Get app config file path from `nmp/settings/` directory.
+pub fn get_app_config_path() -> Option<PathBuf> {
+    let proj_dirs = ProjectDirs::from("", "nmp", "nmp");
+    match proj_dirs {
+        Some(proj_dirs) => {
+            let mut nmp_dir = proj_dirs.config_dir().to_path_buf();
+            nmp_dir.push("settings");
+            match fs::create_dir_all(&nmp_dir) {
+                Ok(_) => {
+                    nmp_dir.push("config.json");
+                    Some(nmp_dir)
+                },
+                Err(err) => {
+                    error!("Can't create nmp-settings config directory: {}", err);
+                    None
+                }
+            }
+        },
+        None => {
+            error!("Can't get nmp-settings dirs");
+            None
+        }
+    }
 }
