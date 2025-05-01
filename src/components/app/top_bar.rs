@@ -5,7 +5,7 @@ use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
 use dioxus::desktop::{use_window, Config, DesktopContext, LogicalPosition, LogicalSize, WindowBuilder};
 
 use crate::get_asset;
-use crate::components::{ClosingApp, IconButton, SaveSettingsButton, Switch, WindowWrapper};
+use crate::components::{AdvancedSettingsSwitch, ClosingApp, IconButton, SaveSettingsButton, WindowWrapper};
 use crate::models::Icon;
 use crate::stores::SettingsStore;
 
@@ -21,7 +21,6 @@ pub fn TopBar(props: TopBarProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/app/top_bar.css"));
     let settings_store = use_context::<SettingsStore>();
     let window: DesktopContext = use_window();
-    let mut is_advanced_settings_enabled = use_signal(|| false);
     let top_bar_classes = match &props.class {
         Some(classes) => format!("top-bar {classes}"),
         None => "top-bar".to_string()
@@ -104,11 +103,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
             }
             div { class: "top-bar__right",
                 IconButton { icon: Icon::Extension, title: "Manage Extensions" }
-                Switch {
-                    title: "Enable advanced settings",
-                    value: is_advanced_settings_enabled(),
-                    onchange: move |event: Event<FormData>| is_advanced_settings_enabled.set(event.checked()),
-                }
+                AdvancedSettingsSwitch {}
                 SaveSettingsButton {}
                 div { class: "top-bar__window-actions",
                     IconButton {

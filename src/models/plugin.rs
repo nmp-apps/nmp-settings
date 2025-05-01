@@ -68,6 +68,7 @@ impl Plugin {
         };
         Ok(plugin)
     }
+    /// Checks `nmpSettingsVersion` field of plugin data.
     fn check_version(&self) -> bool {
         todo!("Check version is not implemented yet");
     }

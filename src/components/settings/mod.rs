@@ -1,3 +1,6 @@
+mod advanced_settings_switch;
+pub use advanced_settings_switch::*;
+
 mod button_group_setting;
 pub use button_group_setting::*;
 
