@@ -1,4 +1,4 @@
-use std::{collections::HashMap, process::Command};
+use std::{collections::HashMap, process::Command, env};
 
 use dioxus::logger::tracing::{error, info};
 
@@ -8,10 +8,9 @@ use crate::models::{Plugin, DisabledPlugin};
 use super::find_apps_by_name;
 
 #[cfg(debug_assertions)]
-const TEST_PLUGIN_PATH: &str = "../nmp-settings-plugin-example/target/debug/nmp-settings-plugin-example";
-
-#[cfg(debug_assertions)]
 pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
+    let test_plugin_path: String = env::var("TEST_PLUGIN_PATH").unwrap_or(String::new());
+    
     info!("Loading plugins...");
     let mut enabled_plugins: Vec<Plugin> = vec![];
     let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
@@ -19,7 +18,7 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
     match plugins {
         Some(plugin_names) => {
             plugin_names.iter().for_each(|_| {
-                let plugin = Plugin::from_command(TEST_PLUGIN_PATH);
+                let plugin = Plugin::from_command(test_plugin_path.as_str());
 
                 match plugin {
                     Ok(plugin) => {
@@ -34,7 +33,7 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
         },
         // find all plugins in system and load them
         None => {
-            let plugin = Plugin::from_command(TEST_PLUGIN_PATH);
+            let plugin = Plugin::from_command(test_plugin_path.as_str());
             
 
             match plugin {
@@ -119,6 +118,8 @@ pub fn parse_plugins(plugins_data: HashMap<String, String>) -> (Vec<Plugin>, Vec
 /// Send data to plugins, return updated plugin JSON data
 #[cfg(debug_assertions)]
 pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> (HashMap<String, String>, Vec<DisabledPlugin>) {
+    let test_plugin_path: String = env::var("TEST_PLUGIN_PATH").unwrap_or(String::new());
+    
     let mut updated_plugins_data: HashMap<String, String> = HashMap::new();
     let mut disabled_plugins = vec![];
     for (plugin_name, plugin) in changed_plugins {
@@ -131,7 +132,7 @@ pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> (HashM
                 continue;
             }
         };
-        let mut command = Command::new(TEST_PLUGIN_PATH);
+        let mut command = Command::new(test_plugin_path.as_str());
         let response = command
             .arg("--json")
             .arg(data)
