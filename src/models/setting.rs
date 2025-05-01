@@ -8,7 +8,7 @@ pub struct Setting {
     category: Option<SettingsCategory>,
     title: String,
     description: String,
-    confirmation: Option<ConfirmationWindow>,
+    confirmation: Option<ConfirmationWindow>, // TODO
     is_advanced: bool,
     component: SettingComponent,
 }
@@ -22,6 +22,9 @@ impl Setting {
     }
     pub fn description(&self) -> &String {
         &self.description
+    }
+    pub fn is_advanced(&self) -> bool {
+        self.is_advanced
     }
     pub fn component(&self) -> &SettingComponent {
         &self.component

@@ -11,3 +11,7 @@
     margin: 0 0 32px 0;
     padding: 0 0 12px 0;
 }
+
+.settings-list__item.hidden {
+    display: none;
+}
