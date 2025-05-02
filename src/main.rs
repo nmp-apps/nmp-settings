@@ -1,13 +1,13 @@
 // use std::path::Path;
-use dioxus::desktop::{
-    tao::window::WindowSizeConstraints,
-    wry::dpi::{
-        PhysicalUnit,
-        PixelUnit
-    },
-    Config,
-    WindowBuilder
+use dioxus::desktop::tao::window::WindowSizeConstraints;
+use dioxus::desktop::wry::dpi::{
+    LogicalUnit,
+    PhysicalSize,
+    PhysicalUnit,
+    PixelUnit,
+    Size
 };
+use dioxus::desktop::{Config, WindowBuilder};
 
 use dioxus::logger::tracing::Level;
 
@@ -25,25 +25,28 @@ fn main() {
     dioxus::logger::init(Level::ERROR).expect("logger failed to init");
     dioxus::LaunchBuilder::desktop()
     .with_cfg(
-        Config::new().with_window(
-            WindowBuilder::new()
-            .with_resizable(true)
-            .with_decorations(false)
-            // .with_focused(true)
-            .with_inner_size_constraints(
-                WindowSizeConstraints::new(
-                    Option::Some(PixelUnit::Physical(PhysicalUnit::new(800))),
-                    Option::Some(PixelUnit::Physical(PhysicalUnit::new(600))),
-                    Option::None,
-                    Option::None
+        Config::new()
+            // .with_disable_context_menu(true)
+            .with_window(
+                WindowBuilder::new()
+                .with_resizable(true)
+                .with_decorations(false)
+                // .with_focused(true)
+                .with_inner_size(Size::Physical(PhysicalSize { height: 1440, width: 2560 }))
+                .with_inner_size_constraints(
+                    WindowSizeConstraints::new(
+                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(1280))),
+                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(720))),
+                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(2560))),
+                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(1600)))
+                    )
                 )
+                .with_theme(Option::None)
+                .with_title("Settings")
+                .with_transparent(true)
+                // // .with_window_icon(Option::Some(Icon::from_rgba(std::fs::read(Path::new("/assets/favicon.ico")).unwrap(), 16, 16).unwrap()))
+                // .with_cursor_moved_event(false)
             )
-            .with_theme(Option::None)
-            .with_title("Settings")
-            .with_transparent(true)
-            // // .with_window_icon(Option::Some(Icon::from_rgba(std::fs::read(Path::new("/assets/favicon.ico")).unwrap(), 16, 16).unwrap()))
-            // .with_cursor_moved_event(true)
-        )
     )
     .launch(App);
 }

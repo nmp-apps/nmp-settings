@@ -16,11 +16,11 @@ pub fn App() -> Element {
   use_settings_store();
 
     rsx! {
-        // Global app resources
-        document::Link { rel: "icon", href: "{favicon}" }
-        document::Stylesheet { href: "{reset_css}" }
-        document::Stylesheet { href: "{theme_css}" }
-        document::Stylesheet { href: "{main_css}" }
-        Router::<Route> {}
+      // Global app resources
+      document::Link { rel: "icon", href: "{favicon}" }
+      document::Stylesheet { href: "{reset_css}" }
+      document::Stylesheet { href: "{theme_css}" }
+      document::Stylesheet { href: "{main_css}" }
+      Router::<Route> {}
     }
 }

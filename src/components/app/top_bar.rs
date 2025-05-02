@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 use dioxus::desktop::{use_window, DesktopContext};
 
 use crate::get_asset;
-use crate::components::{AdvancedSettingsSwitch, CloseButton, IconButton, SaveSettingsButton};
+use crate::components::{AdvancedSettingsSwitch, CloseButton, IconButton, PluginsButton, SaveSettingsButton};
 use crate::models::Icon;
 
 #[derive(PartialEq, Props, Clone)]
@@ -43,7 +43,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
                 h1 { class: "top-bar__title", "Settings" }
             }
             div { class: "top-bar__right",
-                IconButton { icon: Icon::Extension, title: "Manage Extensions" }
+                PluginsButton {}
                 AdvancedSettingsSwitch {}
                 SaveSettingsButton {}
                 div { class: "top-bar__window-actions",

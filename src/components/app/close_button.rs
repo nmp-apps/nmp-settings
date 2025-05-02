@@ -59,7 +59,7 @@ pub fn CloseButton() -> Element {
                             .with_minimizable(false)
                             .with_position(window_position)
                             .with_resizable(false)
-                            // .with_transparent(true)
+                            .with_transparent(true)
                             // .with_transient_for(window.gtk_window())
                             .with_theme(Some(Theme::Dark))
                     )
