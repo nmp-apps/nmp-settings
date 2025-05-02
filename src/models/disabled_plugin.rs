@@ -12,4 +12,10 @@ impl DisabledPlugin {
     pub fn name(&self) -> &String {
         &self.plugin_name
     }
+    pub fn version(&self) -> &Option<String> {
+        &self.plugin_version
+    }
+    pub fn nmp_settings_version(&self) -> &Option<String> {
+        &self.nmp_settings_version
+    }
 }

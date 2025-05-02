@@ -1,7 +1,7 @@
+use constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 // use std::path::Path;
 use dioxus::desktop::tao::window::WindowSizeConstraints;
 use dioxus::desktop::wry::dpi::{
-    LogicalUnit,
     PhysicalSize,
     PhysicalUnit,
     PixelUnit,
@@ -12,6 +12,7 @@ use dioxus::desktop::{Config, WindowBuilder};
 use dioxus::logger::tracing::Level;
 
 mod macros; // must be defined before all
+mod constants;
 mod utils;
 mod stores;
 mod router;
@@ -26,7 +27,7 @@ fn main() {
     dioxus::LaunchBuilder::desktop()
     .with_cfg(
         Config::new()
-            // .with_disable_context_menu(true)
+            .with_disable_context_menu(IS_WINDOW_CONTEXT_MENU_DISABLED)
             .with_window(
                 WindowBuilder::new()
                 .with_resizable(true)

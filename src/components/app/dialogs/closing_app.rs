@@ -9,7 +9,7 @@ pub struct ClosingAppProps {
 
 #[component]
 pub fn ClosingApp(props: ClosingAppProps) -> Element {
-    let reset_css: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/closing_app.css"));
+    let styles: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/closing_app.css"));
 
     let cancel = move |_| {
         window().close();
@@ -22,7 +22,7 @@ pub fn ClosingApp(props: ClosingAppProps) -> Element {
 
     rsx! {
         div { class: "closing-app",
-            document::Stylesheet { href: "{reset_css}", rel: "preload" }
+            document::Stylesheet { href: "{styles}", rel: "preload" }
 
             h1 { class: "closing-app__title",
                 "You have unsaved changes. Are you sure you want to exit?"
