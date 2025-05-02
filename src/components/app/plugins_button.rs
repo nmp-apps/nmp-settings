@@ -1,10 +1,11 @@
-use dioxus::desktop::tao::window::{Theme, WindowSizeConstraints};
+use dioxus::desktop::tao::window::WindowSizeConstraints;
 use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
 use dioxus::desktop::{use_window, Config, DesktopContext, LogicalPosition, LogicalSize, WindowBuilder};
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 
 use crate::components::{IconButton, Plugins, WindowWrapper};
+use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::models::Icon;
 use crate::stores::PluginsStore;
 
@@ -29,7 +30,7 @@ pub fn PluginsButton() -> Element {
             VirtualDom::new_with_props(PluginsListDialog, PluginsListDialogProps { plugins_store: plugins_store.clone() }),
             Config::new()
                 .with_as_child_window()
-                .with_disable_context_menu(true)
+                .with_disable_context_menu(IS_WINDOW_CONTEXT_MENU_DISABLED)
                 .with_window(
                     WindowBuilder::new()
                         .with_always_on_top(true)
@@ -52,7 +53,7 @@ pub fn PluginsButton() -> Element {
                         .with_resizable(false)
                         .with_transparent(true)
                         // .with_transient_for(window.gtk_window())
-                        .with_theme(Some(Theme::Dark))
+                        .with_theme(None)
                 )
         );
     };

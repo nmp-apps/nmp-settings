@@ -75,6 +75,12 @@ impl Plugin {
     pub fn get_name(&self) -> String {
         self.plugin_name.replace("nmp-settings-plugin-", "")
     }
+    pub fn get_version(&self) -> &String {
+        &self.plugin_version
+    }
+    pub fn get_nmp_settings_version(&self) -> &String {
+        &self.nmp_settings_version
+    }
     pub fn get_settings(&self) -> &Vec<Setting> {
         &self.settings
     }
