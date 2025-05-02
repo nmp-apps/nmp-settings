@@ -6,7 +6,7 @@ use crate::models::{DisabledPlugin, Plugin};
 use crate::utils::load_plugins;
 
 /// Initial Plugins Data
-#[derive(Clone, Debug)]
+#[derive(PartialEq, Clone, Debug)]
 pub struct PluginsStore {
     plugins: Vec<Plugin>,
     disabled_plugins: Signal<Vec<DisabledPlugin>>

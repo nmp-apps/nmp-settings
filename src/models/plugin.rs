@@ -6,7 +6,7 @@ use crate::utils::{plugin_check_version, truncate_plugin_name};
 
 use super::{DisabledPlugin, Setting};
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
+#[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub struct Plugin {
     plugin_version: String,

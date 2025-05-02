@@ -1,5 +1,8 @@
 mod closing_app;
 pub use closing_app::*;
 
+mod plugins;
+pub use plugins::*;
+
 mod window_wrapper;
 pub use window_wrapper::*;
