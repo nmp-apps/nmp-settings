@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 use crate::components::Setting;
 use crate::get_asset;
-use crate::stores::{AppStore, StoredSetting};
+use crate::stores::{ConfigStore, StoredSetting};
 
 #[derive(PartialEq, Clone, Props)]
 pub struct SettingsListProps {
@@ -11,7 +11,7 @@ pub struct SettingsListProps {
 
 #[component]
 pub fn SettingsList(props: SettingsListProps) -> Element {
-    let app_store = use_context::<Signal<AppStore>>();
+    let config_store = use_context::<Signal<ConfigStore>>();
     let styles: String = use_hook(|| get_asset!("/assets/styles/settings/settings_list.css"));
 
     rsx! {
@@ -21,7 +21,7 @@ pub fn SettingsList(props: SettingsListProps) -> Element {
             for setting in props.settings {
                 li {
                     class: "settings-list__item",
-                    class: if is_setting_hidden(&setting, app_store.read().is_advanced_settings()) { "hidden" },
+                    class: if is_setting_hidden(&setting, config_store.read().is_advanced_settings()) { "hidden" },
                     Setting { setting: setting.clone() }
                 }
             }

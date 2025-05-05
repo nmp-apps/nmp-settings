@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::get_asset;
-use crate::stores::{use_app_store, use_plugins_store, use_settings_store};
+use crate::stores::{use_config_store, use_plugins_store, use_settings_store};
 use crate::router::Route;
 
 #[component]
@@ -11,7 +11,7 @@ pub fn App() -> Element {
   let theme_css: String = use_hook(|| get_asset!("/assets/styles/theme.css"));
   let main_css: String = use_hook(|| get_asset!("/assets/styles/main.css"));
 
-  use_app_store();
+  use_config_store();
   use_plugins_store();
   use_settings_store();
 
