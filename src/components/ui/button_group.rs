@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::{components::Button, get_asset};
+use crate::components::Button;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonGroupProps {
@@ -24,12 +24,8 @@ impl ButtonGroupItem {
 
 #[component]
 pub fn ButtonGroup(props: ButtonGroupProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/button_group.css"));
-
     rsx! {
         div { class: "ui-button-group",
-            document::Stylesheet { href: "{styles}" }
-
             for item in props.items.read().clone() {
                 Button {
                     primary: props.value == item.value,

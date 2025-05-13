@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 use dioxus::desktop::{use_window, DesktopContext};
 
-use crate::get_asset;
 use crate::components::{
     AdvancedSettingsSwitch,
     CloseButton,
@@ -19,7 +18,6 @@ pub struct TopBarProps {
 
 #[component]
 pub fn TopBar(props: TopBarProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/app/top_bar.css"));
     let window: DesktopContext = use_window();
     let top_bar_classes = match &props.class {
         Some(classes) => format!("top-bar {classes}"),
@@ -41,8 +39,6 @@ pub fn TopBar(props: TopBarProps) -> Element {
     };
 
     rsx! {
-        document::Link { rel: "stylesheet", href: "{styles}" }
-
         div { class: top_bar_classes,
             div { class: "top-bar__left" }
             div { class: "top-bar__center",

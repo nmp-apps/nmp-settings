@@ -1,6 +1,5 @@
 use dioxus::prelude::*;
 
-use crate::get_asset;
 use crate::stores::AppStore;
 use crate::models::{
     Icon,
@@ -10,15 +9,10 @@ use crate::components::IconButton;
 
 #[component]
 pub fn Notifications() -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/app/notifications.css"));
-    let notification_styles: String = use_hook(|| get_asset!("/assets/styles/app/notification.css"));
-
     let mut app_store = use_context::<Signal<AppStore>>();
 
     rsx! {
         ul { class: "app-notifications",
-            document::Stylesheet { href: styles, rel: "preload" }
-            document::Stylesheet { href: notification_styles, rel: "preload" }
 
             for notification in app_store.read().notifications().clone() {
                 li {
@@ -44,7 +38,6 @@ fn Notification(props: NotificationProps) -> Element {
     rsx! {
         div { class: "notification",
             div { class: "notification__first-line",
-
                 h1 { class: "notification__title", {format!("{}", props.data.title())} }
                 if !props.data.permanent() {
                     IconButton {

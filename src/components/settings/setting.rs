@@ -1,4 +1,4 @@
-use dioxus::{document, prelude::*};
+use dioxus::prelude::*;
 
 use crate::components::{
     ButtonGroupSetting,
@@ -9,7 +9,6 @@ use crate::components::{
     SwitchSetting,
     TextSetting
 };
-use crate::get_asset;
 use crate::models::SettingComponent;
 use crate::stores::{PluginsStore, StoredSetting};
 
@@ -22,7 +21,6 @@ pub struct SettingProps {
 #[component]
 pub fn Setting(props: SettingProps) -> Element {
     let plugins_store = use_context::<PluginsStore>();
-    let styles: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
     let is_disabled = use_memo(move || {
         let disabled_plugins = plugins_store.get_disabled_plugins().read().clone();
         let found_plugin = disabled_plugins.iter().find(|disabled_plugin| {
@@ -108,8 +106,6 @@ pub fn Setting(props: SettingProps) -> Element {
 
     rsx! {
         div { class: "setting", class: if is_disabled() { "disabled" },
-            document::Stylesheet { href: "{styles}" }
-
             div { class: "setting__content",
                 h6 { {format!("{}", props.setting.read().setting().title())} }
                 if props.setting.read().setting().description().len() > 0 {

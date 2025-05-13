@@ -1,7 +1,6 @@
 use dioxus::prelude::*;
 
 use crate::components::Setting;
-use crate::get_asset;
 use crate::stores::{ConfigStore, StoredSetting};
 
 #[derive(PartialEq, Clone, Props)]
@@ -12,12 +11,9 @@ pub struct SettingsListProps {
 #[component]
 pub fn SettingsList(props: SettingsListProps) -> Element {
     let config_store = use_context::<Signal<ConfigStore>>();
-    let styles: String = use_hook(|| get_asset!("/assets/styles/settings/settings_list.css"));
 
     rsx! {
         ul { class: "settings-list",
-            document::Stylesheet { href: "{styles}" }
-
             for setting in props.settings {
                 li {
                     class: "settings-list__item",

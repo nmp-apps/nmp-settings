@@ -12,3 +12,6 @@ pub use settings::*;
 
 mod ui;
 pub use ui::*;
+
+mod styles_loader;
+pub use  styles_loader::*;

@@ -1,8 +1,6 @@
 use std::ops::Deref;
 
-use dioxus::{document, prelude::*};
-
-use crate::get_asset;
+use dioxus::prelude::*;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct NumberProps {
@@ -17,8 +15,6 @@ pub struct NumberProps {
 
 #[component]
 pub fn Number(props: NumberProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/number.css"));
-
     let input_handler = move |evt: Event<FormData>| {
         let min_ref = props.min.read();
         let min = min_ref.deref().clone();
@@ -76,7 +72,6 @@ pub fn Number(props: NumberProps) -> Element {
         div {
             class: "ui-number",
             class: if props.disabled.read().clone() { "disabled" },
-            document::Stylesheet { href: "{styles}" }
 
             button {
                 class: "ui-number__step-button left",

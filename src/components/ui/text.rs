@@ -1,7 +1,5 @@
 use dioxus::prelude::*;
 
-use crate::get_asset;
-
 #[derive(PartialEq, Props, Clone)]
 pub struct TextProps {
     value: ReadOnlySignal<String>,
@@ -14,8 +12,6 @@ pub struct TextProps {
 
 #[component]
 pub fn Text(props: TextProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/text.css"));
-
     let input_handler = move |evt: Event<FormData>| {
         let min = props.min_length.read();
         let min = min.clone();
@@ -41,7 +37,6 @@ pub fn Text(props: TextProps) -> Element {
         div {
             class: "ui-text",
             class: if props.disabled.read().clone() { "disabled" },
-            document::Link { rel: "stylesheet", href: "{styles}" }
             input {
                 class: "ui-text__input",
                 r#type: "text",

@@ -3,9 +3,7 @@ use std::cmp::PartialEq;
 
 use dioxus::prelude::*;
 
-use crate::get_asset;
 use crate::models::Icon;
-
 
 #[derive(PartialEq, Clone)]
 pub struct ListItem<T> {
@@ -33,11 +31,8 @@ pub struct ListProps<T: 'static + PartialEq + Clone> {
 
 #[component]
 pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/list.css"));
     rsx! {
         ul { class: "ui-list",
-            document::Link { rel: "stylesheet", href: "{styles}" }
-
             for item in props.items {
                 ListItem {
                     item,

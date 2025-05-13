@@ -2,8 +2,6 @@ use std::ops::Deref;
 
 use dioxus::prelude::*;
 
-use crate::get_asset;
-
 #[derive(PartialEq, Props, Clone)]
 pub struct SliderProps {
     value: ReadOnlySignal<f64>,
@@ -17,8 +15,6 @@ pub struct SliderProps {
 
 #[component]
 pub fn Slider(props: SliderProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/slider.css"));
-
     let filled_part_rem = use_memo(move || {
         let value_ref = props.value.read();
         let value = value_ref.deref();
@@ -51,7 +47,6 @@ pub fn Slider(props: SliderProps) -> Element {
 
     rsx! {
         div { class: "ui-slider", class: if *props.disabled.read() { "disabled" },
-            document::Stylesheet { href: "{styles}" }
             input {
                 class: "ui-slider__input",
                 min: "{props.min}",
