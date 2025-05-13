@@ -7,6 +7,9 @@ pub use disabled_plugin::*;
 mod icon;
 pub use icon::*;
 
+mod notification;
+pub use notification::*;
+
 mod plugin;
 pub use plugin::*;
 

@@ -1,0 +1,28 @@
+.notification {
+    width: 26rem;
+    padding: 0.5rem 1rem;
+    background-color: red;
+    border-radius: 8px;
+    background-color: var(--notification-bg-color);
+}
+
+.notification__first-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.notification__title {
+    flex: 1;
+    font-size: 16px;
+    font-weight: 400;
+    text-wrap: pretty;
+    color: var(--notification-title-color);
+}
+
+.notification__description {
+    font-size: 14px;
+    font-weight: 350;
+    text-wrap: pretty;
+    color: var(--notification-description-color);
+}

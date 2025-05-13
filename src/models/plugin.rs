@@ -1,8 +1,10 @@
 use std::process::Command;
 use serde::{Deserialize, Serialize};
-use dioxus::logger::tracing::{error, warn};
+use dioxus::prelude::*;
+use dioxus::{logger::tracing::{error, warn}, signals::Signal};
 
-use crate::utils::{plugin_check_version, truncate_plugin_name};
+use crate::models::Notification;
+use crate::{stores::AppStore, utils::{plugin_check_version, truncate_plugin_name}};
 
 use super::{DisabledPlugin, Setting};
 
@@ -16,20 +18,20 @@ pub struct Plugin {
 }
 
 impl Plugin {
-    // pub fn new(plugin_version: String, nmp_settings_version: String, plugin_name: String, settings: Vec<Settings>,) -> Plugin {
-    //     Plugin {
-    //         plugin_version,
-    //         nmp_settings_version,
-    //         plugin_name,
-    //         settings,
-    //     }
-    // }
     pub fn from_command(command_name: &str) -> Result<Plugin, DisabledPlugin> {
-        
+        let mut app_store = use_context::<Signal<AppStore>>();
         let is_check_version_valid = plugin_check_version(command_name);
         
         if !is_check_version_valid {
             warn!("Plugin version check by command {} is not valid.", command_name);
+            app_store.write().push_notification(
+                &Notification::new(
+                    String::from("Plugin version check failed."),
+                    Some(format!("Plugin {} failed version check.", command_name)),
+                    None,
+                    Some(5000),
+                ),
+            );
             return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
         }
 
@@ -39,6 +41,14 @@ impl Plugin {
             Ok(v) => v.stdout,
             Err(e) => {
                 error!("Can't get plugin {} output data: {}", command_name, e);
+                app_store.write().push_notification(
+                    &Notification::new(
+                        String::from("Loading plugin data error"),
+                        Some(format!("Plugin {} has incorrect data.", command_name)),
+                        None,
+                        Some(5000),
+                    ),
+                );
                 return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             }
         };
@@ -46,6 +56,14 @@ impl Plugin {
             Ok(v) => v,
             Err(e) => {
                 error!("Can't read plugin {} output data {}", command_name, e);
+                app_store.write().push_notification(
+                    &Notification::new(
+                        String::from("Loading plugin data error"),
+                        Some(format!("Plugin {} has incorrect data.", command_name)),
+                        None,
+                        Some(5000),
+                    ),
+                );
                 return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             },
         };
@@ -53,23 +71,40 @@ impl Plugin {
             Ok(v) => v,
             Err(e) => {
                 error!("Parsing plugin {} data error: {}", command_name, e);
+                app_store.write().push_notification(
+                    &Notification::new(
+                        String::from("Loading plugin data error"),
+                        Some(format!("Plugin {} has incorrect data.", command_name)),
+                        None,
+                        Some(5000),
+                    ),
+                );
                 return Err(DisabledPlugin::new(truncate_plugin_name(command_name), None, None));
             },
         };
         Ok(plugin)
     }
     pub fn from_str(plugin_name: &str, json: &str) -> Result<Plugin, DisabledPlugin> {
+        let mut app_store = use_context::<Signal<AppStore>>();
         let plugin: Plugin = match serde_json::from_str(json) {
             Ok(v) => v,
             Err(e) => {
                 error!("Parsing plugin data error, {}", e);
+                app_store.write().push_notification(
+                    &Notification::new(
+                        String::from("Loading plugin data error"),
+                        Some(format!("Plugin {} has incorrect data.", plugin_name)),
+                        None,
+                        Some(5000),
+                    ),
+                );
                 return Err(DisabledPlugin::new(truncate_plugin_name(plugin_name), None, None));
             },
         };
         Ok(plugin)
     }
     /// Checks `nmpSettingsVersion` field of plugin data.
-    fn check_version(&self) -> bool {
+    fn check_settings_version(&self) -> bool {
         todo!("Check version is not implemented yet");
     }
     pub fn get_name(&self) -> String {

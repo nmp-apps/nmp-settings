@@ -2,7 +2,13 @@ use dioxus::prelude::*;
 use dioxus::desktop::{use_window, DesktopContext};
 
 use crate::get_asset;
-use crate::components::{AdvancedSettingsSwitch, CloseButton, IconButton, PluginsButton, SaveSettingsButton};
+use crate::components::{
+    AdvancedSettingsSwitch,
+    CloseButton,
+    IconButton,
+    PluginsButton,
+    SaveSettingsButton
+};
 use crate::models::Icon;
 
 #[derive(PartialEq, Props, Clone)]

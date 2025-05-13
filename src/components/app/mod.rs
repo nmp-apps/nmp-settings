@@ -13,6 +13,9 @@ pub use category_navigation::CategoryNavigation;
 mod close_button;
 pub use close_button::*;
 
+mod notifications;
+pub use notifications::*;
+
 mod plugin_category_navigation;
 pub use plugin_category_navigation::PluginCategoryNavigation;
 
