@@ -1,3 +1,6 @@
+mod app;
+pub use app::*;
+
 mod config;
 pub use config::*;
 

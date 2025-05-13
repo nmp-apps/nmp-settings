@@ -3,9 +3,14 @@
     --text-color: rgba(255, 255, 255, 0.95);
     --text-secondary-color: rgba(255, 255, 255, 0.65);
     --focus-outline-color: rgba(255, 255, 255, 0.5);
-
+    
     --layout-border-color: rgb(255, 255, 255, 0.5);
     --divider-color: rgba(255, 255, 255, 0.15);
+    
+    /* Notification */
+    --notification-bg-color: rgba(255, 255, 255, 0.05);
+    --notification-title-color: rgba(255, 255, 255, 0.85);
+    --notification-description-color: rgba(255, 255, 255, 0.65);
 
     /* Setting */
     --setting-title-color: var(--text-color);
