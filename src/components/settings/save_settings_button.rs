@@ -1,15 +1,17 @@
 use std::collections::HashMap;
+use std::time::Duration;
 
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 
-use crate::models::{DisabledPlugin, Plugin, Setting};
-use crate::stores::{PluginsStore, SettingsStore};
+use crate::models::{DisabledPlugin, Notification, Plugin, Setting};
+use crate::stores::{AppStore, PluginsStore, SettingsStore};
 use crate::components::Button;
 use crate::utils::{parse_plugins, parse_settings_from_plugins, send_data_to_plugins};
 
 #[component]
 pub fn SaveSettingsButton() -> Element {
+    let mut app_store = use_context::<Signal<AppStore>>();
     let mut settings_store = use_context::<SettingsStore>();
     let mut plugins_store = use_context::<PluginsStore>();
 
@@ -19,6 +21,14 @@ pub fn SaveSettingsButton() -> Element {
     });
 
     let handler = move |_| {
+        let notification = Notification::new(
+            String::from("Saving changes..."),
+            Some(String::from("It may take a while. Please don't close window.")),
+            Some(true),
+            None
+        );
+        app_store.write().push_notification(&notification);
+
         let mut changed_plugins: HashMap<String, Plugin> = HashMap::new();
         for (setting_id, setting) in settings_store.changed_settings().read().iter() {
             let parsed_id: Vec<&str> = setting_id.split(":").collect();
@@ -134,6 +144,8 @@ pub fn SaveSettingsButton() -> Element {
             let uncategorized_settings_mut = settings_store_mut.uncategorized_settings_mut();
             uncategorized_settings_mut.set(parsed_uncategorized);
         }
+
+        app_store.write().remove_notification(&notification);
     };
 
      rsx! {
