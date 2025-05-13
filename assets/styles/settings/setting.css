@@ -15,6 +15,9 @@
     font-size: 20px;
     font-weight: 400;
     color: var(--setting-title-color);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
 .setting.disabled .setting__content h6 {

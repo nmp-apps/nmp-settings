@@ -31,6 +31,9 @@ pub use display::*;
 mod extension;
 pub use extension::*;
 
+mod info;
+pub use info::*;
+
 mod keyboard_arrow_up;
 pub use keyboard_arrow_up:: *;
 

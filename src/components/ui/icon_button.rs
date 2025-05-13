@@ -4,6 +4,7 @@ use crate::models::Icon;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct IconButtonProps {
+    class: ReadOnlySignal<Option<String>>,
     icon: Icon,
     title: Option<String>,
     #[props(into, default = "24px")]
@@ -15,10 +16,19 @@ pub struct IconButtonProps {
 
 #[component]
 pub fn IconButton(props: IconButtonProps) -> Element {
+    let classes = use_memo(move || {
+        let mut res = vec![String::from("ui-icon-button")];
+        if props.disabled {
+            res.push(String::from("diasbled"));
+        }
+        if let Some(classes) = props.class.read().clone() {
+            res.push(classes);
+        }
+        res.join(" ")
+    });
     rsx! {
         button {
-            class: "ui-icon-button",
-            class: if props.disabled { "disabled" },
+            class: classes(),
             disabled: props.disabled,
             title: props.title.unwrap_or(String::new()),
 
