@@ -2,7 +2,7 @@ use std::ops::Deref;
 
 use dioxus::{logger::tracing::error, prelude::*};
 
-use crate::{components::{CheckIcon, KeyboardArrowUpIcon}, get_asset};
+use crate::components::{CheckIcon, KeyboardArrowUpIcon};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SelectProps<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Debug> {
@@ -37,7 +37,6 @@ pub fn Select<T>(props: SelectProps<T>) -> Element
 where
     T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Display + std::fmt::Debug
 {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/select.css"));
     let is_multiple = use_memo(move || {
         match *props.multiple.read() {
             Some(value) => value,
@@ -177,7 +176,6 @@ where
             class: "ui-select",
             class: if is_opened() { "opened" } else { "" },
             class: if props.disabled.read().clone() { "disabled" },
-            document::Stylesheet { href: "{styles}" }
 
             button {
                 class: "ui-select__button",

@@ -1,7 +1,5 @@
 use dioxus::prelude::*;
 
-use crate::get_asset;
-
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonProps {
     children: Option<Element>,
@@ -15,8 +13,6 @@ pub struct ButtonProps {
 
 #[component]
 pub fn Button(props: ButtonProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
-
     let classes = use_memo(move || {
         let mut result = vec!["ui-button"];
         match *props.disabled.read() {
@@ -50,8 +46,6 @@ pub fn Button(props: ButtonProps) -> Element {
                     handler.call(event)
                 }
             },
-
-            document::Link { rel: "stylesheet", href: "{styles}" }
 
             if let Some(children) = props.children {
                 {children}
