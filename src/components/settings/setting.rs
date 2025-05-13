@@ -1,15 +1,9 @@
 use dioxus::prelude::*;
 
 use crate::components::{
-    ButtonGroupSetting,
-    NumberSetting,
-    SelectSetting,
-    SelectSettingData,
-    SliderSetting,
-    SwitchSetting,
-    TextSetting
+    ButtonGroupSetting, IconButton, NumberSetting, SelectSetting, SelectSettingData, SliderSetting, SwitchSetting, TextSetting
 };
-use crate::models::SettingComponent;
+use crate::models::{Icon, SettingComponent};
 use crate::stores::{PluginsStore, StoredSetting};
 
 #[derive(PartialEq, Props, Clone)]
@@ -107,7 +101,16 @@ pub fn Setting(props: SettingProps) -> Element {
     rsx! {
         div { class: "setting", class: if is_disabled() { "disabled" },
             div { class: "setting__content",
-                h6 { {format!("{}", props.setting.read().setting().title())} }
+                h6 {
+                    {format!("{}", props.setting.read().setting().title())}
+                    IconButton {
+                        class: "setting__plugin-icon",
+                        icon: Icon::Info,
+                        title: props.setting.read().owner().clone(),
+                        disabled: true,
+                        size: 18,
+                    }
+                }
                 if props.setting.read().setting().description().len() > 0 {
                     p { {format!("{}", props.setting.read().setting().description())} }
                 }
