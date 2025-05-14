@@ -9,6 +9,16 @@ pub fn StylesLoader() -> Element {
     let reset_css: String = use_hook(|| get_asset!("/assets/styles/reset.css"));
     let theme_css: String = use_hook(|| get_asset!("/assets/styles/theme.css"));
     let main_css: String = use_hook(|| get_asset!("/assets/styles/main.css"));
+    // ui
+    let button_group: String = use_hook(|| get_asset!("/assets/styles/ui/button_group.css"));
+    let button: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
+    let icon_button: String = use_hook(|| get_asset!("/assets/styles/ui/icon_button.css"));
+    let list: String = use_hook(|| get_asset!("/assets/styles/ui/list.css"));
+    let number: String = use_hook(|| get_asset!("/assets/styles/ui/number.css"));
+    let select: String = use_hook(|| get_asset!("/assets/styles/ui/select.css"));
+    let slider: String = use_hook(|| get_asset!("/assets/styles/ui/slider.css"));
+    let switch: String = use_hook(|| get_asset!("/assets/styles/ui/switch.css"));
+    let text: String = use_hook(|| get_asset!("/assets/styles/ui/text.css"));
     // views
     let categorized_settings: String = use_hook(|| get_asset!("/assets/styles/views/categorized_settings.css"));
     let home: String = use_hook(|| get_asset!("/assets/styles/views/home.css"));
@@ -22,22 +32,23 @@ pub fn StylesLoader() -> Element {
     // settings
     let setting: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
     let settings_list: String = use_hook(|| get_asset!("/assets/styles/settings/settings_list.css"));
-    // ui
-    let button_group: String = use_hook(|| get_asset!("/assets/styles/ui/button_group.css"));
-    let button: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
-    let icon_button: String = use_hook(|| get_asset!("/assets/styles/ui/icon_button.css"));
-    let list: String = use_hook(|| get_asset!("/assets/styles/ui/list.css"));
-    let number: String = use_hook(|| get_asset!("/assets/styles/ui/number.css"));
-    let select: String = use_hook(|| get_asset!("/assets/styles/ui/select.css"));
-    let slider: String = use_hook(|| get_asset!("/assets/styles/ui/slider.css"));
-    let switch: String = use_hook(|| get_asset!("/assets/styles/ui/switch.css"));
-    let text: String = use_hook(|| get_asset!("/assets/styles/ui/text.css"));
 
     rsx! {
+        // Styles connected in strict order because of css hierarchy (main first, then ui and etc.)
         // common
         document::Stylesheet { href: "{reset_css}" }
         document::Stylesheet { href: "{theme_css}" }
         document::Stylesheet { href: "{main_css}" }
+        // ui
+        document::Stylesheet { href: "{button_group}" }
+        document::Stylesheet { href: "{button}" }
+        document::Stylesheet { href: "{icon_button}" }
+        document::Stylesheet { href: "{list}" }
+        document::Stylesheet { href: "{number}" }
+        document::Stylesheet { href: "{select}" }
+        document::Stylesheet { href: "{slider}" }
+        document::Stylesheet { href: "{switch}" }
+        document::Stylesheet { href: "{text}" }
         // views
         document::Stylesheet { href: "{categorized_settings}" } // uncategorized are the same
         document::Stylesheet { href: "{home}" }
@@ -51,15 +62,5 @@ pub fn StylesLoader() -> Element {
         // settings
         document::Stylesheet { href: "{setting}" }
         document::Stylesheet { href: "{settings_list}" }
-        // ui
-        document::Stylesheet { href: "{button_group}" }
-        document::Stylesheet { href: "{button}" }
-        document::Stylesheet { href: "{icon_button}" }
-        document::Stylesheet { href: "{list}" }
-        document::Stylesheet { href: "{number}" }
-        document::Stylesheet { href: "{select}" }
-        document::Stylesheet { href: "{slider}" }
-        document::Stylesheet { href: "{switch}" }
-        document::Stylesheet { href: "{text}" }
     }
 }
