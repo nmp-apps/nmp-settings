@@ -28,6 +28,11 @@
     margin-bottom: 8px;
 }
 
+.setting__plugin-icon {
+    color: var(--text-secondary-color);
+    opacity: 0.4;
+}
+
 .setting__content p {
     font-size: 14px;
     font-weight: 300;
