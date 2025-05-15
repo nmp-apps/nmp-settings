@@ -8,7 +8,7 @@ pub struct Setting {
     category: Option<SettingsCategory>,
     title: String,
     description: String,
-    confirmation: Option<ConfirmationWindow>, // TODO
+    confirmation: Option<ConfirmationWindow>,
     is_advanced: bool,
     component: SettingComponent,
 }
@@ -22,6 +22,9 @@ impl Setting {
     }
     pub fn description(&self) -> &String {
         &self.description
+    }
+    pub fn confirmation(&self) -> &Option<ConfirmationWindow> {
+        &self.confirmation
     }
     pub fn is_advanced(&self) -> bool {
         self.is_advanced
@@ -48,14 +51,20 @@ pub enum SettingComponent {
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 pub struct ConfirmationWindow {
     title: String,
-    description: String,
+    description: Option<String>,
 }
 
-// impl ConfirmationWindow {
-//     pub fn new(title: String, description: String) -> ConfirmationWindow {
-//         ConfirmationWindow { title, description }
-//     }
-// }
+impl ConfirmationWindow {
+    // pub fn new(title: String, description: String) -> ConfirmationWindow {
+    //     ConfirmationWindow { title, description }
+    // }
+    pub fn title(&self) -> &String {
+        &self.title
+    }
+    pub fn description(&self) -> &Option<String> {
+        &self.description
+    }
+}
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "camelCase")]

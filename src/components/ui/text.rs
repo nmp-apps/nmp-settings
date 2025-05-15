@@ -8,6 +8,7 @@ pub struct TextProps {
     #[props(default = ReadOnlySignal::new(Signal::new(false)))]
     disabled: ReadOnlySignal<bool>,
     oninput: Option<EventHandler<String>>,
+    onmousedown: Option<EventHandler<MouseEvent>>,
 }
 
 #[component]
@@ -44,6 +45,11 @@ pub fn Text(props: TextProps) -> Element {
                 minlength: props.min_length,
                 maxlength: props.max_length,
                 oninput: input_handler,
+                onmousedown: move |evt| {
+                    if let Some(handler) = props.onmousedown {
+                        handler.call(evt)
+                    }
+                },
                 disabled: *props.disabled.read(),
             }
         }

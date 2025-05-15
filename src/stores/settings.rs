@@ -16,7 +16,8 @@ pub struct SettingsStore {
     /// Settings by owner
     uncategorized_settings: Signal<HashMap<String, Vec<StoredSetting>>>,
     // key is StoredSetting id and value is plugin initial Setting
-    changed_settings: Signal<HashMap<String, Setting>>
+    changed_settings: Signal<HashMap<String, Setting>>,
+    approved_confirmation_setting_ids: Signal<Vec<String>>
 }
 
 impl SettingsStore {
@@ -24,7 +25,8 @@ impl SettingsStore {
         SettingsStore {
             categorized_settings: Signal::new(categorized_settings),
             uncategorized_settings: Signal::new(uncategorized_settings),
-            changed_settings: Signal::new(HashMap::new())
+            changed_settings: Signal::new(HashMap::new()),
+            approved_confirmation_setting_ids: Signal::new(vec![])
         }
     }
     pub fn categorized_settings(&self) -> &Signal<HashMap<SettingsCategory, Vec<StoredSetting>>> {
@@ -44,6 +46,14 @@ impl SettingsStore {
     }
     pub fn changed_settings_mut(&mut self) -> &mut Signal<HashMap<String, Setting>> {
         &mut self.changed_settings
+    }
+    pub fn approved_confirmation_setting_ids(&self) -> Signal<Vec<String>> {
+        self.approved_confirmation_setting_ids
+    }
+    pub fn approve_confirmation_setting(&mut self, setting_id: &String) {
+        if !self.approved_confirmation_setting_ids.read().contains(setting_id) {
+            self.approved_confirmation_setting_ids.write().push(setting_id.clone());
+        }
     }
     /// Finds setting in categorized or uncategorized lists and returns it's clone
     pub fn find_setting(&self, setting: &Setting, plugin_name: &String) -> Option<StoredSetting>{

@@ -1,42 +1,36 @@
-use dioxus::desktop::tao::window::{Theme, WindowId, WindowSizeConstraints};
-use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
-use dioxus::desktop::{use_window, Config, DesktopContext, LogicalPosition, LogicalSize, WindowBuilder};
-use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
+use dioxus::desktop::tao::window::{Theme, WindowSizeConstraints};
+use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
+use dioxus::desktop::{use_window, Config, LogicalPosition, LogicalSize, WindowBuilder};
+use dioxus::logger::tracing::error;
 
-use crate::components::{ClosingApp, IconButton, WindowWrapper};
+use crate::components::{Confirm, WindowWrapper};
 use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
-use crate::models::Icon;
-use crate::stores::SettingsStore;
+use crate::models::{ConfirmationWindow};
 
-#[component]
-pub fn CloseButton() -> Element {
-    let window: DesktopContext = use_window();
-    let settings_store = use_context::<SettingsStore>();
-
-    let handler = {
-        let window = window.clone();
-        move || {
-            if settings_store.changed_settings().read().len() <= 0 {
-                window.close();
-                return;
-            }
-            
-            // open closing dialog for unsaved changes
+// Shows confirmation window with buttons "Yes" and "No"
+pub fn use_confirmation_window(confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
+    let confirmation_window = confirmation_window.clone();
+    let show_window = move || -> bool {
+        if let Some(confirmation_window) = confirmation_window.clone() {
+            let window = use_window();
             let monitor_size = match window.current_monitor() {
                 Some(cm) => cm.size(),
                 None => {
                     error!("Failed get monitor size");
-                    return;
+                    return false;
                 }
             };
-            // let child_window = child_window.upgrade().unwrap();
             let window_position = LogicalPosition::new(
                 (monitor_size.width - 650) / 2,
                 (monitor_size.height - 250) / 2,
             );
             window.new_window(
-                VirtualDom::new_with_props(UnsavedSettingsDialog, UnsavedSettingsDialogProps { parent_window_id: window.id() }),
+                VirtualDom::new_with_props(ConfirmationDialog, ConfirmationDialogProps {
+                    title: confirmation_window.title().clone(),
+                    description: confirmation_window.description().clone(),
+                    onconfirm: callback
+                }),
                 Config::new()
                     .with_as_child_window()
                     .with_disable_context_menu(IS_WINDOW_CONTEXT_MENU_DISABLED)
@@ -65,24 +59,30 @@ pub fn CloseButton() -> Element {
                             .with_theme(Some(Theme::Dark))
                     )
             );
+            false
+        } else {
+            return true;
         }
     };
-
-    rsx! {
-        IconButton { onclick: move |_| handler(), size: "16px", icon: Icon::Close }
-    }
+    show_window
 }
 
 #[derive(PartialEq, Props, Clone)]
-struct UnsavedSettingsDialogProps {
-    parent_window_id: WindowId
+struct ConfirmationDialogProps {
+    title: String,
+    description: Option<String>,
+    onconfirm: EventHandler<bool>
 }
 
 #[component]
-fn UnsavedSettingsDialog(props: UnsavedSettingsDialogProps) -> Element {
+fn ConfirmationDialog(props: ConfirmationDialogProps) -> Element {
     rsx! {
         WindowWrapper {
-            ClosingApp { parent_window_id: props.parent_window_id }
+            Confirm {
+                title: props.title,
+                description: props.description,
+                onconfirm: move |answer| props.onconfirm.call(answer),
+            }
         }
     }
 }

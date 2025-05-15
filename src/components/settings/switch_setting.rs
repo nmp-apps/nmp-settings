@@ -4,8 +4,10 @@ use dioxus::logger::tracing::trace;
 use dioxus::prelude::*;
 
 use crate::components::Switch as UiSwitch;
+use crate::hooks::use_confirmation_window;
 use crate::models::{Switch, SettingComponent};
 use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
+use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct SwitchSettingProps {
@@ -16,10 +18,20 @@ pub struct SwitchSettingProps {
 
 #[component]
 pub fn SwitchSetting(props: SwitchSettingProps) -> Element {
-    let mut settings_store = use_context::<SettingsStore>();
+    let settings_store = use_context::<SettingsStore>();
     let plugins_store = use_context::<PluginsStore>();
 
-    let mut handler = move |new_value: bool| {
+    let check_confirmation = {
+        let store = settings_store.clone();
+        use_confirmation_window(
+            props.setting.read().setting().confirmation(),
+            Callback::new(move |answer: bool| confirmation_window_handler(answer, props.setting.read().clone(), store.to_owned()))
+        )
+    };
+
+    let mut handler = {
+        let mut settings_store = settings_store.clone();
+        move |new_value: bool| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
         settings_store.mutate_setting_value(
@@ -46,13 +58,24 @@ pub fn SwitchSetting(props: SwitchSettingProps) -> Element {
                 }
             }
         );
+    }
     };
 
     rsx! {
         UiSwitch {
-            onchange: move |evt: Event<FormData>| {
-                let value: bool = evt.data.value().parse().unwrap_or(false);
-                handler(value);
+            onchange: {
+                let confirmed_setting_ids = settings_store
+                    .approved_confirmation_setting_ids()
+                    .read()
+                    .clone();
+                move |new_value: bool| {
+                    if !confirmed_setting_ids.contains(&props.setting.read().id().clone())
+                        && !check_confirmation()
+                    {
+                        return;
+                    }
+                    handler(new_value);
+                }
             },
             value: props.data.read().value(),
             disabled: match *props.disabled.read() {
