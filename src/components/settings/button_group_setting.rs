@@ -4,8 +4,10 @@ use dioxus::logger::tracing::trace;
 use dioxus::prelude::*;
 
 use crate::components::{ButtonGroup, ButtonGroupItem};
+use crate::hooks::use_confirmation_window;
 use crate::models::{ButtonGroup as ButtonGroupModel, SettingComponent};
 use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
+use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct ButtonGroupSettingProps {
@@ -16,7 +18,7 @@ pub struct ButtonGroupSettingProps {
 
 #[component]
 pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
-    let mut settings_store = use_context::<SettingsStore>();
+    let settings_store = use_context::<SettingsStore>();
     let plugins_store = use_context::<PluginsStore>();
 
     let converted_items: Memo<Vec<ButtonGroupItem>> = use_memo(move || {
@@ -31,7 +33,17 @@ pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
             .collect()
     });
 
-    let mut handler = move |new_value: String| {
+    let check_confirmation = {
+        let store = settings_store.clone();
+        use_confirmation_window(
+            props.setting.read().setting().confirmation(),
+            Callback::new(move |answer: bool| confirmation_window_handler(answer, props.setting.read().clone(), store.to_owned()))
+        )
+    };
+
+    let mut handler = {
+        let mut settings_store = settings_store.clone();
+        move |new_value: String| {
         let setting_ref = props.setting.read();
         let setting = setting_ref.deref();
         settings_store.mutate_setting_value(
@@ -58,11 +70,25 @@ pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
                 }
             }
         );
+    }
     };
 
     rsx! {
         ButtonGroup {
-            onchange: move |new_value| handler(new_value),
+            onchange: {
+                let confirmed_setting_ids = settings_store
+                    .approved_confirmation_setting_ids()
+                    .read()
+                    .clone();
+                move |new_value| {
+                    if !confirmed_setting_ids.contains(&props.setting.read().id().clone())
+                        && !check_confirmation()
+                    {
+                        return;
+                    }
+                    handler(new_value);
+                }
+            },
             items: converted_items(),
             value: props.data.read().value(),
             disabled: props.disabled,

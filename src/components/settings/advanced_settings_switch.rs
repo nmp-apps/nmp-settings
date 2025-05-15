@@ -6,10 +6,10 @@ use crate::{components::Switch, stores::ConfigStore};
 pub fn AdvancedSettingsSwitch() -> Element {
     let mut config_store = use_context::<Signal<ConfigStore>>();
 
-    let handler = move |event: Event<FormData>| {
+    let handler = move |new_value: bool| {
         let store_mut = &mut config_store.write();
         let flag = store_mut.is_advanced_settings_mut();
-        *flag = event.checked();
+        *flag = new_value;
     };
     rsx! {
         Switch {

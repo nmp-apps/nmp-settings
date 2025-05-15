@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 
 use crate::models::{Plugin, SettingsCategory};
-use crate::stores::StoredSetting;
+use crate::stores::{SettingsStore, StoredSetting};
 
 /// Parses loaded plugins data and sorts settings into categories -> (categorized, uncategorized)
 pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCategory, Vec<StoredSetting>>, HashMap<String, Vec<StoredSetting>>) {
@@ -76,4 +76,10 @@ pub fn parse_settings_from_plugins(plugins: Vec<Plugin>) -> (HashMap<SettingsCat
     });
 
     (categorized, uncategorized)
+}
+
+pub fn confirmation_window_handler(answer: bool, settings: StoredSetting, mut settings_store: SettingsStore) {
+    if answer {
+        settings_store.approve_confirmation_setting(settings.id());
+    }
 }

@@ -114,7 +114,6 @@ pub fn parse_plugins(plugins_data: HashMap<String, String>) -> (Vec<Plugin>, Vec
     (plugins, disabled_plugins)
 }
 
-// TODO: add disabling plugins on error
 /// Send data to plugins, return updated plugin JSON data
 #[cfg(debug_assertions)]
 pub fn send_data_to_plugins(changed_plugins: &HashMap<String, Plugin>) -> (HashMap<String, String>, Vec<DisabledPlugin>) {

@@ -17,6 +17,7 @@ mod utils;
 mod stores;
 mod router;
 mod components;
+mod hooks;
 mod models;
 mod views;
 mod app;

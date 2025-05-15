@@ -23,6 +23,7 @@ pub fn StylesLoader() -> Element {
     let categorized_settings: String = use_hook(|| get_asset!("/assets/styles/views/categorized_settings.css"));
     let home: String = use_hook(|| get_asset!("/assets/styles/views/home.css"));
     // app
+    let dialog_window_wrapper = use_hook(|| get_asset!("/assets/styles/app/dialogs/window_wrapper.css"));
     let left_bar: String = use_hook(|| get_asset!("/assets/styles/app/left_bar.css"));
     let notifications: String = use_hook(|| get_asset!("/assets/styles/app/notifications.css"));
     let notification: String = use_hook(|| get_asset!("/assets/styles/app/notification.css"));
@@ -53,6 +54,7 @@ pub fn StylesLoader() -> Element {
         document::Stylesheet { href: "{categorized_settings}" } // uncategorized are the same
         document::Stylesheet { href: "{home}" }
         // app
+        document::Stylesheet { href: "{dialog_window_wrapper}" }
         document::Stylesheet { href: "{left_bar}" }
         document::Stylesheet { href: "{notifications}" }
         document::Stylesheet { href: "{notification}" }

@@ -1,6 +1,9 @@
 mod closing_app;
 pub use closing_app::*;
 
+mod confirm;
+pub use confirm::*;
+
 mod plugins;
 pub use plugins::*;
 

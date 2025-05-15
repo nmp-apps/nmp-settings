@@ -10,7 +10,8 @@ pub struct NumberProps {
     step: ReadOnlySignal<f64>,
     #[props(default = ReadOnlySignal::new(Signal::new(false)))]
     disabled: ReadOnlySignal<bool>,
-    oninput: EventHandler<f64>
+    oninput: EventHandler<f64>,
+    onmousedowninput: Option<EventHandler<MouseEvent>>,
 }
 
 #[component]
@@ -87,6 +88,11 @@ pub fn Number(props: NumberProps) -> Element {
                 step: "{props.step}",
                 disabled: *props.disabled.read(),
                 oninput: input_handler,
+                onmousedown: move |evt| {
+                    if let Some(handler) = props.onmousedowninput {
+                        handler.call(evt)
+                    }
+                },
             }
             button {
                 class: "ui-number__step-button right",

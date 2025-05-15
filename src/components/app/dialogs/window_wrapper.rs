@@ -11,7 +11,7 @@ pub struct WindowWrapperProps {
 #[component]
 pub fn WindowWrapper(props: WindowWrapperProps) -> Element {
     rsx! {
-        div {
+        div { class: "dialog-window-wrapper",
             StylesLoader {}
             {props.children}
         }

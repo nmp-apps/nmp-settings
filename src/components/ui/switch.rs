@@ -6,14 +6,15 @@ pub struct SwitchProps {
     title: ReadOnlySignal<Option<String>>,
     #[props(default = ReadOnlySignal::new(Signal::new(false)))]
     disabled: ReadOnlySignal<bool>,
-    onchange: Option<EventHandler<Event<FormData>>>
+    onchange: Option<Callback<bool>>
 }
 
 #[component]
 pub fn Switch(props: SwitchProps) -> Element {
-    let handler = move |event: Event<FormData>| {
+    let handler = move |event: Event<MouseData>| {
+        event.prevent_default();
         if let Some(handler) = props.onchange {
-            handler.call(event);
+            handler.call(!*props.value.read());
         }
     };
     rsx! {
@@ -25,7 +26,7 @@ pub fn Switch(props: SwitchProps) -> Element {
                 r#type: "checkbox",
                 class: "ui-switch-checkbox",
                 checked: props.value,
-                onchange: handler,
+                onclick: handler,
             }
             div { class: "ui-switch-thumb" }
         }
