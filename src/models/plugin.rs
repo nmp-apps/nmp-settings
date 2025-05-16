@@ -1,4 +1,5 @@
 use std::process::Command;
+use semver::{Version, VersionReq};
 use serde::{Deserialize, Serialize};
 use dioxus::prelude::*;
 use dioxus::{logger::tracing::{error, warn}, signals::Signal};
@@ -104,17 +105,35 @@ impl Plugin {
         Ok(plugin)
     }
     /// Checks `nmpSettingsVersion` field of plugin data.
-    fn check_settings_version(&self) -> bool {
-        todo!("Check version is not implemented yet");
+    pub fn check_version_compatibility(&self) -> bool {
+        // TODO: now it only checks if version is not higher than users nmp-settings version.
+        // Add lower border version check.
+        let user_nmp_settings_version = env!("CARGO_PKG_VERSION");
+        let installed_version = match Version::parse(user_nmp_settings_version) {
+            Ok(version) => version,
+            Err(_) => {
+                error!("Check version error: parsing version of nmp-settings is failed.");
+                return false;
+            }
+        };
+        let required_version = match VersionReq::parse(format!(">={}", self.get_nmp_settings_version()).as_str()) {
+            Ok(version) => version,
+            Err(_) => {
+                error!("Check version error: parsing installed version for plugin {} is failed.", self.get_name());
+                return false;
+            }
+        };
+        
+        required_version.matches(&installed_version)
     }
     pub fn get_name(&self) -> String {
         self.plugin_name.replace("nmp-settings-plugin-", "")
     }
-    pub fn get_version(&self) -> &String {
-        &self.plugin_version
+    pub fn get_version(&self) -> String {
+        self.plugin_version.clone()
     }
-    pub fn get_nmp_settings_version(&self) -> &String {
-        &self.nmp_settings_version
+    pub fn get_nmp_settings_version(&self) -> String {
+        self.nmp_settings_version.clone()
     }
     pub fn get_settings(&self) -> &Vec<Setting> {
         &self.settings

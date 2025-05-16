@@ -1,14 +1,19 @@
 use std::{collections::HashMap, process::Command, env};
 
 use dioxus::logger::tracing::{error, info};
+use dioxus::prelude::*;
 
 use crate::models::{Plugin, DisabledPlugin};
+use crate::{models::Notification, stores::AppStore};
 
 #[cfg(not(debug_assertions))]
 use super::find_apps_by_name;
 
 #[cfg(debug_assertions)]
 pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
+
+
+    let mut app_store = use_context::<Signal<AppStore>>();
     let test_plugin_path: String = env::var("TEST_PLUGIN_PATH").unwrap_or(String::new());
     
     info!("Loading plugins...");
@@ -38,7 +43,23 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
 
             match plugin {
                 Ok(plugin) => {
-                    enabled_plugins.push(plugin);
+                    if plugin.check_version_compatibility() {
+                        enabled_plugins.push(plugin);
+                    } else {
+                        app_store.write().push_notification(
+                            &Notification::new(
+                                String::from("Incompatible plugin version"),
+                                Some(format!("Plugin {} has incompatible nmp-settings version.", plugin.get_name())),
+                                None,
+                                Some(5000),
+                            ),
+                        );
+                        disabled_plugins.push(DisabledPlugin::new(
+                            plugin.get_name(),
+                            Some(plugin.get_version()),
+                            Some(plugin.get_nmp_settings_version())
+                        ));
+                    }
                 },
                 Err(disabled_plugin) => {
                     error!("Found {:?}", disabled_plugin);

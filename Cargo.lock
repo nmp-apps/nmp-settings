@@ -2735,6 +2735,7 @@ version = "0.1.0"
 dependencies = [
  "dioxus",
  "directories-next",
+ "semver",
  "serde",
  "serde_json",
  "tokio",

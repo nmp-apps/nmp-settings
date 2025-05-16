@@ -50,11 +50,11 @@ pub fn Plugins(props: PluginsProps) -> Element {
                                         div { class: "plugins-dialog__plugin-data",
                                             p {
                                                 span { "Version: " }
-                                                {plugin.get_version().clone()}
+                                                {plugin.get_version()}
                                             }
                                             p {
                                                 span { "Required settings version: " }
-                                                {plugin.get_nmp_settings_version().clone()}
+                                                {plugin.get_nmp_settings_version()}
                                             }
                                         }
                                     }
