@@ -11,8 +11,6 @@ use super::find_apps_by_name;
 
 #[cfg(debug_assertions)]
 pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
-
-
     let mut app_store = use_context::<Signal<AppStore>>();
     let test_plugin_path: String = env::var("TEST_PLUGIN_PATH").unwrap_or(String::new());
     
@@ -76,8 +74,10 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
 #[cfg(not(debug_assertions))]
 pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
     info!("Loading plugins...");
-        let mut enabled_plugins: Vec<Plugin> = vec![];
-        let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
+    let mut app_store = use_context::<Signal<AppStore>>();
+    let mut enabled_plugins: Vec<Plugin> = vec![];
+    let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
+    
     match plugins {
         Some(plugin_names) => {
             let full_names = plugin_names.iter().map(|name| {
@@ -106,7 +106,23 @@ pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledP
                 let plugin = Plugin::from_command(plugin_path);
                 match plugin {
                     Ok(plugin) => {
-                        enabled_plugins.push(plugin);
+                        if plugin.check_version_compatibility() {
+                            enabled_plugins.push(plugin);
+                        } else {
+                            app_store.write().push_notification(
+                                &Notification::new(
+                                    String::from("Incompatible plugin version"),
+                                    Some(format!("Plugin {} has incompatible nmp-settings version.", plugin.get_name())),
+                                    None,
+                                    Some(5000),
+                                ),
+                            );
+                            disabled_plugins.push(DisabledPlugin::new(
+                                plugin.get_name(),
+                                Some(plugin.get_version()),
+                                Some(plugin.get_nmp_settings_version())
+                            ));
+                        }
                     },
                     Err(disabled_plugin) => {
                         error!("Found {:?}", disabled_plugin);
