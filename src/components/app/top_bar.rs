@@ -37,14 +37,22 @@ pub fn TopBar(props: TopBarProps) -> Element {
             window.set_maximized(true);
         }
     };
+    let move_window = move |_| {
+        window.drag();
+    };
 
     rsx! {
-        div { class: top_bar_classes,
+        div { class: top_bar_classes, onmousedown: move_window,
             div { class: "top-bar__left" }
             div { class: "top-bar__center",
                 h1 { class: "top-bar__title", "Settings" }
             }
-            div { class: "top-bar__right",
+            div {
+                class: "top-bar__right",
+                onmousedown: |evt| {
+                    evt.stop_propagation();
+                },
+
                 PluginsButton {}
                 AdvancedSettingsSwitch {}
                 SaveSettingsButton {}

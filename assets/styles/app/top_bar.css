@@ -1,7 +1,7 @@
 .top-bar {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr minmax(0, 1fr);
     gap: 0.75rem;
     border-bottom: 1px solid var(--layout-border-color);
     padding: 0.5rem;
@@ -22,6 +22,8 @@
 
 .top-bar__right {
     justify-content: flex-end;
+    width: min-content;
+    margin-left: auto;
 }
 
 .top-bar__title {
