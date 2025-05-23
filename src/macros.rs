@@ -3,7 +3,7 @@
 macro_rules! get_asset {
     ($x:expr) => {
         {
-        let prefix = if cfg!(not(debug_assertions)) {
+        let prefix = if cfg!(feature = "appimage_assets") {
             let current_dir_buffer = std::env::current_dir().unwrap();
             let current_dir = current_dir_buffer.to_str().expect("Can't take a current path.");
             &format!("{}/lib/NmpSettings", current_dir)

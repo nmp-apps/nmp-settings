@@ -32,4 +32,4 @@ identifier = "com.nmp"
 publisher = "nmp"
 category = "Utility"
 short_description = "Settings GUI. Extensible by plugins."
-icon = ["assets/settings-logo-32.png", "assets/settings-logo-64.png"]
+icon = ["assets/settings-logo-16.png", "assets/settings-logo-32.png", "assets/settings-logo-64.png", "assets/settings-logo-128.png", "assets/settings-logo-256.png"]
