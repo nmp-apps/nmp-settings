@@ -21,8 +21,6 @@ desktop = ["dioxus/desktop"]
 mobile = ["dioxus/mobile"]
 appimage_assets = [] # adds prefix for appimage assets directory for correct file path
 
-[profile]
-
 [profile.wasm-dev]
 inherits = "dev"
 opt-level = 1
