@@ -7,12 +7,15 @@ use dioxus::prelude::*;
 use crate::components::{IconButton, Plugins, WindowWrapper};
 use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::models::Icon;
-use crate::stores::PluginsStore;
+use crate::stores::{AppStore, AppWindowName, PluginsStore};
+
+const APP_WINDOW_NAME: AppWindowName = AppWindowName::Plugins;
 
 #[component]
 pub fn PluginsButton() -> Element {
     let window: DesktopContext = use_window();
     let plugins_store = use_context::<PluginsStore>();
+    let mut app_store = use_context::<Signal<AppStore>>();
 
     let handler = move |_| {
         let monitor_size = match window.current_monitor() {
@@ -26,8 +29,12 @@ pub fn PluginsButton() -> Element {
             (monitor_size.width - 900) / 2,
             (monitor_size.height - 900) / 2,
         );
-        window.new_window(
-            VirtualDom::new_with_props(PluginsListDialog, PluginsListDialogProps { plugins_store: plugins_store.clone() }),
+        let plugins_window = window.new_window(
+            VirtualDom::new_with_props(PluginsListDialog, PluginsListDialogProps {
+                app_window_name: APP_WINDOW_NAME,
+                app_store: app_store.clone(),
+                plugins_store: plugins_store.clone()
+            }),
             Config::new()
                 .with_as_child_window()
                 .with_disable_context_menu(IS_WINDOW_CONTEXT_MENU_DISABLED)
@@ -56,6 +63,7 @@ pub fn PluginsButton() -> Element {
                         .with_theme(None)
                 )
         );
+        app_store.write().push_opened_window(AppWindowName::Plugins, plugins_window);
     };
     
     rsx! {
@@ -69,6 +77,8 @@ pub fn PluginsButton() -> Element {
 
 #[derive(PartialEq, Props, Clone)]
 struct PluginsListDialogProps {
+    app_window_name: AppWindowName,
+    app_store: Signal<AppStore>,
     plugins_store: PluginsStore
 }
 
@@ -76,7 +86,11 @@ struct PluginsListDialogProps {
 fn PluginsListDialog(props: PluginsListDialogProps) -> Element {
     rsx! {
         WindowWrapper {
-            Plugins { plugins_store: props.plugins_store }
+            Plugins {
+                plugins_store: props.plugins_store,
+                app_store: props.app_store,
+                app_window_name: props.app_window_name,
+            }
         }
     }
 }

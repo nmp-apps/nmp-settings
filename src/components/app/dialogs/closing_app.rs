@@ -4,7 +4,8 @@ use crate::{components::Button, get_asset};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ClosingAppProps {
-    parent_window_id: ReadOnlySignal<WindowId>
+    parent_window_id: ReadOnlySignal<WindowId>,
+    close_windows: Callback
 }
 
 #[component]
@@ -15,7 +16,9 @@ pub fn ClosingApp(props: ClosingAppProps) -> Element {
         window().close();
     };
 
+    let close_windows = props.close_windows.clone();
     let close = move |_| {
+        close_windows(());
         window().close_window(*props.parent_window_id.read());
         window().close();
     };

@@ -24,6 +24,9 @@ mod app;
 use app::App;
 
 fn main() {
+    // Fix: Failed to create GBM buffer of size WidthxHeight: Invalid argument
+    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+
     dioxus::logger::init(Level::ERROR).expect("logger failed to init");
     dioxus::LaunchBuilder::desktop()
     .with_cfg(

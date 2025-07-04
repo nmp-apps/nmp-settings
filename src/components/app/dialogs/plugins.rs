@@ -4,15 +4,17 @@ use dioxus::desktop::window;
 use crate::components::IconButton;
 use crate::get_asset;
 use crate::models::Icon;
-use crate::stores::PluginsStore;
+use crate::stores::{AppStore, AppWindowName, PluginsStore};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct PluginsProps {
-    plugins_store: PluginsStore
+    plugins_store: PluginsStore,
+    app_store: Signal<AppStore>,
+    app_window_name: AppWindowName
 }
 
 #[component]
-pub fn Plugins(props: PluginsProps) -> Element {
+pub fn Plugins(mut props: PluginsProps) -> Element {
     let styles: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/plugins.css"));
     let plugins_store = props.plugins_store.clone();
     let disabled_plugin_names: Memo<Vec<String>> = use_memo(move || {
@@ -20,6 +22,11 @@ pub fn Plugins(props: PluginsProps) -> Element {
             dp.name().clone()
         }).collect()
     });
+
+    let close_handler = move |_| {
+        props.app_store.write().remove_opened_window_by_name(props.app_window_name.clone());
+        window().close();
+    };
 
     rsx! {
         main { class: "plugins-dialog",
@@ -31,9 +38,7 @@ pub fn Plugins(props: PluginsProps) -> Element {
                 }
                 div { class: "plugins-dialog__top-bar-right",
                     IconButton {
-                        onclick: move |_| {
-                            window().close();
-                        },
+                        onclick: close_handler,
                         size: "16px",
                         icon: Icon::Close,
                     }

@@ -1,5 +1,8 @@
+use std::collections::HashMap;
+use std::rc::Weak;
 use std::time::{Duration, SystemTime};
 
+use dioxus::desktop::DesktopService;
 use dioxus::prelude::*;
 use dioxus::logger::tracing::trace;
 use tokio::time::sleep;
@@ -10,12 +13,13 @@ use crate::models::Notification;
 #[derive(Clone, Debug)]
 pub struct AppStore {
     notifications: Vec<Notification>,
-    notifications_timeout_queue: Vec<SystemTime>
+    notifications_timeout_queue: Vec<SystemTime>,
+    opened_windows: HashMap<AppWindowName, Weak<DesktopService>>
 }
 
 impl AppStore {
     fn new() -> AppStore {
-        AppStore { notifications: vec![], notifications_timeout_queue: vec![] }
+        AppStore { notifications: vec![], notifications_timeout_queue: vec![], opened_windows: HashMap::new() }
     }
     pub fn notifications(&self) -> &Vec<Notification> {
         &self.notifications
@@ -39,6 +43,20 @@ impl AppStore {
     pub fn remove_notifications_timeout_queue(&mut self, notification_id: &SystemTime) {
         self.notifications_timeout_queue.retain(|item| item != notification_id);
     }
+    pub fn opened_windows(&self) -> &HashMap<AppWindowName, Weak<DesktopService>> {
+        &self.opened_windows
+    }
+    pub fn push_opened_window(&mut self, window_name: AppWindowName, window_service: Weak<DesktopService>) {
+        self.opened_windows.insert(window_name, window_service);
+    }
+    pub fn remove_opened_window_by_name(&mut self, window_name: AppWindowName) {
+        self.opened_windows.remove(&window_name);
+    }
+}
+
+#[derive(Clone, Debug, Hash, PartialEq, Eq)]
+pub enum AppWindowName {
+    Plugins
 }
 
 pub fn use_app_store() {
