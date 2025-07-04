@@ -34,7 +34,7 @@ pub fn TopBar(props: TopBarProps) -> Element {
     let click_maximize_handler = {
         let window = window.clone();
         move || {
-            window.set_maximized(true);
+            window.toggle_maximized();
         }
     };
     let move_window = move |_| {
