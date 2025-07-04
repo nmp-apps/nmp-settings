@@ -7,9 +7,13 @@ use dioxus::logger::tracing::error;
 use crate::components::{Confirm, WindowWrapper};
 use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::models::{ConfirmationWindow};
+use crate::stores::{AppStore, AppWindowName};
 
 // Shows confirmation window with buttons "Yes" and "No"
-pub fn use_confirmation_window(confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
+pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
+    let app_store = use_context::<Signal<AppStore>>();
+    
+    let window_name = window_name.clone();
     let confirmation_window = confirmation_window.clone();
     let show_window = move || -> bool {
         if let Some(confirmation_window) = confirmation_window.clone() {
@@ -25,10 +29,12 @@ pub fn use_confirmation_window(confirmation_window: &Option<ConfirmationWindow>,
                 (monitor_size.width - 650) / 2,
                 (monitor_size.height - 250) / 2,
             );
-            window.new_window(
+            let confirmation_window = window.new_window(
                 VirtualDom::new_with_props(ConfirmationDialog, ConfirmationDialogProps {
                     title: confirmation_window.title().clone(),
                     description: confirmation_window.description().clone(),
+                    app_window_name: window_name.clone(),
+                    app_store: app_store.clone(),
                     onconfirm: callback
                 }),
                 Config::new()
@@ -59,6 +65,7 @@ pub fn use_confirmation_window(confirmation_window: &Option<ConfirmationWindow>,
                             .with_theme(Some(Theme::Dark))
                     )
             );
+            app_store.clone().write().push_opened_window(window_name.clone(), confirmation_window);
             false
         } else {
             return true;
@@ -71,6 +78,8 @@ pub fn use_confirmation_window(confirmation_window: &Option<ConfirmationWindow>,
 struct ConfirmationDialogProps {
     title: String,
     description: Option<String>,
+    app_window_name: AppWindowName,
+    app_store: Signal<AppStore>,
     onconfirm: EventHandler<bool>
 }
 
@@ -81,6 +90,8 @@ fn ConfirmationDialog(props: ConfirmationDialogProps) -> Element {
             Confirm {
                 title: props.title,
                 description: props.description,
+                app_store: props.app_store,
+                app_window_name: props.app_window_name,
                 onconfirm: move |answer| props.onconfirm.call(answer),
             }
         }

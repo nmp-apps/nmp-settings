@@ -6,7 +6,7 @@ use dioxus::prelude::*;
 use crate::components::Switch as UiSwitch;
 use crate::hooks::use_confirmation_window;
 use crate::models::{Switch, SettingComponent};
-use crate::stores::{PluginsStore, SettingsStore, StoredSetting};
+use crate::stores::{AppWindowName, PluginsStore, SettingsStore, StoredSetting};
 use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
@@ -24,6 +24,7 @@ pub fn SwitchSetting(props: SwitchSettingProps) -> Element {
     let check_confirmation = {
         let store = settings_store.clone();
         use_confirmation_window(
+            AppWindowName::SettingConfirmation,
             props.setting.read().setting().confirmation(),
             Callback::new(move |answer: bool| confirmation_window_handler(answer, props.setting.read().clone(), store.to_owned()))
         )

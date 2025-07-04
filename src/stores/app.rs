@@ -56,7 +56,8 @@ impl AppStore {
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub enum AppWindowName {
-    Plugins
+    Plugins,
+    SettingConfirmation
 }
 
 pub fn use_app_store() {
