@@ -12,9 +12,9 @@ use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct NumberSettingProps {
-    setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Number>,
-    disabled: ReadOnlySignal<Option<bool>>
+    setting: ReadSignal<StoredSetting>,
+    data: ReadSignal<Number>,
+    disabled: ReadSignal<Option<bool>>
 }
 
 #[component]

@@ -12,15 +12,17 @@ use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct TextSettingProps {
-    setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Text>,
-    disabled: ReadOnlySignal<Option<bool>>
+    setting: ReadSignal<StoredSetting>,
+    data: ReadSignal<Text>,
+    disabled: ReadSignal<Option<bool>>
 }
 
 #[component]
 pub fn TextSetting(props: TextSettingProps) -> Element {
     let settings_store = use_context::<SettingsStore>();
     let plugins_store = use_context::<PluginsStore>();
+
+    let ui_text_value = props.data.read().value().clone();
 
     let check_confirmation = Rc::new({
         let store = settings_store.clone();
@@ -96,7 +98,7 @@ pub fn TextSetting(props: TextSettingProps) -> Element {
                     handler(new_value);
                 }
             },
-            value: props.data.read().value(),
+            value: ui_text_value,
             min_length: props.data.read().min_length(),
             max_length: props.data.read().max_length(),
             disabled: match *props.disabled.read() {

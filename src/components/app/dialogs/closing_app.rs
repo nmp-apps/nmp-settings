@@ -1,31 +1,34 @@
-use dioxus::{desktop::{tao::window::WindowId, window}, prelude::*};
+use dioxus::{desktop::{tao::window::WindowId, use_window}, prelude::*};
 
-use crate::{components::Button, get_asset};
+use crate::{components::Button};
+
+static STYLES: Asset = asset!("/assets/styles/app/dialogs/closing_app.css");
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ClosingAppProps {
-    parent_window_id: ReadOnlySignal<WindowId>,
-    close_windows: Callback
+    parent_window_id: ReadSignal<WindowId>,
+    close_windows: Callback,
+    close_self: Callback
 }
 
 #[component]
 pub fn ClosingApp(props: ClosingAppProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/closing_app.css"));
+    let window = use_window();
 
     let cancel = move |_| {
-        window().close();
+        props.close_self.call(())
     };
 
     let close_windows = props.close_windows.clone();
+    let window = window.clone();
     let close = move |_| {
         close_windows(());
-        window().close_window(*props.parent_window_id.read());
-        window().close();
+        window.close_window(*props.parent_window_id.read());
     };
 
     rsx! {
         div { class: "closing-app",
-            document::Stylesheet { href: "{styles}", rel: "preload" }
+            document::Stylesheet { href: "{STYLES}", rel: "preload" }
 
             h1 { class: "closing-app__title",
                 "You have unsaved changes. Are you sure you want to exit?"

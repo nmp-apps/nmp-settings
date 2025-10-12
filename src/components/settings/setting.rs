@@ -8,7 +8,7 @@ use crate::stores::{PluginsStore, StoredSetting};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SettingProps {
-    setting: ReadOnlySignal<StoredSetting>
+    setting: ReadSignal<StoredSetting>
 }
 
 /// Main Setting component

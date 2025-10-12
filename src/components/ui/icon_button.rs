@@ -4,7 +4,7 @@ use crate::models::Icon;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct IconButtonProps {
-    class: ReadOnlySignal<Option<String>>,
+    class: ReadSignal<Option<String>>,
     icon: Icon,
     title: Option<String>,
     #[props(into, default = "24px")]

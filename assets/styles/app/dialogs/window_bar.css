@@ -1,0 +1,37 @@
+.window-bar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr minmax(0, 1fr);
+    gap: 0.75px;
+    border-bottom: 1px solid var(--layout-border-color);
+    padding: 4px;
+}
+
+.window-bar__left,
+.window-bar__center,
+.window-bar__right {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.window-bar__left {
+    justify-content: flex-start;
+}
+
+.window-bar__center {}
+
+.window-bar__right {
+    justify-content: flex-end;
+    width: min-content;
+    margin-left: auto;
+}
+
+.window-bar__title {
+    flex-grow: 1;
+    font-size: 18px;
+    font-weight: 250;
+    text-align: center;
+    cursor: default;
+}

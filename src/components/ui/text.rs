@@ -2,11 +2,11 @@ use dioxus::prelude::*;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct TextProps {
-    value: ReadOnlySignal<String>,
-    min_length: ReadOnlySignal<u32>,
-    max_length: ReadOnlySignal<u32>,
-    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
-    disabled: ReadOnlySignal<bool>,
+    value: ReadSignal<String>,
+    min_length: ReadSignal<u32>,
+    max_length: ReadSignal<u32>,
+    #[props(default = ReadSignal::new(Signal::new(false)))]
+    disabled: ReadSignal<bool>,
     oninput: Option<EventHandler<String>>,
     onmousedown: Option<EventHandler<MouseEvent>>,
 }

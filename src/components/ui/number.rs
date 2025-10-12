@@ -4,12 +4,12 @@ use dioxus::prelude::*;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct NumberProps {
-    value: ReadOnlySignal<f64>,
-    min: ReadOnlySignal<f64>,
-    max: ReadOnlySignal<f64>,
-    step: ReadOnlySignal<f64>,
-    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
-    disabled: ReadOnlySignal<bool>,
+    value: ReadSignal<f64>,
+    min: ReadSignal<f64>,
+    max: ReadSignal<f64>,
+    step: ReadSignal<f64>,
+    #[props(default = ReadSignal::new(Signal::new(false)))]
+    disabled: ReadSignal<bool>,
     oninput: EventHandler<f64>,
     onmousedowninput: Option<EventHandler<MouseEvent>>,
 }

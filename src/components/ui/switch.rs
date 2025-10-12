@@ -2,10 +2,10 @@ use dioxus::prelude::*;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SwitchProps {
-    value: ReadOnlySignal<bool>,
-    title: ReadOnlySignal<Option<String>>,
-    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
-    disabled: ReadOnlySignal<bool>,
+    value: ReadSignal<bool>,
+    title: ReadSignal<Option<String>>,
+    #[props(default = ReadSignal::new(Signal::new(false)))]
+    disabled: ReadSignal<bool>,
     onchange: Option<Callback<bool>>
 }
 

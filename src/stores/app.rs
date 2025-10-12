@@ -1,6 +1,7 @@
 use std::collections::HashMap;
-use std::rc::Weak;
+use std::rc::{Rc};
 use std::time::{Duration, SystemTime};
+use std::fmt;
 
 use dioxus::desktop::DesktopService;
 use dioxus::prelude::*;
@@ -10,11 +11,21 @@ use tokio::time::sleep;
 use crate::models::Notification;
 
 /// User app settings store.
-#[derive(Clone, Debug)]
+#[derive(Clone)]
 pub struct AppStore {
     notifications: Vec<Notification>,
     notifications_timeout_queue: Vec<SystemTime>,
-    opened_windows: HashMap<AppWindowName, Weak<DesktopService>>
+    opened_windows: HashMap<AppWindowName, Rc<DesktopService>>
+}
+
+impl fmt::Debug for AppStore {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("AppStore")
+            .field("notifications", &self.notifications)
+            .field("notifications_timeout_queue", &self.notifications_timeout_queue)
+            .field("opened_windows", &format!("{:?}", self.opened_windows().keys())) // only keys because DesktopService doesn't implement Debug
+            .finish()
+    }
 }
 
 impl AppStore {
@@ -43,10 +54,10 @@ impl AppStore {
     pub fn remove_notifications_timeout_queue(&mut self, notification_id: &SystemTime) {
         self.notifications_timeout_queue.retain(|item| item != notification_id);
     }
-    pub fn opened_windows(&self) -> &HashMap<AppWindowName, Weak<DesktopService>> {
+    pub fn opened_windows(&self) -> &HashMap<AppWindowName, Rc<DesktopService>> {
         &self.opened_windows
     }
-    pub fn push_opened_window(&mut self, window_name: AppWindowName, window_service: Weak<DesktopService>) {
+    pub fn push_opened_window(&mut self, window_name: AppWindowName, window_service: Rc<DesktopService>) {
         self.opened_windows.insert(window_name, window_service);
     }
     pub fn remove_opened_window_by_name(&mut self, window_name: AppWindowName) {
@@ -57,7 +68,8 @@ impl AppStore {
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
 pub enum AppWindowName {
     Plugins,
-    SettingConfirmation
+    SettingConfirmation,
+    ClosingApp
 }
 
 pub fn use_app_store() {

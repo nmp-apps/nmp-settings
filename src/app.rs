@@ -1,7 +1,5 @@
 use dioxus::prelude::*;
 
-use crate::get_asset;
-
 use crate::stores::{
   use_app_store,
   use_config_store,
@@ -11,10 +9,10 @@ use crate::stores::{
 use crate::router::Route;
 use crate::components::StylesLoader;
 
+static FAVICON: Asset = asset!("/assets/favicon.ico");
+
 #[component]
 pub fn App() -> Element {
-  let favicon: String = use_hook(|| get_asset!("/assets/favicon.ico"));
-
   use_app_store();
   use_config_store();
   use_plugins_store();
@@ -22,7 +20,7 @@ pub fn App() -> Element {
 
     rsx! {
       // Global app resources
-      document::Link { rel: "icon", href: "{favicon}" }
+      document::Link { rel: "icon", href: "{FAVICON}" }
       StylesLoader {}
       Router::<Route> {}
     }

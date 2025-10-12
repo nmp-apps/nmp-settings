@@ -4,12 +4,12 @@ use dioxus::prelude::*;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SliderProps {
-    value: ReadOnlySignal<f64>,
-    min: ReadOnlySignal<f64>,
-    max: ReadOnlySignal<f64>,
-    step: ReadOnlySignal<f64>,
-    #[props(default = ReadOnlySignal::new(use_signal(|| false)))]
-    disabled: ReadOnlySignal<bool>,
+    value: ReadSignal<f64>,
+    min: ReadSignal<f64>,
+    max: ReadSignal<f64>,
+    step: ReadSignal<f64>,
+    #[props(default = ReadSignal::new(use_signal(|| false)))]
+    disabled: ReadSignal<bool>,
     oninput: EventHandler<f64>,
     onmousedownslider: Option<EventHandler<MouseEvent>>,
     onmousedowninput: Option<EventHandler<MouseEvent>>,

@@ -6,11 +6,11 @@ use crate::components::{CheckIcon, KeyboardArrowUpIcon};
 
 #[derive(PartialEq, Props, Clone)]
 pub struct SelectProps<T: 'static + std::clone::Clone + std::cmp::PartialEq + std::fmt::Debug> {
-    multiple: ReadOnlySignal<Option<bool>>,
-    items: ReadOnlySignal<Vec<SelectItem<T>>>,
-    value: ReadOnlySignal<SelectValue<T>>,
-    #[props(default = ReadOnlySignal::new(Signal::new(false)))]
-    disabled: ReadOnlySignal<bool>,
+    multiple: ReadSignal<Option<bool>>,
+    items: ReadSignal<Vec<SelectItem<T>>>,
+    value: ReadSignal<SelectValue<T>>,
+    #[props(default = ReadSignal::new(Signal::new(false)))]
+    disabled: ReadSignal<bool>,
     onclick: EventHandler<SelectValue<T>>
 }
 
@@ -208,9 +208,9 @@ where
     }
 }
 
-fn is_selected_value<T>(item: SelectItem<T>, current_value: ReadOnlySignal<SelectValue<T>>) -> bool
+fn is_selected_value<T>(item: SelectItem<T>, current_value: ReadSignal<SelectValue<T>>) -> bool
 where
-    T: std::fmt::Debug + std::cmp::PartialEq
+    T: std::fmt::Debug + std::cmp::PartialEq + 'static
 {
     match current_value.read().deref() {
         SelectValue::Single(value) => {

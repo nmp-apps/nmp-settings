@@ -11,15 +11,17 @@ use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct ButtonGroupSettingProps {
-    setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<ButtonGroupModel>,
-    disabled: ReadOnlySignal<bool>
+    setting: ReadSignal<StoredSetting>,
+    data: ReadSignal<ButtonGroupModel>,
+    disabled: ReadSignal<bool>
 }
 
 #[component]
 pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
     let settings_store = use_context::<SettingsStore>();
     let plugins_store = use_context::<PluginsStore>();
+
+    let button_group_value = props.data.read().value().clone();
 
     let converted_items: Memo<Vec<ButtonGroupItem>> = use_memo(move || {
         let data = props.data.read();
@@ -91,7 +93,7 @@ pub fn ButtonGroupSetting(props: ButtonGroupSettingProps) -> Element {
                 }
             },
             items: converted_items(),
-            value: props.data.read().value(),
+            value: button_group_value,
             disabled: props.disabled,
         }
     }

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use dioxus::hooks::{use_context, use_context_provider};
 use dioxus::logger::tracing::{error, info, trace};
-use dioxus::signals::{Readable, Signal, Writable};
+use dioxus::signals::{ReadableExt, Signal, WritableExt};
 use crate::models::{Setting, SettingComponent, SettingsCategory};
 use crate::utils::parse_settings_from_plugins;
 

@@ -11,7 +11,6 @@ use dioxus::desktop::{Config, WindowBuilder};
 
 use dioxus::logger::tracing::Level;
 
-mod macros; // must be defined before all
 mod constants;
 mod utils;
 mod stores;

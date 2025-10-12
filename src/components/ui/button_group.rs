@@ -4,10 +4,10 @@ use crate::components::Button;
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ButtonGroupProps {
-    value: ReadOnlySignal<String>,
-    items: ReadOnlySignal<Vec<ButtonGroupItem>>,
+    value: ReadSignal<String>,
+    items: ReadSignal<Vec<ButtonGroupItem>>,
     onchange: Option<EventHandler<String>>,
-    disabled: ReadOnlySignal<bool>,
+    disabled: ReadSignal<bool>,
 }
 
 #[derive(PartialEq, Clone)]

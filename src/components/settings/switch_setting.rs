@@ -11,9 +11,9 @@ use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct SwitchSettingProps {
-    setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<Switch>,
-    disabled: ReadOnlySignal<Option<bool>>
+    setting: ReadSignal<StoredSetting>,
+    data: ReadSignal<Switch>,
+    disabled: ReadSignal<Option<bool>>
 }
 
 #[component]

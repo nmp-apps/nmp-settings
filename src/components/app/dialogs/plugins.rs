@@ -1,21 +1,17 @@
 use dioxus::prelude::*;
-use dioxus::desktop::window;
+use crate::stores::PluginsStore;
+use crate::components::WindowBar;
 
-use crate::components::IconButton;
-use crate::get_asset;
-use crate::models::Icon;
-use crate::stores::{AppStore, AppWindowName, PluginsStore};
+static STYLES: Asset = asset!("/assets/styles/app/dialogs/plugins.css");
 
 #[derive(PartialEq, Props, Clone)]
 pub struct PluginsProps {
     plugins_store: PluginsStore,
-    app_store: Signal<AppStore>,
-    app_window_name: AppWindowName
+    on_close: Callback
 }
 
 #[component]
-pub fn Plugins(mut props: PluginsProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/plugins.css"));
+pub fn Plugins(props: PluginsProps) -> Element {
     let plugins_store = props.plugins_store.clone();
     let disabled_plugin_names: Memo<Vec<String>> = use_memo(move || {
         plugins_store.get_disabled_plugins().read().iter().map(|dp| {
@@ -23,26 +19,12 @@ pub fn Plugins(mut props: PluginsProps) -> Element {
         }).collect()
     });
 
-    let close_handler = move |_| {
-        props.app_store.write().remove_opened_window_by_name(props.app_window_name.clone());
-        window().close();
-    };
-
     rsx! {
         main { class: "plugins-dialog",
-            document::Stylesheet { href: "{styles}", rel: "preload" }
-            div { class: "plugins-dialog__top-bar",
-                div { class: "plugins-dialog__top-bar-left" }
-                div { class: "plugins-dialog__top-bar-center",
-                    h1 { class: "plugins-dialog__title", "Extensions" }
-                }
-                div { class: "plugins-dialog__top-bar-right",
-                    IconButton {
-                        onclick: close_handler,
-                        size: "16px",
-                        icon: Icon::Close,
-                    }
-                }
+            document::Stylesheet { href: "{STYLES}", rel: "preload" }
+            WindowBar {
+                title: "Extensions",
+                on_close: move |_| props.on_close.call(()),
             }
             section { class: "plugins-dialog__content",
                 ul { class: "plugins-dialog__plugin-list plugins-dialog__enabled-plugins",

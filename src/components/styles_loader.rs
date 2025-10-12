@@ -1,68 +1,70 @@
 use dioxus::prelude::*;
 
-use crate::get_asset;
+// common
+static RESET_CSS: Asset = asset!("/assets/styles/reset.css");
+static THEME_CSS: Asset = asset!("/assets/styles/theme.css");
+static MAIN_CSS: Asset = asset!("/assets/styles/main.css");
+// ui
+static BUTTON_GROUP_CSS: Asset = asset!("/assets/styles/ui/button_group.css");
+static BUTTON_CSS: Asset = asset!("/assets/styles/ui/button.css");
+static ICON_BUTTON_CSS: Asset = asset!("/assets/styles/ui/icon_button.css");
+static LIST_CSS: Asset = asset!("/assets/styles/ui/list.css");
+static NUMBER_CSS: Asset = asset!("/assets/styles/ui/number.css");
+static SELECT_CSS: Asset = asset!("/assets/styles/ui/select.css");
+static SLIDER_CSS: Asset = asset!("/assets/styles/ui/slider.css");
+static SWITCH_CSS: Asset = asset!("/assets/styles/ui/switch.css");
+static TEXT_CSS: Asset = asset!("/assets/styles/ui/text.css");
+// views
+static CATEGORIZED_SETTINGS_CSS: Asset = asset!("/assets/styles/views/categorized_settings.css");
+static HOME_CSS: Asset = asset!("/assets/styles/views/home.css");
+// app
+static DIALOG_WINDOW_WRAPPER_CSS: Asset = asset!("/assets/styles/app/dialogs/window_wrapper.css");
+static LEFT_BAR_CSS: Asset = asset!("/assets/styles/app/left_bar.css");
+static NOTIFICATIONS_CSS: Asset = asset!("/assets/styles/app/notifications.css");
+static NOTIFICATION_CSS: Asset = asset!("/assets/styles/app/notification.css");
+static TOP_BAR_CSS: Asset = asset!("/assets/styles/app/top_bar.css");
+// dialogs
+static WINDOW_BAR_CSS: Asset = asset!("/assets/styles/app/dialogs/window_bar.css");
+// layouts
+static MAIN_LAYOUT_CSS: Asset = asset!("/assets/styles/layouts/main_layout.css");
+// settings
+static SETTINGS_CSS: Asset = asset!("/assets/styles/settings/setting.css");
+static SETTINGS_LIST_CSS: Asset = asset!("/assets/styles/settings/settings_list.css");
 
 /// Component with style links. Loads in root for prevent loading on place(as it is not web app)
 #[component]
 pub fn StylesLoader() -> Element {
-    // common
-    let reset_css: String = use_hook(|| get_asset!("/assets/styles/reset.css"));
-    let theme_css: String = use_hook(|| get_asset!("/assets/styles/theme.css"));
-    let main_css: String = use_hook(|| get_asset!("/assets/styles/main.css"));
-    // ui
-    let button_group: String = use_hook(|| get_asset!("/assets/styles/ui/button_group.css"));
-    let button: String = use_hook(|| get_asset!("/assets/styles/ui/button.css"));
-    let icon_button: String = use_hook(|| get_asset!("/assets/styles/ui/icon_button.css"));
-    let list: String = use_hook(|| get_asset!("/assets/styles/ui/list.css"));
-    let number: String = use_hook(|| get_asset!("/assets/styles/ui/number.css"));
-    let select: String = use_hook(|| get_asset!("/assets/styles/ui/select.css"));
-    let slider: String = use_hook(|| get_asset!("/assets/styles/ui/slider.css"));
-    let switch: String = use_hook(|| get_asset!("/assets/styles/ui/switch.css"));
-    let text: String = use_hook(|| get_asset!("/assets/styles/ui/text.css"));
-    // views
-    let categorized_settings: String = use_hook(|| get_asset!("/assets/styles/views/categorized_settings.css"));
-    let home: String = use_hook(|| get_asset!("/assets/styles/views/home.css"));
-    // app
-    let dialog_window_wrapper = use_hook(|| get_asset!("/assets/styles/app/dialogs/window_wrapper.css"));
-    let left_bar: String = use_hook(|| get_asset!("/assets/styles/app/left_bar.css"));
-    let notifications: String = use_hook(|| get_asset!("/assets/styles/app/notifications.css"));
-    let notification: String = use_hook(|| get_asset!("/assets/styles/app/notification.css"));
-    let top_bar: String = use_hook(|| get_asset!("/assets/styles/app/top_bar.css"));
-    // layouts
-    let main_layout: String = use_hook(|| get_asset!("/assets/styles/layouts/main_layout.css"));
-    // settings
-    let setting: String = use_hook(|| get_asset!("/assets/styles/settings/setting.css"));
-    let settings_list: String = use_hook(|| get_asset!("/assets/styles/settings/settings_list.css"));
-
     rsx! {
         // Styles connected in strict order because of css hierarchy (main first, then ui and etc.)
         // common
-        document::Stylesheet { href: "{reset_css}" }
-        document::Stylesheet { href: "{theme_css}" }
-        document::Stylesheet { href: "{main_css}" }
+        document::Link { href: RESET_CSS, rel: "stylesheet" }
+        document::Link { href: THEME_CSS, rel: "stylesheet" }
+        document::Link { href: MAIN_CSS, rel: "stylesheet" }
         // ui
-        document::Stylesheet { href: "{button_group}" }
-        document::Stylesheet { href: "{button}" }
-        document::Stylesheet { href: "{icon_button}" }
-        document::Stylesheet { href: "{list}" }
-        document::Stylesheet { href: "{number}" }
-        document::Stylesheet { href: "{select}" }
-        document::Stylesheet { href: "{slider}" }
-        document::Stylesheet { href: "{switch}" }
-        document::Stylesheet { href: "{text}" }
+        document::Stylesheet { href: BUTTON_GROUP_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: BUTTON_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: ICON_BUTTON_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: LIST_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: NUMBER_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: SELECT_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: SLIDER_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: SWITCH_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: TEXT_CSS, rel: "stylesheet" }
         // views
-        document::Stylesheet { href: "{categorized_settings}" } // uncategorized are the same
-        document::Stylesheet { href: "{home}" }
+        document::Stylesheet { href: CATEGORIZED_SETTINGS_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: HOME_CSS, rel: "stylesheet" }
         // app
-        document::Stylesheet { href: "{dialog_window_wrapper}" }
-        document::Stylesheet { href: "{left_bar}" }
-        document::Stylesheet { href: "{notifications}" }
-        document::Stylesheet { href: "{notification}" }
-        document::Stylesheet { href: "{top_bar}" }
+        document::Stylesheet { href: DIALOG_WINDOW_WRAPPER_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: LEFT_BAR_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: NOTIFICATIONS_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: NOTIFICATION_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: TOP_BAR_CSS, rel: "stylesheet" }
+        // dialogs
+        document::Stylesheet { href: WINDOW_BAR_CSS, rel: "stylesheet" }
         // layouts
-        document::Stylesheet { href: "{main_layout}" }
+        document::Stylesheet { href: MAIN_LAYOUT_CSS, rel: "stylesheet" }
         // settings
-        document::Stylesheet { href: "{setting}" }
-        document::Stylesheet { href: "{settings_list}" }
+        document::Stylesheet { href: SETTINGS_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: SETTINGS_LIST_CSS, rel: "stylesheet" }
     }
 }

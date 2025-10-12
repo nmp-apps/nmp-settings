@@ -11,9 +11,9 @@ use crate::utils::confirmation_window_handler;
 
 #[derive(PartialEq, Clone, Props)]
 pub struct SelectSettingProps {
-    setting: ReadOnlySignal<StoredSetting>,
-    data: ReadOnlySignal<SelectSettingData>,
-    disabled: ReadOnlySignal<Option<bool>>
+    setting: ReadSignal<StoredSetting>,
+    data: ReadSignal<SelectSettingData>,
+    disabled: ReadSignal<Option<bool>>
 }
 
 pub enum SelectSettingData {

@@ -1,9 +1,9 @@
 use dioxus::desktop::window;
 use dioxus::prelude::*;
-
-use crate::get_asset;
 use crate::components::Button;
 use crate::stores::{AppStore, AppWindowName};
+
+static STYLES: Asset = asset!("/assets/styles/app/dialogs/confirm.css");
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ConfirmProps {
@@ -16,18 +16,16 @@ pub struct ConfirmProps {
 
 #[component]
 pub fn Confirm(mut props: ConfirmProps) -> Element {
-    let styles: String = use_hook(|| get_asset!("/assets/styles/app/dialogs/confirm.css"));
-
     let handler = move |answer: bool| {
         props.onconfirm.call(answer);
-        println!("{:#?}", props.app_window_name.clone());
+        println!("{:#?}: {:?}", props.app_window_name.clone(), answer);
         props.app_store.write().remove_opened_window_by_name(props.app_window_name.clone());
         window().close();
     };
 
     rsx! {
         div { class: "confirm",
-            document::Stylesheet { href: "{styles}" }
+            document::Stylesheet { href: "{STYLES}" }
 
             h1 { class: "confirm__title", {props.title} }
             if let Some(description) = props.description {

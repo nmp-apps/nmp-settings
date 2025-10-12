@@ -24,7 +24,7 @@ impl<T> ListItem<T> {
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ListProps<T: 'static + PartialEq + Clone> {
-    capitalized: ReadOnlySignal<Option<bool>>,
+    capitalized: ReadSignal<Option<bool>>,
     items: Vec<ListItem<T>>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
@@ -46,7 +46,7 @@ pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
 
 #[derive(PartialEq, Props, Clone)]
 pub struct ListItemProps<T: 'static + PartialEq + Clone> {
-    capitalized: ReadOnlySignal<Option<bool>>,
+    capitalized: ReadSignal<Option<bool>>,
     item: ListItem<T>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
@@ -64,7 +64,7 @@ fn ListItem<T: Display + PartialEq + Clone>(props: ListItemProps<T>) -> Element 
                     handler.call(props.item.clone())
                 }
             },
-            key: item.name.clone(),
+            key: "{item.name.clone()}",
 
             match item.icon {
                 Some(icon) => icon.to_component(String::from("20px")),

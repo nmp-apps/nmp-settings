@@ -5,9 +5,9 @@ pub struct ButtonProps {
     children: Option<Element>,
     title: Option<String>,
     #[props(default = false)]
-    primary: ReadOnlySignal<Option<bool>>,
+    primary: ReadSignal<Option<bool>>,
     #[props(default = false)]
-    disabled: ReadOnlySignal<Option<bool>>,
+    disabled: ReadSignal<Option<bool>>,
     onclick: Option<EventHandler<MouseEvent>>
 }
 
