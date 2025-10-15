@@ -1,13 +1,9 @@
 use constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
+use dioxus::desktop::tao::platform::unix::WindowBuilderExtUnix;
 // use std::path::Path;
 use dioxus::desktop::tao::window::WindowSizeConstraints;
-use dioxus::desktop::wry::dpi::{
-    PhysicalSize,
-    PhysicalUnit,
-    PixelUnit,
-    Size
-};
-use dioxus::desktop::{Config, WindowBuilder};
+use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
+use dioxus::desktop::{Config, LogicalSize, WindowBuilder};
 
 use dioxus::logger::tracing::Level;
 
@@ -35,21 +31,21 @@ fn main() {
                 WindowBuilder::new()
                 .with_resizable(true)
                 .with_decorations(false)
-                // .with_focused(true)
-                .with_inner_size(Size::Physical(PhysicalSize { height: 1440, width: 2560 }))
+                .with_focused(true)
                 .with_inner_size_constraints(
                     WindowSizeConstraints::new(
-                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(1280))),
-                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(720))),
-                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(2560))),
-                        Option::Some(PixelUnit::Physical(PhysicalUnit::new(1600)))
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(1280.0))),
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(720.0))),
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(2560.0))),
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(1600.0)))
                     )
                 )
+                .with_inner_size(Size::Logical(LogicalSize { height: 720.0, width: 1280.0 }))
                 .with_theme(Option::None)
                 .with_title("Settings")
                 .with_transparent(true)
                 // // .with_window_icon(Option::Some(Icon::from_rgba(std::fs::read(Path::new("/assets/favicon.ico")).unwrap(), 16, 16).unwrap()))
-                // .with_cursor_moved_event(false)
+                .with_skip_taskbar(false)
             )
     )
     .launch(App);

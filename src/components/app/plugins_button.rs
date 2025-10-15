@@ -3,7 +3,7 @@ use std::rc::Rc;
 
 use dioxus::desktop::tao::platform::unix::{WindowBuilderExtUnix, WindowExtUnix};
 use dioxus::desktop::tao::window::{WindowSizeConstraints};
-use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
+use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit};
 use dioxus::desktop::{use_window, Config, DesktopContext, LogicalPosition, LogicalSize, WindowBuilder};
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
@@ -44,16 +44,17 @@ pub fn PluginsButton() -> Element {
         }
 
         // open plugins dialog
-        let monitor_size = match window.current_monitor() {
-            Some(cm) => cm.size(),
+        let monitor_size: LogicalSize<f64> = match window.current_monitor() {
+            Some(cm) => cm.size().to_logical(cm.scale_factor()),
             None => {
                 error!("Failed get monitor size");
                 return;
             }
         };
-        let width: f64 = ((monitor_size.width - 900) / 2).into();
-        let height: f64 = ((monitor_size.height - 900) / 2).into();
-        let window_position = LogicalPosition::new(width, height);
+        let window_position = LogicalPosition::new(
+            (monitor_size.width - 900.0) / 2.0,
+            (monitor_size.height - 900.0) / 2.0,
+        );
 
         spawn(async move {
             let plugins_window = window.new_window(
@@ -81,14 +82,14 @@ pub fn PluginsButton() -> Element {
                                     Option::Some(PixelUnit::Logical(LogicalUnit::new(900.0)))
                                 )
                             )
-                            .with_inner_size(Size::Logical(LogicalSize { height: 900.0, width: 900.0 }))
+                            .with_inner_size(LogicalSize::new(900.0, 900.0))
                             .with_maximizable(false)
                             .with_minimizable(false)
                             .with_position(window_position)
                             .with_resizable(false)
                             .with_transparent(true)
                             .with_transient_for(window.gtk_window())
-                            .with_theme(None)
+                            .with_theme(Option::None)
                     )
             ).await;
             // save dialog in app wide HashMap for future control

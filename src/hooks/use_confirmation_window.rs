@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
-use dioxus::desktop::tao::window::{Theme, WindowSizeConstraints};
-use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit, Size};
+use dioxus::desktop::tao::window::{WindowSizeConstraints};
+use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit};
 use dioxus::desktop::{use_window, Config, LogicalPosition, LogicalSize, WindowBuilder};
 use dioxus::logger::tracing::error;
 
@@ -12,8 +12,8 @@ use crate::stores::{AppStore, AppWindowName};
 // Shows confirmation window with buttons "Yes" and "No"
 pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
     let app_store = use_context::<Signal<AppStore>>();
-    
     let confirmation_window = confirmation_window.clone();
+    
     let show_window = move || -> bool {
         let app_store = app_store.clone();
         let window_name = window_name.clone();
@@ -33,16 +33,16 @@ pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: 
 
         if let Some(confirmation_window) = confirmation_window.clone() {
             let window = use_window();
-            let monitor_size = match window.current_monitor() {
-                Some(cm) => cm.size(),
+            let monitor_size: LogicalSize<f64> = match window.current_monitor() {
+                Some(cm) => cm.size().to_logical(cm.scale_factor()),
                 None => {
                     error!("Failed get monitor size");
                     return false;
                 }
             };
             let window_position = LogicalPosition::new(
-                (monitor_size.width - 650) / 2,
-                (monitor_size.height - 250) / 2,
+                (monitor_size.width - 650.0) / 2.0,
+                (monitor_size.height - 250.0) / 2.0,
             );
             spawn(async move {
 
@@ -72,14 +72,14 @@ pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: 
                                         Option::Some(PixelUnit::Logical(LogicalUnit::new(250.0)))
                                     )
                                 )
-                                .with_inner_size(Size::Logical(LogicalSize { height: 250.0, width: 600.0 }))
+                                .with_inner_size(LogicalSize::new(650.0, 250.0))
                                 .with_maximizable(false)
                                 .with_minimizable(false)
                                 .with_position(window_position)
                                 .with_resizable(false)
                                 .with_transparent(true)
                                 // .with_transient_for(window.gtk_window())
-                                .with_theme(Some(Theme::Dark))
+                                .with_theme(Option::None)
                         )
                 ).await;
                 app_store.clone().write().push_opened_window(window_name.clone(), confirmation_window);
