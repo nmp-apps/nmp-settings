@@ -2984,7 +2984,7 @@ dependencies = [
 
 [[package]]
 name = "nmp-settings"
-version = "0.1.0"
+version = "0.7.0"
 dependencies = [
  "dioxus",
  "directories-next",
