@@ -11,10 +11,10 @@ use super::find_apps_by_name;
 
 #[cfg(debug_assertions)]
 pub fn load_plugins(plugins: Option<Vec<String>>) -> (Vec<Plugin>, Vec<DisabledPlugin>) {
+    info!("Loading plugins...");
     let mut app_store = use_context::<Signal<AppStore>>();
     let test_plugin_path: String = env::var("TEST_PLUGIN_PATH").unwrap_or(String::new());
     
-    info!("Loading plugins...");
     let mut enabled_plugins: Vec<Plugin> = vec![];
     let mut disabled_plugins: Vec<DisabledPlugin> = vec![];
 

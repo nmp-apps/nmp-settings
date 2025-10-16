@@ -1,10 +1,8 @@
-use std::{
-    env,
-    fs,
-    path::PathBuf,
-};
+use std::{env, fs, vec};
+use std::collections::HashSet;
+use std::path::PathBuf;
 
-use dioxus::logger::tracing::error;
+use dioxus::{logger::tracing::error, prelude::info};
 use directories_next::ProjectDirs;
 
 /// Find path of executables by partial name
@@ -36,10 +34,11 @@ pub fn find_apps_by_name(partial_name: &str) -> Vec<String> {
     // Get directories from $PATH environment variable
     if let Ok(path_var) = env::var("PATH") {
         let path_dirs: Vec<&str> = path_var.split(':').collect();
+        info!("path_dirs: {:#?}", path_dirs);
         search_dirs.extend(path_dirs.iter().map(|s| s.to_string()));
     }
 
-    let mut found_apps = Vec::new();
+    let mut found_apps = HashSet::new();
 
     for dir in &search_dirs {
         if let Ok(entries) = fs::read_dir(dir) {
@@ -47,13 +46,17 @@ pub fn find_apps_by_name(partial_name: &str) -> Vec<String> {
                 let path = entry.path();
                 if let Some(file_name) = path.file_name().and_then(|s| s.to_str()) {
                     if file_name.contains(partial_name) {
-                        found_apps.push(file_name.to_string());
+                        found_apps.insert(file_name.to_string());
                     }
                 }
             }
         }
     }
-    found_apps
+
+    let mut vec_apps: Vec<String> = found_apps.into_iter().collect();
+    vec_apps.sort();
+    info!("found plugins: {:#?}", vec_apps);
+    vec_apps
 }
 
 /// Get app config file path from `nmp/settings/` directory.

@@ -1,5 +1,5 @@
 use dioxus::hooks::use_context_provider;
-use dioxus::logger::tracing::{error, trace};
+use dioxus::logger::tracing::{error, info};
 use dioxus::signals::Signal;
 
 use crate::models::{DisabledPlugin, Plugin};
@@ -46,7 +46,7 @@ impl PluginsStore {
 
 /// Plugins store. Immutable! Lives only until the component is dropped.
 pub fn use_plugins_store() {
-    trace!("Init settings store...");
+    info!("Init plugins store...");
     let plugins = load_plugins(None);
     use_context_provider(|| PluginsStore::new(plugins.0, plugins.1));
 }

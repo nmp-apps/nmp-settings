@@ -22,7 +22,7 @@ fn main() {
     // Fix: Failed to create GBM buffer of size WidthxHeight: Invalid argument
     std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
 
-    dioxus::logger::init(Level::ERROR).expect("logger failed to init");
+    dioxus::logger::init(Level::INFO).expect("Logger failed to init");
     dioxus::LaunchBuilder::desktop()
     .with_cfg(
         Config::new()
@@ -44,7 +44,7 @@ fn main() {
                 .with_theme(Option::None)
                 .with_title("Settings")
                 .with_transparent(true)
-                // // .with_window_icon(Option::Some(Icon::from_rgba(std::fs::read(Path::new("/assets/favicon.ico")).unwrap(), 16, 16).unwrap()))
+                // .with_window_icon(Option::Some(Icon::from_rgba(std::fs::read(Path::new("/assets/favicon.ico")).unwrap(), 16, 16).unwrap()))
                 .with_skip_taskbar(false)
             )
     )
