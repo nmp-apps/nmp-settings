@@ -23,6 +23,7 @@ static LEFT_BAR_CSS: Asset = asset!("/assets/styles/app/left_bar.css");
 static NOTIFICATIONS_CSS: Asset = asset!("/assets/styles/app/notifications.css");
 static NOTIFICATION_CSS: Asset = asset!("/assets/styles/app/notification.css");
 static TOP_BAR_CSS: Asset = asset!("/assets/styles/app/top_bar.css");
+static WINDOW_RESIZE_CSS: Asset = asset!("/assets/styles/app/window_resize.css");
 // dialogs
 static WINDOW_BAR_CSS: Asset = asset!("/assets/styles/app/dialogs/window_bar.css");
 // layouts
@@ -59,6 +60,7 @@ pub fn StylesLoader() -> Element {
         document::Stylesheet { href: NOTIFICATIONS_CSS, rel: "stylesheet" }
         document::Stylesheet { href: NOTIFICATION_CSS, rel: "stylesheet" }
         document::Stylesheet { href: TOP_BAR_CSS, rel: "stylesheet" }
+        document::Stylesheet { href: WINDOW_RESIZE_CSS, rel: "stylesheet" }
         // dialogs
         document::Stylesheet { href: WINDOW_BAR_CSS, rel: "stylesheet" }
         // layouts

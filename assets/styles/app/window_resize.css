@@ -1,0 +1,70 @@
+.window-resize-north {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    cursor: ns-resize;
+}
+.window-resize-south {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    cursor: ns-resize;
+}
+.window-resize-west {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    cursor: ew-resize;
+}
+.window-resize-east {
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 4px;
+    cursor: ew-resize;
+}
+
+.window-resize-north,
+.window-resize-south,
+.window-resize-west,
+.window-resize-east {
+    position: absolute;
+    z-index: 9998;
+}
+
+.window-resize-northwest,
+.window-resize-northeast,
+.window-resize-southeast,
+.window-resize-southwest {
+    position: absolute;
+    z-index: 9999;
+    height: 4px;
+    width: 4px;
+}
+
+.window-resize-northwest {
+    top: 0;
+    left: 0;
+    cursor: nwse-resize;
+}
+
+.window-resize-northeast {
+    top: 0;
+    right: 0;
+    cursor: nesw-resize;
+}
+
+.window-resize-southeast {
+    bottom: 0;
+    right: 0;
+    cursor: nwse-resize;
+}
+
+.window-resize-southwest {
+    bottom: 0;
+    left: 0;
+    cursor: nesw-resize;
+}

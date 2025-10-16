@@ -21,3 +21,6 @@ pub use plugin_category_navigation::PluginCategoryNavigation;
 
 mod plugins_button;
 pub use plugins_button::*;
+
+mod window_resize;
+pub use window_resize::WindowResize;

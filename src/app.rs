@@ -7,7 +7,7 @@ use crate::stores::{
   use_settings_store
 };
 use crate::router::Route;
-use crate::components::StylesLoader;
+use crate::components::{StylesLoader, WindowResize};
 
 static FAVICON: Asset = asset!("/assets/favicon.ico");
 
@@ -22,6 +22,7 @@ pub fn App() -> Element {
       // Global app resources
       document::Link { rel: "icon", href: "{FAVICON}" }
       StylesLoader {}
+      WindowResize {}
       Router::<Route> {}
     }
 }
