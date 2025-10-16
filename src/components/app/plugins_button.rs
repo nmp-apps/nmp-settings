@@ -4,7 +4,7 @@ use std::rc::Rc;
 use dioxus::desktop::tao::platform::unix::{WindowBuilderExtUnix, WindowExtUnix};
 use dioxus::desktop::tao::window::{WindowSizeConstraints};
 use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit};
-use dioxus::desktop::{use_window, Config, DesktopContext, LogicalPosition, LogicalSize, WindowBuilder};
+use dioxus::desktop::{use_window, Config, DesktopContext, LogicalSize, WindowBuilder};
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 
@@ -13,6 +13,7 @@ use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::hooks::use_close_child_windows;
 use crate::models::Icon;
 use crate::stores::{AppStore, AppWindowName, PluginsStore};
+use crate::utils::{WindowLogicalData, WindowPercentSize};
 
 const APP_WINDOW_NAME: AppWindowName = AppWindowName::Plugins;
 
@@ -43,18 +44,13 @@ pub fn PluginsButton() -> Element {
             return;
         }
 
-        // open plugins dialog
-        let monitor_size: LogicalSize<f64> = match window.current_monitor() {
-            Some(cm) => cm.size().to_logical(cm.scale_factor()),
+        let window_logical_data = match WindowLogicalData::new(&window, WindowPercentSize::new(35.0, 56.0)) {
+            Some(d) => d,
             None => {
-                error!("Failed get monitor size");
+                error!("Failed build window data");
                 return;
             }
         };
-        let window_position = LogicalPosition::new(
-            (monitor_size.width - 900.0) / 2.0,
-            (monitor_size.height - 900.0) / 2.0,
-        );
 
         spawn(async move {
             let plugins_window = window.new_window(
@@ -76,16 +72,16 @@ pub fn PluginsButton() -> Element {
                             .with_visible(false) // prevents performance issues on opening with decorations = false
                             .with_inner_size_constraints(
                                 WindowSizeConstraints::new(
-                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(900.0))),
-                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(900.0))),
-                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(900.0))),
-                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(900.0)))
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.width))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.height))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.width))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.height)))
                                 )
                             )
-                            .with_inner_size(LogicalSize::new(900.0, 900.0))
+                            .with_inner_size(LogicalSize::new(window_logical_data.size.width, window_logical_data.size.height))
                             .with_maximizable(false)
                             .with_minimizable(false)
-                            .with_position(window_position)
+                            .with_position(window_logical_data.centered_position)
                             .with_resizable(false)
                             .with_transparent(true)
                             .with_transient_for(window.gtk_window())

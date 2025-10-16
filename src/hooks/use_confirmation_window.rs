@@ -1,13 +1,14 @@
 use dioxus::prelude::*;
 use dioxus::desktop::tao::window::{WindowSizeConstraints};
 use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit};
-use dioxus::desktop::{use_window, Config, LogicalPosition, LogicalSize, WindowBuilder};
+use dioxus::desktop::{use_window, Config, LogicalSize, WindowBuilder};
 use dioxus::logger::tracing::error;
 
 use crate::components::{Confirm, WindowWrapper};
 use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::models::{ConfirmationWindow};
 use crate::stores::{AppStore, AppWindowName};
+use crate::utils::{WindowLogicalData, WindowPercentSize};
 
 // Shows confirmation window with buttons "Yes" and "No"
 pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
@@ -33,17 +34,14 @@ pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: 
 
         if let Some(confirmation_window) = confirmation_window.clone() {
             let window = use_window();
-            let monitor_size: LogicalSize<f64> = match window.current_monitor() {
-                Some(cm) => cm.size().to_logical(cm.scale_factor()),
+            let window_logical_data = match WindowLogicalData::new(&window, WindowPercentSize::new(25.4, 15.7)) {
+                Some(d) => d,
                 None => {
-                    error!("Failed get monitor size");
+                    error!("Failed build window data");
                     return false;
                 }
             };
-            let window_position = LogicalPosition::new(
-                (monitor_size.width - 650.0) / 2.0,
-                (monitor_size.height - 250.0) / 2.0,
-            );
+
             spawn(async move {
 
                 let confirmation_window = window.new_window(
@@ -66,16 +64,16 @@ pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: 
                                 .with_visible(false) // prevents performance issues on opening with decorations = false
                                 .with_inner_size_constraints(
                                     WindowSizeConstraints::new(
-                                        Option::Some(PixelUnit::Logical(LogicalUnit::new(650.0))),
-                                        Option::Some(PixelUnit::Logical(LogicalUnit::new(250.0))),
-                                        Option::Some(PixelUnit::Logical(LogicalUnit::new(650.0))),
-                                        Option::Some(PixelUnit::Logical(LogicalUnit::new(250.0)))
+                                        Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.width))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.height))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.width))),
+                                    Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.height)))
                                     )
                                 )
                                 .with_inner_size(LogicalSize::new(650.0, 250.0))
                                 .with_maximizable(false)
                                 .with_minimizable(false)
-                                .with_position(window_position)
+                                .with_position(window_logical_data.centered_position)
                                 .with_resizable(false)
                                 .with_transparent(true)
                                 // .with_transient_for(window.gtk_window())
