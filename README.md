@@ -2,7 +2,7 @@
 
 **One unified, user-friendly interface to configure all your applications.**
 
-<img width="128.304" height="180.792" alt="logo" src="https://github.com/user-attachments/assets/907e5bea-bf6e-4467-9187-55de842c11bc" align="right" />
+<img width="115.4736" height="162.71280000000002" alt="logo" src="https://github.com/user-attachments/assets/907e5bea-bf6e-4467-9187-55de842c11bc" align="right" />
 
 ---
 
@@ -128,3 +128,7 @@ Contributors: [See all](https://github.com/nmp-apps/nmp-settings/graphs/contribu
 ## 📄 License
 
 [GNU GPLv3](https://github.com/nmp-apps/nmp-settings/tree/main?tab=GPL-3.0-1-ov-file)
+
+## 🌟 Support the Project
+
+If you like the project, consider giving us a ⭐ on GitHub and sharing it with others!
