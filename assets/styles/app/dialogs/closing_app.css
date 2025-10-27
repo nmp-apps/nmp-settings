@@ -3,20 +3,25 @@
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    padding: 12px;
     height: 100%;
 }
 
 .closing-app__title {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 400;
-    margin-bottom: 40px;
     text-align: center;
+    height: 100%;
+    overflow: scroll;
+    margin-bottom: 24px;
+    padding: 12px 12px 0px 12px;
+    flex-grow: 0;
 }
 
 .closing-app__actions {
+    padding-bottom: 12px;
     display: flex;
     gap: 12px;
+    flex-shrink: 0;
 }
 
 .closing-app__actions > button {

@@ -1,6 +1,6 @@
 use dioxus::{desktop::{tao::window::WindowId, use_window}, prelude::*};
 
-use crate::{components::Button};
+use crate::components::Button;
 
 static STYLES: Asset = asset!("/assets/styles/app/dialogs/closing_app.css");
 
@@ -15,7 +15,7 @@ pub struct ClosingAppProps {
 pub fn ClosingApp(props: ClosingAppProps) -> Element {
     let window = use_window();
 
-    let cancel = move |_| {
+    let cancel = move || {
         props.close_self.call(())
     };
 
@@ -31,10 +31,12 @@ pub fn ClosingApp(props: ClosingAppProps) -> Element {
             document::Stylesheet { href: "{STYLES}", rel: "preload" }
 
             h1 { class: "closing-app__title",
-                "You have unsaved changes. Are you sure you want to exit?"
+                "You have unsaved changes."
+                br {}
+                "Are you sure you want to exit?"
             }
             div { class: "closing-app__actions",
-                Button { onclick: cancel, "No" }
+                Button { onclick: move |_| cancel(), "No" }
                 Button { onclick: close, "Yes" }
             }
         }

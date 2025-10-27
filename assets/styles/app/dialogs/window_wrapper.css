@@ -1,4 +1,5 @@
 .dialog-window-wrapper {
     height: 100%;
     width: 100%;
+    border: 2px solid var(--divider-color);
 }

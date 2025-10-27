@@ -4,7 +4,7 @@ use std::rc::Rc;
 use dioxus::desktop::tao::platform::unix::{WindowBuilderExtUnix, WindowExtUnix};
 use dioxus::desktop::tao::window::{WindowId, WindowSizeConstraints};
 use dioxus::desktop::wry::dpi::{LogicalUnit, PixelUnit};
-use dioxus::desktop::{use_window, Config, DesktopContext, LogicalSize, WindowBuilder};
+use dioxus::desktop::{use_window, Config, DesktopContext, WindowBuilder};
 use dioxus::logger::tracing::error;
 use dioxus::prelude::*;
 
@@ -13,7 +13,7 @@ use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::hooks::use_close_child_windows;
 use crate::models::Icon;
 use crate::stores::{AppStore, AppWindowName, SettingsStore};
-use crate::utils::{WindowLogicalData, WindowPercentSize};
+use crate::utils::{WindowLogicalData, WindowSize};
 
 const APP_WINDOW_NAME: AppWindowName = AppWindowName::ClosingApp;
 
@@ -52,7 +52,7 @@ pub fn CloseButton() -> Element {
             return;
         }
 
-        let window_logical_data = match WindowLogicalData::new(&window, WindowPercentSize::new(25.4, 15.7)) {
+        let window_logical_data = match WindowLogicalData::new(&window, WindowSize::Pixel { width: 600.0, height: 220.0 }) {
             Some(d) => d,
             None => {
                 error!("Failed build window data");
@@ -89,7 +89,7 @@ pub fn CloseButton() -> Element {
                                     Option::Some(PixelUnit::Logical(LogicalUnit::new(window_logical_data.size.height)))
                                 )
                             )
-                            .with_inner_size(LogicalSize::new(window_logical_data.size.width, window_logical_data.size.height))
+                            .with_inner_size(window_logical_data.size)
                             .with_maximizable(false)
                             .with_minimizable(false)
                             .with_position(window_logical_data.centered_position)

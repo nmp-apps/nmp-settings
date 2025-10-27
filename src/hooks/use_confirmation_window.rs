@@ -8,7 +8,7 @@ use crate::components::{Confirm, WindowWrapper};
 use crate::constants::IS_WINDOW_CONTEXT_MENU_DISABLED;
 use crate::models::{ConfirmationWindow};
 use crate::stores::{AppStore, AppWindowName};
-use crate::utils::{WindowLogicalData, WindowPercentSize};
+use crate::utils::{WindowLogicalData, WindowSize};
 
 // Shows confirmation window with buttons "Yes" and "No"
 pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: &Option<ConfirmationWindow>, callback: Callback<bool>) -> impl Fn() -> bool {
@@ -34,7 +34,7 @@ pub fn use_confirmation_window(window_name: AppWindowName, confirmation_window: 
 
         if let Some(confirmation_window) = confirmation_window.clone() {
             let window = use_window();
-            let window_logical_data = match WindowLogicalData::new(&window, WindowPercentSize::new(25.4, 15.7)) {
+            let window_logical_data = match WindowLogicalData::new(&window, WindowSize::Pixel { width: 600.0, height: 260.0 }) {
                 Some(d) => d,
                 None => {
                     error!("Failed build window data");
