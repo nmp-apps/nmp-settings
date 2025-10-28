@@ -90,7 +90,7 @@ Using nmp-settings, you get:
 - [nmp-settings-plugin-example](https://github.com/nmp-apps/nmp-settings-plugin-example)
 - *(more coming soon!)*
 
-> Want your favorite tool supported? [Request a plugin](https://github.com/nmp-apps/nmp-settings/issues/new) or [create one yourself](https://github.com/nmp-apps/nmp-settings/wiki).
+> Want your favorite tool supported? [Request a plugin](https://github.com/nmp-apps/nmp-settings/issues/new) or [create one yourself](https://github.com/nmp-apps/nmp-settings/wiki/Plugins).
 
 ---
 
@@ -114,6 +114,8 @@ cd nmp-settings
 sh bundle-[appimage/deb/default].sh
 ```
 3. After that you will see path with your bundled app
+
+More detailed instructions, [here](https://github.com/nmp-apps/nmp-settings/wiki/Installation)
 
 ## 🙌 Contributing
 
