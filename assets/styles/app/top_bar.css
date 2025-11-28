@@ -1,10 +1,10 @@
 .top-bar {
+    height: 2.5rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr minmax(0, 1fr);
     gap: 0.75rem;
-    border-bottom: 1px solid var(--layout-border-color);
-    padding: 0.5rem;
+    padding: 0.25rem;
 }
 
 .top-bar__left,
@@ -13,7 +13,7 @@
     flex-grow: 1;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 0.7rem;
 }
 
 .top-bar__left {
@@ -28,8 +28,8 @@
 
 .top-bar__title {
     flex-grow: 1;
-    font-size: 18px;
-    font-weight: 250;
+    font-size: 1.05rem;
+    font-weight: 400;
     text-align: center;
     cursor: default;
 }

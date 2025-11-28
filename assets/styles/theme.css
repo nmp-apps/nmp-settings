@@ -1,5 +1,6 @@
 :root {
     --app-background-color:rgba(15, 17, 22, 1);
+    --left-bar-background-color:rgba(255, 255, 255, 0.05);
     --text-color: rgba(255, 255, 255, 0.95);
     --text-secondary-color: rgba(255, 255, 255, 0.65);
     --focus-outline-color: rgba(255, 255, 255, 0.5);
@@ -58,7 +59,8 @@
     /* List Item */
     --list-item-text-color: rgba(255, 255, 255, 0.8);
     --list-item-bg-color: transparent;
-    --list-item-hover-bg-color: rgba(255, 255, 255, 0.05);
+    --list-item-hover-bg-color: rgba(255, 255, 255, 0.07);
+    --list-item-selected-bg-color: rgba(255, 255, 255, 0.05);
 
     /* Number Input */
     --number-input-border-color: rgba(255, 255, 255, 0.2);

@@ -20,6 +20,11 @@
     text-transform: capitalize;
 }
 
+.ui-list__item.selected {
+    background-color: var(--list-item-selected-bg-color);
+    font-weight: 500;
+}
+
 .ui-list__item:hover {
     background-color: var(--list-item-hover-bg-color);
 }

@@ -8,9 +8,12 @@ pub fn LeftBar() -> Element {
 
     rsx! {
         div { class: "left-bar",
-            CategoryNavigation {}
-            hr { class: "left-bar__divider" }
-            PluginCategoryNavigation {}
+            div {
+                class: "left-bar__card",
+                CategoryNavigation {}
+                hr { class: "left-bar__divider" }
+                PluginCategoryNavigation {}
+            }
         }
     }
 }

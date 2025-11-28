@@ -1,14 +1,24 @@
 .left-bar {
+    height: calc(100dvh - 2.5rem);
     width: 30vw;
-    max-width: 300px;
-    min-width: 200px;
+    max-width: 250px;
+    min-width: 150px;
+    padding: 8px;
+    font-size: 0.95rem;
+    font-weight: 300;
+    display: flex;
+}
+
+.left-bar__card {
     flex-grow: 1;
     flex-basis: 100%;
-    padding: 8px;
-    border-right: 1px solid var(--layout-border-color);
+    overflow: scroll;
+    background: var(--left-bar-background-color);
+    border-radius: 8px;
+    padding: 0.5rem;
 }
 
 .left-bar__divider {
-    margin: 20px 0;
+    margin: 15px 0;
     color: var(--divider-color);
 }

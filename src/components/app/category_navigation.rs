@@ -8,6 +8,12 @@ use crate::router::Route;
 pub fn CategoryNavigation() -> Element {
     let nav = navigator();
 
+    let current_route = use_route::<Route>();
+    let current_category = match current_route {
+        Route::CategorizedSettings { ref category_name } => Some(category_name.clone()),
+        _ => None,
+    };
+
     const CATEGORIES: [SettingsCategory; 10] = [SettingsCategory::Appearance, SettingsCategory::Bluetooth, SettingsCategory::Desktop, SettingsCategory::Display, SettingsCategory::LockScreen, SettingsCategory::Network, SettingsCategory::Notifications, SettingsCategory::Security, SettingsCategory::Sound, SettingsCategory::Users];
     let list_items: Vec<ListItem<String>> = CATEGORIES.map(|category|
         ListItem::new(
@@ -25,6 +31,7 @@ pub fn CategoryNavigation() -> Element {
         List::<String> {
             items: list_items,
             capitalized: true,
+            value: current_category,
             onclick: category_click_handler,
         }
     }
