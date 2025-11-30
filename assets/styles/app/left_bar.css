@@ -16,6 +16,9 @@
     background: var(--left-bar-background-color);
     border-radius: 8px;
     padding: 0.5rem;
+    box-shadow: 
+    inset 0 8px 8px -8px rgba(1, 1, 1, 0.4), /* Top shadow */
+    inset 0 -8px 8px -8px rgba(1, 1, 1, 0.4); /* Bottom shadow */
 }
 
 .left-bar__divider {

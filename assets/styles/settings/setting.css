@@ -12,7 +12,7 @@
 }
 
 .setting__content h6 {
-    font-size: 20px;
+    font-size: 1rem;
     font-weight: 400;
     color: var(--setting-title-color);
     display: flex;
@@ -25,7 +25,7 @@
 }
 
 .setting__content h6:has(+ p) {
-    margin-bottom: 8px;
+    margin-bottom: 0.25rem;
 }
 
 .setting__plugin-icon {
@@ -34,7 +34,7 @@
 }
 
 .setting__content p {
-    font-size: 14px;
+    font-size: 0.75rem;
     font-weight: 300;
     color: var(--setting-description-color);
 }

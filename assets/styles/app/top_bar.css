@@ -1,5 +1,5 @@
 .top-bar {
-    height: 2.5rem;
+    height: 2.25rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr minmax(0, 1fr);
@@ -36,5 +36,5 @@
 
 .top-bar__window-actions {
     display: flex;
-    gap: 4px;
+    gap: 0.25rem;
 }

@@ -1,7 +1,7 @@
 /* Unchecked state [default] */
 .ui-switch {
-    width: 4rem;
-    height: 2rem;
+    width: 3rem;
+    height: 1.75rem;
     position: relative;
     border-radius: 3.40282e+38px;
     border: 2px solid var(--switch-border-color);
@@ -29,8 +29,8 @@
     height: 1.25rem;
     pointer-events: none;
     position: absolute;
-    top: 0.28rem;
-    left: 0.25rem;
+    top: 0.12rem;
+    left: 0.15rem;
     background: var(--switch-thumb-bg-color);
     border-radius: 3.40282e+38px;
     border: none;
@@ -55,7 +55,7 @@
 }
 
 .ui-switch:has(.ui-switch-checkbox:checked) .ui-switch-thumb {
-    translate: 165% 0;
+    translate: 100% 0;
     background: var(--switch-checked-thumb-bg-color);
 }
 

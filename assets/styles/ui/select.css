@@ -1,6 +1,6 @@
 .ui-select {
-    height: 2rem;
-    width: 18rem;
+    height: 1.75rem;
+    max-width: 18rem;
     position: relative;
 }
 
@@ -9,18 +9,26 @@
 }
 
 .ui-select__button {
+    height: 1.75rem;
     width: 100%;
+    padding: 0.25rem 0.25rem;
     cursor: pointer;
     text-align: start;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
-    border: 2px solid var(--select-border-color);
+    gap: 0.5rem;
+    border: 2px solid transparent;
     border-radius: 8px;
     background-color: var(--select-bg-color);
     color: var(--text-color);
-    font-size: 1.125rem;
-    transition: outline-offset 0.05s, outline 0.05s;
+    font-size: 1rem;
+    transition: outline-offset 0.05s, outline 0.05s, background-color: 0.2s, border-radius 0.2s;
+}
+
+.ui-select__button:hover {
+    background-color: var(--select-hover-bg-color);
+    border: 2px solid var(--select-hover-border-color);
 }
 
 .ui-select__button:focus {
@@ -28,8 +36,11 @@
     outline-offset: 0.125rem;
 }
 
-.ui-select.opened .ui-select__button {
-    border-radius: 8px 8px 0 0;
+.ui-number__step-button:active {
+    border-color: var(--number-input-active-border-color);
+    background-color: var(--number-input-active-bg-color);
+    transition: background-color 0.04s,
+    border 0.04s;
 }
 
 .ui-select.disabled > .ui-select__button {
@@ -39,8 +50,16 @@
     color: var(--select-disabled-text-color);
 }
 
+.ui-select__value {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .ui-select__arrow-icon {
     transition: all 0.3s;
+    flex-grow: 1;
+    flex-shrink: 0;
 }
 
 .ui-select.opened .ui-select__arrow-icon {
@@ -50,28 +69,31 @@
 .ui-select__list {
     position: absolute;
     z-index: 10;
-    top: 2.25rem;
+    top: 2rem;
     right: 0;
     padding: 0;
     width: 100%;
+    min-width: 12rem;
     max-height: 0;
     overflow-y: auto;
     scroll-behavior: smooth;
     list-style: none;
     background-color: var(--select-bg-color);
-    border-radius: 0 0 8px 8px;
+    border-radius: 8px;
     font-size: 1rem;
-    transition: height 0.2s, max-height 0.2s;
+    opacity: 0;
+    transition: height 0.2s, max-height 0.2s, opacity 0.2s;
 }
 
 .ui-select.opened > .ui-select__list {
-    max-height: 160px;
+    max-height: 10rem;
+    opacity: 1;
     border: 2px solid var(--select-border-color);
-    border-top: none;
+    /* border-top: none; */
 }
 
 .ui-select__item {
-    padding: 0.375rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     width: 100%;
     display: flex;
     align-items: center;
@@ -99,6 +121,6 @@
 }
 
 .ui-select__item-icon {
-    min-width: 1.5rem;
-    max-width: 1.5rem;
+    min-width: 1.2rem;
+    max-width: 1.2rem;
 }

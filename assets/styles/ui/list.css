@@ -1,5 +1,8 @@
 .ui-list {
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .ui-list__item {

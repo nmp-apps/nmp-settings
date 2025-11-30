@@ -181,7 +181,7 @@ where
                 class: "ui-select__button",
                 disabled: *props.disabled.read(),
                 onclick: move |_| is_opened.set(!is_opened()),
-                span { "{select_button_text}" }
+                span { class: "ui-select__value", "{select_button_text}" }
                 KeyboardArrowUpIcon { class: "ui-select__arrow-icon" }
             }
 

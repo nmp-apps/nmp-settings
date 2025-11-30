@@ -63,8 +63,9 @@
     --list-item-selected-bg-color: rgba(255, 255, 255, 0.05);
 
     /* Number Input */
-    --number-input-border-color: rgba(255, 255, 255, 0.2);
     --number-input-bg-color: transparent;
+    --number-input-hover-bg-color: rgba(255, 255, 255, 0.05);
+    --number-input-hover-border-color: rgba(255, 255, 255, 0.1);
     --number-input-active-border-color: rgba(255, 255, 255, 0.3);
     --number-input-active-bg-color: rgba(255, 255, 255, 0.1);
     --number-input-disabled-text-color: rgba(255, 255, 255, 0.25);
@@ -74,6 +75,8 @@
     /* Select */
     --select-bg-color: rgba(15, 17, 22, 1);
     --select-border-color: rgba(255, 255, 255, 0.2);
+    --select-hover-bg-color: rgba(255, 255, 255, 0.05);
+    --select-hover-border-color: rgba(255, 255, 255, 0.1);
     --select-item-text-color: rgba(255, 255, 255, 0.8);
     --select-item-bg-color: transparent;
     --select-item-hover-bg-color: rgba(255, 255, 255, 0.05);
