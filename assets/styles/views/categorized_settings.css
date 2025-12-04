@@ -1,18 +1,24 @@
 .categorized-settings {
     width: 100%;
     height: calc(100vh - 52px);
+    position: relative;
     overflow-y: scroll;
-    padding: 8px 24px;
+    padding: 0 1.5rem 0.5rem 1.5rem;
     scroll-behavior: smooth;
 }
 
 .categorized-settings__container {
-    max-width: 960px;
+    max-width: 50rem;
 }
 
 .categorized-settings__title {
-    font-size: 44px;
+    padding: 0.5rem 0;
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-size: 1.8rem;
     font-weight: 400;
     text-transform: capitalize;
-    margin-bottom: 20px;
+    background: linear-gradient(to bottom, var(--app-background-color) 90%, rgba(0, 0, 0, 0) 100%);;
 }

@@ -1,15 +1,15 @@
 .settings-list {
     list-style: none;
-    padding: 0 0 0 4px;
+    padding: 0 0 0 0.25rem;
 }
 
 .settings-list > :not(:last-child) {
-    border-bottom: 2px solid var(--divider-color);
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .settings-list__item {
-    margin: 0 0 32px 0;
-    padding: 0 0 12px 0;
+    margin: 0 0 1rem 0;
+    padding: 0 0 1rem 0;
 }
 
 .settings-list__item.hidden {

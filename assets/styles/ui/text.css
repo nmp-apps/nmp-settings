@@ -6,7 +6,7 @@
 }
 
 .ui-text__input {
-    height: 2rem;
+    height: 1.75rem;
     width: 12rem;
     padding: 0 0.5rem;
     text-align: start;
@@ -14,7 +14,7 @@
     border-radius: 8px;
     background-color: var(--text-bg-color);
     color: var(--text-color);
-    font-size: 1.125rem;
+    font-size: 1rem;
     transition: outline-offset 0.05s, outline 0.05s;
 }
 

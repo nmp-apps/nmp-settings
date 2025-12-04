@@ -1,5 +1,5 @@
 .ui-button-group {
-    height: 2rem;
+    height: fit-content;
     display: flex;
     /* justify-content: space-between; */
     gap: 0.375rem;

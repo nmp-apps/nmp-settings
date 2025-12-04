@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 use dioxus::desktop::{use_window, DesktopContext};
 
+use crate::components::app::left_bar::LeftBarHideButton;
 use crate::components::{
     AdvancedSettingsSwitch,
     CloseButton,
@@ -43,7 +44,13 @@ pub fn TopBar(props: TopBarProps) -> Element {
 
     rsx! {
         div { class: top_bar_classes, onmousedown: move_window,
-            div { class: "top-bar__left" }
+            div { class: "top-bar__left",
+                onmousedown: |evt| {
+                    evt.stop_propagation();
+                },
+
+                LeftBarHideButton {}
+            }
             div { class: "top-bar__center",
                 h1 { class: "top-bar__title", "Settings" }
             }

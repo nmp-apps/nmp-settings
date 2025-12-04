@@ -7,7 +7,14 @@ use crate::stores::SettingsStore;
 #[component]
 pub fn PluginCategoryNavigation() -> Element {
     let nav = navigator();
+    let current_route = use_route::<Route>();
+
     let settings_store = use_context::<SettingsStore>();
+
+    let current_plugin = match current_route {
+        Route::UncategorizedSettings { ref plugin_name } => Some(plugin_name.clone()),
+        _ => None,
+    };
 
     let items = use_memo(move || {
         let uncategorized_settings = settings_store.uncategorized_settings();
@@ -27,6 +34,6 @@ pub fn PluginCategoryNavigation() -> Element {
     };
 
     rsx! {
-        List::<String> { items: items(), onclick: category_click_handler }
+        List::<String> { items: items(), value: current_plugin, onclick: category_click_handler }
     }
 }

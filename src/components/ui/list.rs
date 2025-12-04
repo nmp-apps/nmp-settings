@@ -26,6 +26,7 @@ impl<T> ListItem<T> {
 pub struct ListProps<T: 'static + PartialEq + Clone> {
     capitalized: ReadSignal<Option<bool>>,
     items: Vec<ListItem<T>>,
+    value: ReadSignal<Option<String>>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
 
@@ -35,8 +36,12 @@ pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
         ul { class: "ui-list",
             for item in props.items {
                 ListItem {
-                    item,
+                    item: item.clone(),
                     capitalized: props.capitalized,
+                    selected: match props.value.read().clone() {
+                        Option::Some(value) => item.get_value().to_string() == value,
+                        _ => false,
+                    },
                     onclick: props.onclick.clone(),
                 }
             }
@@ -48,6 +53,7 @@ pub fn List<T: Display + PartialEq + Clone>(props: ListProps<T>) -> Element {
 pub struct ListItemProps<T: 'static + PartialEq + Clone> {
     capitalized: ReadSignal<Option<bool>>,
     item: ListItem<T>,
+    selected: ReadSignal<Option<bool>>,
     onclick: Option<EventHandler<ListItem<T>>>
 }
 
@@ -55,10 +61,12 @@ pub struct ListItemProps<T: 'static + PartialEq + Clone> {
 fn ListItem<T: Display + PartialEq + Clone>(props: ListItemProps<T>) -> Element {
     let item = props.item.clone();
     let capitalized = use_memo(move || props.capitalized.read().unwrap_or(false));
+    let selected = use_memo(move || props.selected.read().unwrap_or(false));
     rsx! {
         li {
             class: "ui-list__item",
             class: if capitalized() { "capitalized" } else { "" },
+            class: if selected() { "selected" } else { "" },
             onclick: move |_| {
                 if let Some(handler) = props.onclick {
                     handler.call(props.item.clone())

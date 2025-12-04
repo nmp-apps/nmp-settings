@@ -8,29 +8,46 @@ use dioxus::prelude::*;
 use dioxus::logger::tracing::trace;
 use tokio::time::sleep;
 
+use crate::hooks::use_window_size;
 use crate::models::Notification;
 
 /// User app settings store.
 #[derive(Clone)]
 pub struct AppStore {
+    is_left_bar_opened: bool,
     notifications: Vec<Notification>,
     notifications_timeout_queue: Vec<SystemTime>,
-    opened_windows: HashMap<AppWindowName, Rc<DesktopService>>
+    opened_windows: HashMap<AppWindowName, Rc<DesktopService>>,
+    window_size: (u32, u32)
 }
 
 impl fmt::Debug for AppStore {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.debug_struct("AppStore")
+            .field("is_left_bar_opened", &format!("{}", self.is_left_bar_opened))
             .field("notifications", &self.notifications)
             .field("notifications_timeout_queue", &self.notifications_timeout_queue)
             .field("opened_windows", &format!("{:?}", self.opened_windows().keys())) // only keys because DesktopService doesn't implement Debug
+            .field("window_size", &format!("{:?}", self.window_size()))
             .finish()
     }
 }
 
 impl AppStore {
     fn new() -> AppStore {
-        AppStore { notifications: vec![], notifications_timeout_queue: vec![], opened_windows: HashMap::new() }
+        AppStore {
+            is_left_bar_opened: true,
+            notifications: vec![],
+            notifications_timeout_queue: vec![],
+            opened_windows: HashMap::new(),
+            window_size: (0, 0)
+        }
+    }
+    pub fn is_left_bar_opened(&self) -> bool {
+        self.is_left_bar_opened
+    }
+    pub fn set_left_bar_opened(&mut self, new_value: bool) {
+        self.is_left_bar_opened = new_value
     }
     pub fn notifications(&self) -> &Vec<Notification> {
         &self.notifications
@@ -63,6 +80,9 @@ impl AppStore {
     pub fn remove_opened_window_by_name(&mut self, window_name: AppWindowName) {
         self.opened_windows.remove(&window_name);
     }
+    pub fn window_size(&self) -> &(u32, u32) {
+        &self.window_size
+    }
 }
 
 #[derive(Clone, Debug, Hash, PartialEq, Eq)]
@@ -76,7 +96,7 @@ pub fn use_app_store() {
     trace!("Init app store...");
 
     let app_store = use_context_provider(|| Signal::new(AppStore::new()));
-    let app_store = app_store.clone();
+    let mut app_store = app_store.clone();
 
     use_effect(move || {
         let app_store = app_store.clone();
@@ -110,5 +130,12 @@ pub fn use_app_store() {
                 }
             }
         });
+    });
+
+    let window_size = use_window_size();
+
+    use_effect(move || {
+        let _ = window_size;
+        app_store.write().window_size = window_size.read().clone();
     });
 }

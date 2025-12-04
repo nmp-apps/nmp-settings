@@ -97,6 +97,7 @@ pub fn PluginsButton() -> Element {
         IconButton {
             icon: Icon::Extension,
             title: "Manage Extensions",
+            size: "20px",
             onclick: handler,
         }
     }

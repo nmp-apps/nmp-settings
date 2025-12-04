@@ -1,10 +1,10 @@
 .top-bar {
+    height: 2.25rem;
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr minmax(0, 1fr);
     gap: 0.75rem;
-    border-bottom: 1px solid var(--layout-border-color);
-    padding: 0.5rem;
+    padding: 0.25rem;
 }
 
 .top-bar__left,
@@ -13,11 +13,13 @@
     flex-grow: 1;
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 0.7rem;
 }
 
 .top-bar__left {
     justify-content: flex-start;
+    width: min-content;
+    margin-right: auto;
 }
 
 .top-bar__right {
@@ -28,13 +30,22 @@
 
 .top-bar__title {
     flex-grow: 1;
-    font-size: 18px;
-    font-weight: 250;
+    font-size: 1.05rem;
+    font-weight: 400;
     text-align: center;
     cursor: default;
 }
 
 .top-bar__window-actions {
     display: flex;
-    gap: 4px;
+    gap: 0.25rem;
+}
+
+@media (max-width: 800px) {
+    .top-bar {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    }
+    .top-bar__center {
+        display: none;
+    }
 }

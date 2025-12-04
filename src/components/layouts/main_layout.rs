@@ -13,7 +13,9 @@ pub fn MainLayout() -> Element {
 
         div { class: "main-layout__wrapper",
             LeftBar {}
-            Outlet::<Route> {}
+            div { class: "main-layout__content",
+                Outlet::<Route> {}
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 .ui-list {
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .ui-list__item {
@@ -18,6 +21,11 @@
 
 .ui-list__item.capitalized {
     text-transform: capitalize;
+}
+
+.ui-list__item.selected {
+    background-color: var(--list-item-selected-bg-color);
+    font-weight: 500;
 }
 
 .ui-list__item:hover {

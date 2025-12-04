@@ -37,6 +37,12 @@ pub use info::*;
 mod keyboard_arrow_up;
 pub use keyboard_arrow_up:: *;
 
+mod left_panel_close;
+pub use left_panel_close::*;
+
+mod left_panel_open;
+pub use left_panel_open::*;
+
 mod lock_screen;
 pub use lock_screen::*;
 

@@ -77,7 +77,7 @@ pub fn Number(props: NumberProps) -> Element {
             button {
                 class: "ui-number__step-button left",
                 onclick: decrease_handler,
-                "<"
+                "–"
             }
             input {
                 class: "ui-number__input",
@@ -97,7 +97,7 @@ pub fn Number(props: NumberProps) -> Element {
             button {
                 class: "ui-number__step-button right",
                 onclick: increase_handler,
-                ">"
+                "+"
             }
         }
     }

@@ -20,7 +20,9 @@ use app::App;
 
 fn main() {
     // Fix: Failed to create GBM buffer of size WidthxHeight: Invalid argument
-    std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    unsafe {
+        std::env::set_var("WEBKIT_DISABLE_DMABUF_RENDERER", "1");
+    }
 
     dioxus::logger::init(Level::INFO).expect("Logger failed to init");
     dioxus::LaunchBuilder::desktop()
@@ -34,10 +36,10 @@ fn main() {
                 .with_focused(true)
                 .with_inner_size_constraints(
                     WindowSizeConstraints::new(
-                        Option::Some(PixelUnit::Logical(LogicalUnit::new(1280.0))),
-                        Option::Some(PixelUnit::Logical(LogicalUnit::new(720.0))),
-                        Option::Some(PixelUnit::Logical(LogicalUnit::new(2560.0))),
-                        Option::Some(PixelUnit::Logical(LogicalUnit::new(1600.0)))
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(380.0))),
+                        Option::Some(PixelUnit::Logical(LogicalUnit::new(380.0))),
+                        Option::None,
+                        Option::None
                     )
                 )
                 .with_inner_size(Size::Logical(LogicalSize { height: 720.0, width: 1280.0 }))
