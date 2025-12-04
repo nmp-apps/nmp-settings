@@ -13,10 +13,10 @@ static FAVICON: Asset = asset!("/assets/favicon.ico");
 
 #[component]
 pub fn App() -> Element {
-  use_app_store();
-  use_config_store();
-  use_plugins_store();
-  use_settings_store();
+    use_app_store();
+    use_config_store();
+    use_plugins_store();
+    use_settings_store();
 
     rsx! {
       // Global app resources

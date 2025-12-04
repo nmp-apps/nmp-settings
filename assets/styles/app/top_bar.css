@@ -18,6 +18,8 @@
 
 .top-bar__left {
     justify-content: flex-start;
+    width: min-content;
+    margin-right: auto;
 }
 
 .top-bar__right {
@@ -37,4 +39,13 @@
 .top-bar__window-actions {
     display: flex;
     gap: 0.25rem;
+}
+
+@media (max-width: 800px) {
+    .top-bar {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+    }
+    .top-bar__center {
+        display: none;
+    }
 }

@@ -1,11 +1,12 @@
 .left-bar {
     height: calc(100dvh - 2.5rem);
-    width: 30vw;
-    max-width: 250px;
-    min-width: 150px;
     padding: 8px;
     font-size: 0.95rem;
     font-weight: 300;
+    display: none;
+}
+
+.left-bar.open {
     display: flex;
 }
 

@@ -101,8 +101,8 @@ pub fn Setting(props: SettingProps) -> Element {
     rsx! {
         div { class: "setting", class: if is_disabled() { "disabled" },
             div { class: "setting__content",
-                h6 {
-                    {format!("{}", props.setting.read().setting().title())}
+                div { class: "setting__title",
+                    h6 { {format!("{}", props.setting.read().setting().title())} }
                     IconButton {
                         class: "setting__plugin-icon",
                         icon: Icon::Info,
@@ -112,7 +112,9 @@ pub fn Setting(props: SettingProps) -> Element {
                     }
                 }
                 if props.setting.read().setting().description().len() > 0 {
-                    p { {format!("{}", props.setting.read().setting().description())} }
+                    p { class: "setting__description",
+                        {format!("{}", props.setting.read().setting().description())}
+                    }
                 }
             }
 

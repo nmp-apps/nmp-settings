@@ -1,14 +1,14 @@
 .categorized-settings {
     width: 100%;
     height: calc(100vh - 52px);
-    position: realtive;
+    position: relative;
     overflow-y: scroll;
     padding: 0 1.5rem 0.5rem 1.5rem;
     scroll-behavior: smooth;
 }
 
 .categorized-settings__container {
-    max-width: 960px;
+    max-width: 50rem;
 }
 
 .categorized-settings__title {
